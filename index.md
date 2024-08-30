@@ -12,6 +12,8 @@ Key Features:
 
 🌈 Unlimited Colors: Explore a full spectrum of colors to bring your artwork to life. Easily adjust and customize colors to match your vision.
 
+↩️ Undo & Redo: Made a mistake or want to refine your work? Effortlessly undo or redo your last action with a simple tap.
+
 💾 Save to iCloud: Never lose your creations! Save your drawings directly to your iCloud folder, making them accessible on all your devices.
 
 🖼️ Simple Interface: Designed for ease of use, our minimalist interface allows you to focus on drawing without distractions.
