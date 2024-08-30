@@ -21,7 +21,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         return all
     }
 
-    @Published var foregroundColor = Color.black {
+    @Published var foregroundColor = Color.primary {
         didSet {
             currentStroke.color = foregroundColor
         }
@@ -117,5 +117,4 @@ class Drawing: ObservableObject, ReferenceFileDocument {
 
         oldStrokes.removeLast()
     }
-
 }
