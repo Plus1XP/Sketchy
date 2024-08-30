@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F5B279B2C82506F004D09BA /* BrushesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* BrushesView.swift */; };
 		2FDEEC742C82159D009BB9E3 /* SketchyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC732C82159D009BB9E3 /* SketchyApp.swift */; };
 		2FDEEC762C82159D009BB9E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC752C82159D009BB9E3 /* ContentView.swift */; };
 		2FDEEC782C82159E009BB9E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDEEC772C82159E009BB9E3 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F5B279A2C82506F004D09BA /* BrushesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrushesView.swift; sourceTree = "<group>"; };
 		2FDEEC702C82159D009BB9E3 /* Sketchy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sketchy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FDEEC732C82159D009BB9E3 /* SketchyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchyApp.swift; sourceTree = "<group>"; };
 		2FDEEC752C82159D009BB9E3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 			children = (
 				2FDEEC752C82159D009BB9E3 /* ContentView.swift */,
 				2FDEEC972C821EBF009BB9E3 /* SettingsView.swift */,
+				2F5B279A2C82506F004D09BA /* BrushesView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 			files = (
 				2FDEEC842C821650009BB9E3 /* Drawing.swift in Sources */,
 				2FDEEC9A2C821F1E009BB9E3 /* Confetti.swift in Sources */,
+				2F5B279B2C82506F004D09BA /* BrushesView.swift in Sources */,
 				2FDEEC762C82159D009BB9E3 /* ContentView.swift in Sources */,
 				2FDEEC962C821E5A009BB9E3 /* View.swift in Sources */,
 				2FDEEC942C821E43009BB9E3 /* DeviceShakeViewModifier.swift in Sources */,

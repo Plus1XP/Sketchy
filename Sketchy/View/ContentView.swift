@@ -65,19 +65,7 @@ struct ContentView: View {
                         .foregroundColor(.primary)
                 }
                 .popover(isPresented: $showingBrushOptions) {
-                    LazyVGrid(columns: [.init(.flexible()), .init(.flexible())]) {
-                        Text("Width: \(Int(self.drawing.lineWidth))")
-                        Slider(value: $drawing.lineWidth, in: 1...100)
-
-                        Text("Softness: \(Int(self.drawing.blurAmount))")
-                        Slider(value: $drawing.blurAmount, in: 0...50)
-
-                        Text("Spacing: \(drawing.lineSpacing, format: .percent)")
-                        Slider(value: $drawing.lineSpacing, in: 0...5, step: 0.1)
-                    }
-                    .frame(width: 400)
-                    .monospacedDigit()
-                    .padding()
+                    BrushesView()
                 }
             }
         }
