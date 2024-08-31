@@ -10,6 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
     @State var showConfetti: Bool = false
+    @State var canShowSafeAreaInfo: Bool = false
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = false
     // Fill in App ID when app is added to appstore connect!
     private let appName: String = "Sketchy App"
@@ -39,15 +40,28 @@ struct SettingsView: View {
             // Removes white form section backgroung
             .listRowBackground(Color.clear)
             
-            Section(header: Text("\(Image(systemName: "wrench.and.screwdriver")) settings")) {
+            Section(header: Text("\(Image(systemName: "slider.horizontal.3")) settings")) {
                 Group {
                     HStack {
                         Image(systemName: "pencil.and.ruler")
                             .foregroundStyle(.primary)
-
+                        Text("Exceed Safe Area")
+                        Button(action: {
+                            self.canShowSafeAreaInfo.toggle()
+                        }, label: {
+                            Image(systemName: "info.circle")
+                        })
+                        .popover(isPresented:  $canShowSafeAreaInfo) {
+                            Text("Uses the entire screen as the canvas.")
+                                .font(.footnote)
+                                .padding()
+                                .presentationCompactAdaptation(.popover)
+                        }
+                        Spacer()
                         Toggle("Exceed Safe Area", isOn: $canIgnoreSafeArea)
-                            .padding([.leading, .trailing])
+                            .labelsHidden()
                     }
+                    
                 }
             }
             Section(header: Text("\(Image(systemName: "message")) FeedBack")) {
