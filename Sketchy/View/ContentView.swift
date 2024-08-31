@@ -42,7 +42,7 @@ struct ContentView: View {
                     self.drawing.finishedStroke()
                 }
         )
-        .ignoresSafeArea()
+//        .ignoresSafeArea()
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarLeading) {
                 Button(action: self.drawing.undo) {
