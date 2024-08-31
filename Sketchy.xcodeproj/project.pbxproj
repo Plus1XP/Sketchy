@@ -23,7 +23,7 @@
 		2FDEEC982C821EBF009BB9E3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC972C821EBF009BB9E3 /* SettingsView.swift */; };
 		2FDEEC9A2C821F1E009BB9E3 /* Confetti.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC992C821F1E009BB9E3 /* Confetti.swift */; };
 		2FDEEC9D2C821F6D009BB9E3 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC9C2C821F6D009BB9E3 /* ButtonStyles.swift */; };
-		2FDEEC9F2C822060009BB9E3 /* CalendarComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC9E2C822060009BB9E3 /* CalendarComponents.swift */; };
+		2FDEEC9F2C822060009BB9E3 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC9E2C822060009BB9E3 /* HelperFunctions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +45,7 @@
 		2FDEEC972C821EBF009BB9E3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		2FDEEC992C821F1E009BB9E3 /* Confetti.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confetti.swift; sourceTree = "<group>"; };
 		2FDEEC9C2C821F6D009BB9E3 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
-		2FDEEC9E2C822060009BB9E3 /* CalendarComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarComponents.swift; sourceTree = "<group>"; };
+		2FDEEC9E2C822060009BB9E3 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,10 +140,10 @@
 		2FDEEC922C821E26009BB9E3 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				2FDEEC9E2C822060009BB9E3 /* HelperFunctions.swift */,
+				2FDEEC9C2C821F6D009BB9E3 /* ButtonStyles.swift */,
 				2FDEEC932C821E43009BB9E3 /* DeviceShakeViewModifier.swift */,
 				2FDEEC992C821F1E009BB9E3 /* Confetti.swift */,
-				2FDEEC9C2C821F6D009BB9E3 /* ButtonStyles.swift */,
-				2FDEEC9E2C822060009BB9E3 /* CalendarComponents.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -230,7 +230,7 @@
 				2FDEEC882C821690009BB9E3 /* Path.swift in Sources */,
 				2FDEEC862C821689009BB9E3 /* Codable.swift in Sources */,
 				2FDEEC8F2C821DE2009BB9E3 /* UIDevice.swift in Sources */,
-				2FDEEC9F2C822060009BB9E3 /* CalendarComponents.swift in Sources */,
+				2FDEEC9F2C822060009BB9E3 /* HelperFunctions.swift in Sources */,
 				2FDEEC912C821DEF009BB9E3 /* UIWindow.swift in Sources */,
 				2FDEEC982C821EBF009BB9E3 /* SettingsView.swift in Sources */,
 			);
