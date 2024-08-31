@@ -12,6 +12,7 @@ struct ContentView: View {
     @Environment(\.undoManager) var undoManager
     @State private var showingBrushOptions: Bool = false
     @State private var canShowSettingsView: Bool = false
+    @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = false
 
     var body: some View {
         Canvas { context, size in
@@ -42,7 +43,7 @@ struct ContentView: View {
                     self.drawing.finishedStroke()
                 }
         )
-//        .ignoresSafeArea()
+        .ignoresSafeArea(edges: canIgnoreSafeArea ? .all : [])
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarLeading) {
                 Button(action: self.drawing.undo) {
@@ -79,6 +80,18 @@ struct ContentView: View {
             let feedbackGenerator: UINotificationFeedbackGenerator? = UINotificationFeedbackGenerator()
             feedbackGenerator?.notificationOccurred(.success)
             canShowSettingsView.toggle()
+        }
+    }
+}
+
+
+public extension View {
+    @ViewBuilder
+    func expandViewOutOfSafeArea(canIgnore: Bool) -> some View {
+        if canIgnore {
+            self.ignoresSafeArea()
+        } else {
+            AnyView(self)
         }
     }
 }

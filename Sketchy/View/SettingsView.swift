@@ -10,6 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
     @State var showConfetti: Bool = false
+    @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = false
     // Fill in App ID when app is added to appstore connect!
     private let appName: String = "Sketchy App"
     private let appID: String = "6670319622"
@@ -38,6 +39,17 @@ struct SettingsView: View {
             // Removes white form section backgroung
             .listRowBackground(Color.clear)
             
+            Section(header: Text("\(Image(systemName: "wrench.and.screwdriver")) settings")) {
+                Group {
+                    HStack {
+                        Image(systemName: "pencil.and.ruler")
+                            .foregroundStyle(.primary)
+
+                        Toggle("Exceed Safe Area", isOn: $canIgnoreSafeArea)
+                            .padding([.leading, .trailing])
+                    }
+                }
+            }
             Section(header: Text("\(Image(systemName: "message")) FeedBack")) {
                 Group {
                     HStack {
