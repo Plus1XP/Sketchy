@@ -76,6 +76,10 @@ struct ContentView: View {
         .sheet(isPresented: $canShowSettingsView) {
             SettingsView()
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            debugPrint("Moving to the foreground!")
+            drawing.newStroke()
+        }
         .onShake {
             let feedbackGenerator: UINotificationFeedbackGenerator? = UINotificationFeedbackGenerator()
             feedbackGenerator?.notificationOccurred(.success)
