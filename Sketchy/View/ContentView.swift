@@ -12,6 +12,7 @@ struct ContentView: View {
     @Environment(\.undoManager) var undoManager
     @State private var showingBrushOptions: Bool = false
     @State private var canShowSettingsView: Bool = false
+    @State private var canShowMoreMenu: Bool = false
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = false
 
     var body: some View {
@@ -44,18 +45,19 @@ struct ContentView: View {
                 }
         )
         .ignoresSafeArea(edges: canIgnoreSafeArea ? .all : [])
+        
         .toolbar {
-            ToolbarItemGroup(placement: .navigationBarLeading) {
-                Button(action: self.drawing.undo) {
-                    Label("Undo", systemImage: "arrow.uturn.backward")
-                }
-                .disabled(undoManager?.canUndo == false)
-
-                Button(action: self.drawing.redo) {
-                    Label("Redo", systemImage: "arrow.uturn.forward")
-                }
-                .disabled(undoManager?.canRedo == false)
-            }
+//            ToolbarItemGroup(placement: .navigationBarLeading) {
+//                Button(action: self.drawing.undo) {
+//                    Label("Undo", systemImage: "arrow.uturn.backward")
+//                }
+//                .disabled(undoManager?.canUndo == false)
+//
+//                Button(action: self.drawing.redo) {
+//                    Label("Redo", systemImage: "arrow.uturn.forward")
+//                }
+//                .disabled(undoManager?.canRedo == false)
+//            }
 
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 ColorPicker("Color", selection: $drawing.foregroundColor)
@@ -67,6 +69,45 @@ struct ContentView: View {
                 }
                 .popover(isPresented: $showingBrushOptions) {
                     BrushesView()
+                }
+                
+//                Button(action: {
+//                    self.canShowMoreMenu.toggle()
+//                }) {
+//                    Label("Show More", systemImage: "ellipsis.circle")
+//                        .foregroundStyle(.primary)
+//                }
+//                .popover(isPresented: $canShowMoreMenu) {
+//                    HStack {
+//                        Button(action: self.drawing.undo) {
+//                            Label("Undo", systemImage: "arrow.uturn.backward")
+//                        }
+//                        .disabled(undoManager?.canUndo == false)
+//
+//                        Button(action: self.drawing.redo) {
+//                            Label("Redo", systemImage: "arrow.uturn.forward")
+//                        }
+//                        .disabled(undoManager?.canRedo == false)
+//                    }
+//                    .presentationCompactAdaptation(.popover)
+//                    .frame(minWidth: 100, maxHeight: 50)
+//                    .padding()
+//                    .background(.ultraThinMaterial)
+//                }
+                
+                Menu {
+                    Button(action: self.drawing.undo) {
+                        Label("Undo", systemImage: "arrow.uturn.backward")
+                    }
+                    .disabled(undoManager?.canUndo == false)
+                    
+                    Button(action: self.drawing.redo) {
+                        Label("Redo", systemImage: "arrow.uturn.forward")
+                    }
+                    .disabled(undoManager?.canRedo == false)
+                }
+                label: {
+                    Label("Show More", systemImage: "ellipsis.circle")
                 }
             }
         }
