@@ -79,6 +79,11 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         objectWillChange.send()
         currentStroke.points.append(point)
     }
+    
+    func removeLastStroke() {
+        objectWillChange.send()
+        currentStroke.points.removeLast()
+    }
 
     func finishedStroke() {
         objectWillChange.send()
@@ -87,6 +92,15 @@ class Drawing: ObservableObject, ReferenceFileDocument {
 
     func newStroke() {
         currentStroke = Stroke(color: foregroundColor, width: lineWidth, spacing: lineSpacing, blur: blurAmount)
+    }
+    
+    func removeOldStroke() {
+        objectWillChange.send()
+        oldStrokes.removeLast()
+    }
+    
+    func oldStrokeHistory() -> Int {
+        return oldStrokes.count
     }
 
     // MARK: Undo & Redo support

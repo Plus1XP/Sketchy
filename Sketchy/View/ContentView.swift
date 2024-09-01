@@ -71,30 +71,6 @@ struct ContentView: View {
                     BrushesView()
                 }
                 
-//                Button(action: {
-//                    self.canShowMoreMenu.toggle()
-//                }) {
-//                    Label("Show More", systemImage: "ellipsis.circle")
-//                        .foregroundStyle(.primary)
-//                }
-//                .popover(isPresented: $canShowMoreMenu) {
-//                    HStack {
-//                        Button(action: self.drawing.undo) {
-//                            Label("Undo", systemImage: "arrow.uturn.backward")
-//                        }
-//                        .disabled(undoManager?.canUndo == false)
-//
-//                        Button(action: self.drawing.redo) {
-//                            Label("Redo", systemImage: "arrow.uturn.forward")
-//                        }
-//                        .disabled(undoManager?.canRedo == false)
-//                    }
-//                    .presentationCompactAdaptation(.popover)
-//                    .frame(minWidth: 100, maxHeight: 50)
-//                    .padding()
-//                    .background(.ultraThinMaterial)
-//                }
-                
                 Menu {
                     Button(action: self.drawing.undo) {
                         Label("Undo", systemImage: "arrow.uturn.backward")
@@ -105,6 +81,10 @@ struct ContentView: View {
                         Label("Redo", systemImage: "arrow.uturn.forward")
                     }
                     .disabled(undoManager?.canRedo == false)
+                    Button(action: self.drawing.removeOldStroke) {
+                        Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
+                    }
+                    .disabled(self.drawing.oldStrokeHistory() == 0 || undoManager?.canUndo == true)
                 }
                 label: {
                     Label("Show More", systemImage: "ellipsis.circle")
@@ -113,12 +93,15 @@ struct ContentView: View {
         }
         .onAppear {
             self.drawing.undoManager = undoManager
+            print(drawing.oldStrokeHistory())
+
         }
         .sheet(isPresented: $canShowSettingsView) {
             SettingsView()
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            debugPrint("Moving to the foreground!")
+            debugPrint("Moving to the Foreground!")
+            drawing.removeLastStroke()
             drawing.newStroke()
         }
         .onShake {
