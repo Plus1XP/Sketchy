@@ -12,6 +12,7 @@ struct SettingsView: View {
     @State var showConfetti: Bool = false
     @State var canShowSafeAreaInfo: Bool = false
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = false
+    @AppStorage("appearance") var appearance: AppearanceType = .automatic
     // Fill in App ID when app is added to appstore connect!
     private let appName: String = "Sketchy App"
     private let appID: String = "6670319622"
@@ -44,7 +45,7 @@ struct SettingsView: View {
                 Group {
                     HStack {
                         Image(systemName: "pencil.and.ruler")
-                            .foregroundStyle(.primary)
+                            .foregroundStyle(.brown)
                         Text("Exceed Safe Area")
                         Button(action: {
                             self.canShowSafeAreaInfo.toggle()
@@ -61,7 +62,18 @@ struct SettingsView: View {
                         Toggle("Exceed Safe Area", isOn: $canIgnoreSafeArea)
                             .labelsHidden()
                     }
-                    
+                    HStack {
+                        let symbol = appearance == .automatic ? "moonphase.first.quarter" : appearance == .light ? "sun.max" : "moon"
+                        let primaryColor = appearance == .automatic ? Color.gray : appearance == .light ? Color.yellow : Color.gray
+                        let secondaryColor = appearance == .automatic ? Color.yellow : appearance == .light ? Color.yellow : Color.gray
+                        Image(systemName: "\(symbol)")
+                            .foregroundStyle(primaryColor, secondaryColor)
+                        Picker(selection: $appearance, label: Text("System Appearence")) {
+                            Text("Auto").tag(AppearanceType.automatic)
+                            Text("Light").tag(AppearanceType.light)
+                            Text("Dark").tag(AppearanceType.dark)
+                        }
+                    }
                 }
             }
             Section(header: Text("\(Image(systemName: "message")) FeedBack")) {
