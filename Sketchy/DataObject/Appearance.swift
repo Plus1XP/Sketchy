@@ -1,5 +1,5 @@
 //
-//  Appearence.swift
+//  Appearance.swift
 //  Sketchy
 //
 //  Created by nabbit on 01/09/2024.
@@ -82,5 +82,13 @@ extension AppearanceType {
         case .light:
             Color.yellow
         }
+    }
+    
+    func setCanvasColor(colorScheme: ColorScheme) -> Color {
+        colorScheme == .light ? .white : .black
+    }
+    
+    func setBrushColor(colorScheme: ColorScheme) -> Color {
+        colorScheme == .light ? .white : .black
     }
 }

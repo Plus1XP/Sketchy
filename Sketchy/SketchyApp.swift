@@ -9,26 +9,32 @@ import SwiftUI
 
 @main
 struct SketchyApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     @AppStorage("appearance") var appearance: AppearanceType = .automatic
 
     var body: some Scene {
         DocumentGroup(newDocument: Drawing.init) { file in
             ContentView()
-                .preferredColorScheme(appearance.colorScheme)
-                .environment(\.colorScheme, appearance.colorScheme ?? .light)
-                .onChange(of: appearance, {
-                    debugPrint("Apperance changed")
-                    let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                    if let firstWindow = scene?.windows.first {
-                        firstWindow.overrideUserInterfaceStyle = appearance.userInerfaceStyle ?? .unspecified
-                    }
-                })
-                .onAppear {
-                    let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                    if let firstWindow = scene?.windows.first {
-                        firstWindow.overrideUserInterfaceStyle = appearance.userInerfaceStyle ?? .unspecified
-                    }
-                }
+        }
+        .onChange(of: scenePhase) {
+            print("Scene Changed")
+            setAppearance()
+        }
+        .onChange(of: appearance) {
+            print("Appearance settings changed")
+            setAppearance()
+        }
+    }
+    
+    private func setAppearance() {
+        // We do this via the window so we can access UIKit components too.
+        // Replace depreciated code with new code below.
+        
+//        let window = UIApplication.shared.windows.first
+//        window?.overrideUserInterfaceStyle = appearance.userInerfaceStyle ?? .unspecified
+        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        if let firstWindow = scene?.windows.first {
+            firstWindow.overrideUserInterfaceStyle = appearance.userInerfaceStyle ?? .unspecified
         }
     }
 }
