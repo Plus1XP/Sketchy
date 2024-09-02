@@ -1,5 +1,5 @@
 //
-//  appearence.swift
+//  Appearence.swift
 //  Sketchy
 //
 //  Created by nabbit on 01/09/2024.
@@ -32,22 +32,55 @@ extension AppearanceType {
     var colorScheme: ColorScheme? {
         switch self {
         case .automatic:
-            .none
+                .none
         case .dark:
-            .dark
+                .dark
         case .light:
-            .light
+                .light
         }
     }
     
     var userInerfaceStyle: UIUserInterfaceStyle? {
         switch self {
         case .automatic:
-            .unspecified
+                .unspecified
         case .dark:
-            .dark
+                .dark
         case .light:
-            .light
+                .light
+        }
+    }
+    
+    var symbolChoice: String {
+        switch self {
+        case .automatic:
+            "moonphase.first.quarter"
+        case .dark:
+            "moon"
+        case .light:
+            "sun.max"
+        }
+    }
+    
+    var primarySymbolColor: Color {
+        switch self {
+        case .automatic:
+            Color.gray
+        case .dark:
+            Color.gray
+        case .light:
+            Color.yellow
+        }
+    }
+    
+    var secondarySymbolColor: Color {
+        switch self {
+        case .automatic:
+            Color.yellow
+        case .dark:
+            Color.gray
+        case .light:
+            Color.yellow
         }
     }
 }

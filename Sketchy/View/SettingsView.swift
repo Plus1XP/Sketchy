@@ -11,7 +11,7 @@ struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
     @State var showConfetti: Bool = false
     @State var canShowSafeAreaInfo: Bool = false
-    @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = false
+    @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
     @AppStorage("appearance") var appearance: AppearanceType = .automatic
     // Fill in App ID when app is added to appstore connect!
     private let appName: String = "Sketchy App"
@@ -41,7 +41,7 @@ struct SettingsView: View {
             // Removes white form section backgroung
             .listRowBackground(Color.clear)
             
-            Section(header: Text("\(Image(systemName: "slider.horizontal.3")) settings")) {
+            Section(header: Text("\(Image(systemName: "slider.horizontal.3")) Preferences")) {
                 Group {
                     HStack {
                         Image(systemName: "pencil.and.ruler")
@@ -63,11 +63,8 @@ struct SettingsView: View {
                             .labelsHidden()
                     }
                     HStack {
-                        let symbol = appearance == .automatic ? "moonphase.first.quarter" : appearance == .light ? "sun.max" : "moon"
-                        let primaryColor = appearance == .automatic ? Color.gray : appearance == .light ? Color.yellow : Color.gray
-                        let secondaryColor = appearance == .automatic ? Color.yellow : appearance == .light ? Color.yellow : Color.gray
-                        Image(systemName: "\(symbol)")
-                            .foregroundStyle(primaryColor, secondaryColor)
+                        Image(systemName: appearance.symbolChoice)
+                            .foregroundStyle(appearance.primarySymbolColor, appearance.secondarySymbolColor)
                         Picker(selection: $appearance, label: Text("System Appearence")) {
                             Text("Auto").tag(AppearanceType.automatic)
                             Text("Light").tag(AppearanceType.light)
