@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
+    @EnvironmentObject var drawing: Drawing
     @State var showConfetti: Bool = false
     @State var canShowSafeAreaInfo: Bool = false
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
@@ -70,6 +71,11 @@ struct SettingsView: View {
                             Text("Light").tag(AppearanceType.light)
                             Text("Dark").tag(AppearanceType.dark)
                         }
+                    }
+                    HStack {
+                        Image(systemName: "photo.artframe")
+                            .foregroundStyle(.black, .cyan)
+                        ColorPicker("Canvas Color", selection: $drawing.backgroundColor, supportsOpacity: true)
                     }
                 }
             }
@@ -182,4 +188,5 @@ struct SettingsView: View {
 
 #Preview {
     SettingsView()
+        .environmentObject(Drawing())
 }

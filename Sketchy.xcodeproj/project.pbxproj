@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2F5B279B2C82506F004D09BA /* BrushesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* BrushesView.swift */; };
+		2F5B279B2C82506F004D09BA /* BrushesPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* BrushesPreferencesView.swift */; };
 		2FD6FB272C83EAF400AFDD82 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6FB262C83EAF400AFDD82 /* Appearance.swift */; };
 		2FDEEC742C82159D009BB9E3 /* SketchyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC732C82159D009BB9E3 /* SketchyApp.swift */; };
 		2FDEEC762C82159D009BB9E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC752C82159D009BB9E3 /* ContentView.swift */; };
@@ -25,10 +25,13 @@
 		2FDEEC9A2C821F1E009BB9E3 /* Confetti.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC992C821F1E009BB9E3 /* Confetti.swift */; };
 		2FDEEC9D2C821F6D009BB9E3 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC9C2C821F6D009BB9E3 /* ButtonStyles.swift */; };
 		2FDEEC9F2C822060009BB9E3 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC9E2C822060009BB9E3 /* HelperFunctions.swift */; };
+		2FE9916E2C8606F3000686FD /* RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE9916D2C8606F3000686FD /* RawRepresentable.swift */; };
+		2FE991702C861B31000686FD /* ArtCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE9916F2C861B31000686FD /* ArtCanvas.swift */; };
+		2FE991722C861B5F000686FD /* SketchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991712C861B5F000686FD /* SketchModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2F5B279A2C82506F004D09BA /* BrushesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrushesView.swift; sourceTree = "<group>"; };
+		2F5B279A2C82506F004D09BA /* BrushesPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrushesPreferencesView.swift; sourceTree = "<group>"; };
 		2FD6FB262C83EAF400AFDD82 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		2FDEEC702C82159D009BB9E3 /* Sketchy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sketchy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FDEEC732C82159D009BB9E3 /* SketchyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchyApp.swift; sourceTree = "<group>"; };
@@ -48,6 +51,9 @@
 		2FDEEC992C821F1E009BB9E3 /* Confetti.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confetti.swift; sourceTree = "<group>"; };
 		2FDEEC9C2C821F6D009BB9E3 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		2FDEEC9E2C822060009BB9E3 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
+		2FE9916D2C8606F3000686FD /* RawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawRepresentable.swift; sourceTree = "<group>"; };
+		2FE9916F2C861B31000686FD /* ArtCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtCanvas.swift; sourceTree = "<group>"; };
+		2FE991712C861B5F000686FD /* SketchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +115,7 @@
 				2FDEEC8E2C821DE2009BB9E3 /* UIDevice.swift */,
 				2FDEEC902C821DEF009BB9E3 /* UIWindow.swift */,
 				2FDEEC952C821E5A009BB9E3 /* View.swift */,
+				2FE9916D2C8606F3000686FD /* RawRepresentable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -126,7 +133,7 @@
 			children = (
 				2FDEEC752C82159D009BB9E3 /* ContentView.swift */,
 				2FDEEC972C821EBF009BB9E3 /* SettingsView.swift */,
-				2F5B279A2C82506F004D09BA /* BrushesView.swift */,
+				2F5B279A2C82506F004D09BA /* BrushesPreferencesView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -134,8 +141,10 @@
 		2FDEEC8D2C821DBE009BB9E3 /* DataObject */ = {
 			isa = PBXGroup;
 			children = (
-				2FDEEC812C821649009BB9E3 /* Stroke.swift */,
 				2FD6FB262C83EAF400AFDD82 /* Appearance.swift */,
+				2FE9916F2C861B31000686FD /* ArtCanvas.swift */,
+				2FDEEC812C821649009BB9E3 /* Stroke.swift */,
+				2FE991712C861B5F000686FD /* SketchModel.swift */,
 			);
 			path = DataObject;
 			sourceTree = "<group>";
@@ -223,13 +232,16 @@
 			files = (
 				2FDEEC842C821650009BB9E3 /* Drawing.swift in Sources */,
 				2FDEEC9A2C821F1E009BB9E3 /* Confetti.swift in Sources */,
-				2F5B279B2C82506F004D09BA /* BrushesView.swift in Sources */,
+				2F5B279B2C82506F004D09BA /* BrushesPreferencesView.swift in Sources */,
 				2FDEEC762C82159D009BB9E3 /* ContentView.swift in Sources */,
 				2FDEEC962C821E5A009BB9E3 /* View.swift in Sources */,
+				2FE991702C861B31000686FD /* ArtCanvas.swift in Sources */,
 				2FDEEC942C821E43009BB9E3 /* DeviceShakeViewModifier.swift in Sources */,
 				2FDEEC822C821649009BB9E3 /* Stroke.swift in Sources */,
 				2FDEEC742C82159D009BB9E3 /* SketchyApp.swift in Sources */,
+				2FE991722C861B5F000686FD /* SketchModel.swift in Sources */,
 				2FDEEC9D2C821F6D009BB9E3 /* ButtonStyles.swift in Sources */,
+				2FE9916E2C8606F3000686FD /* RawRepresentable.swift in Sources */,
 				2FDEEC882C821690009BB9E3 /* Path.swift in Sources */,
 				2FDEEC862C821689009BB9E3 /* Codable.swift in Sources */,
 				2FDEEC8F2C821DE2009BB9E3 /* UIDevice.swift in Sources */,

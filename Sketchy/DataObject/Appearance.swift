@@ -83,12 +83,4 @@ extension AppearanceType {
             Color.yellow
         }
     }
-    
-    func setCanvasColor(colorScheme: ColorScheme) -> Color {
-        colorScheme == .light ? .white : .black
-    }
-    
-    func setBrushColor(colorScheme: ColorScheme) -> Color {
-        colorScheme == .light ? .white : .black
-    }
 }

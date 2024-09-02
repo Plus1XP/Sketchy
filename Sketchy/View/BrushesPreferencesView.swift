@@ -1,5 +1,5 @@
 //
-//  BrushesView.swift
+//  BrushesPreferencesView.swift
 //  Sketchy
 //
 //  Created by nabbit on 30/08/2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BrushesView: View {
+struct BrushesPreferencesView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var drawing: Drawing
@@ -70,6 +70,6 @@ struct BrushesView: View {
 }
 
 #Preview {
-    BrushesView()
+    BrushesPreferencesView()
         .environmentObject(Drawing())
 }

@@ -10,13 +10,17 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var drawing: Drawing
     @Environment(\.undoManager) var undoManager
+    @Environment(\.colorScheme) private var colorScheme
     @State private var showingBrushOptions: Bool = false
+    @State private var showingCanvasOptions: Bool = false
     @State private var canShowSettingsView: Bool = false
     @State private var canShowMoreMenu: Bool = false
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = false
 
     var body: some View {
         Canvas { context, size in
+            context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(self.drawing.backgroundColor))
+            
             for stroke in self.drawing.strokes {
                 let path = Path(curving: stroke.points)
 
@@ -41,85 +45,98 @@ struct ContentView: View {
                     self.drawing.add(point: value.location)
                 }
                 .onEnded { _ in
+                    debugPrint("Canvas Color: \(self.drawing.backgroundColor)")
+                    debugPrint("Brush Color: \(self.drawing.foregroundColor)")
                     self.drawing.finishedStroke()
                 }
         )
-        .ignoresSafeArea(edges: canIgnoreSafeArea ? .all : [])
+        .ignoresSafeArea(edges: self.canIgnoreSafeArea ? .all : [])
         
         .toolbar {
-//            ToolbarItemGroup(placement: .navigationBarLeading) {
-//                Button(action: self.drawing.undo) {
-//                    Label("Undo", systemImage: "arrow.uturn.backward")
-//                }
-//                .disabled(undoManager?.canUndo == false)
-//
-//                Button(action: self.drawing.redo) {
-//                    Label("Redo", systemImage: "arrow.uturn.forward")
-//                }
-//                .disabled(undoManager?.canRedo == false)
-//            }
+            ToolbarItemGroup(placement: .bottomBar) {
+                Spacer()
+                // Repeat behaviour not working unless button is in view directly
+                Button(action: self.drawing.undo) {
+                    Label("Undo", systemImage: "arrow.uturn.backward")
+                }
+                .buttonRepeatBehavior(.enabled)
+                .disabled(self.undoManager?.canUndo == false)
+                
+                Button(action: self.drawing.redo) {
+                    Label("Redo", systemImage: "arrow.uturn.forward")
+                }
+                .buttonRepeatBehavior(.enabled)
+                .disabled(self.undoManager?.canRedo == false)
+                
+                Button(action: self.drawing.removeOldStroke) {
+                    Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
+                }
+                .buttonRepeatBehavior(.enabled)
+                .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
+                Spacer()
+            }
 
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 ColorPicker("Color", selection: $drawing.foregroundColor)
                     .labelsHidden()
-
-                Button(action: { showingBrushOptions.toggle() }) {
-                    Label("Brush", systemImage: "paintbrush.pointed.fill")
-                        .foregroundColor(.primary)
+                
+                Menu {
+                    Button(action: { self.showingBrushOptions.toggle() }) {
+                        Label("Brush Preferences", systemImage: "paintbrush.pointed.fill")
+                            .foregroundColor(.primary)
+                    }
+                    
+                    Button(action: { self.showingCanvasOptions.toggle() }) {
+                        Label("Canvas Preferences", systemImage: "photo")
+                            .foregroundColor(.primary)
+                    }
+                    
+                } label: {
+                    Label("Show Tools", systemImage: "wrench.and.screwdriver")
                 }
                 .popover(isPresented: $showingBrushOptions) {
-                    BrushesView()
+                    BrushesPreferencesView()
+                }
+                .popover(isPresented: $showingCanvasOptions) {
+
                 }
                 
                 Menu {
                     Button(action: self.drawing.undo) {
                         Label("Undo", systemImage: "arrow.uturn.backward")
                     }
-                    .disabled(undoManager?.canUndo == false)
+                    .disabled(self.undoManager?.canUndo == false)
                     
                     Button(action: self.drawing.redo) {
                         Label("Redo", systemImage: "arrow.uturn.forward")
                     }
-                    .disabled(undoManager?.canRedo == false)
+                    .disabled(self.undoManager?.canRedo == false)
                     Button(action: self.drawing.removeOldStroke) {
                         Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
                     }
-                    .disabled(self.drawing.oldStrokeHistory() == 0 || undoManager?.canUndo == true)
-                }
-                label: {
+                    .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
+                } label: {
                     Label("Show More", systemImage: "ellipsis.circle")
                 }
             }
         }
         .onAppear {
-            self.drawing.undoManager = undoManager
-            print(drawing.oldStrokeHistory())
-
+            self.drawing.undoManager = self.undoManager
+            debugPrint("Loading Canvas Preferences")
+            self.drawing.setCanvasDefaults(colorScheme: self.colorScheme)
         }
         .sheet(isPresented: $canShowSettingsView) {
             SettingsView()
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             debugPrint("Moving to the Foreground!")
-            drawing.removeLastStroke()
-            drawing.newStroke()
+            self.drawing.removeLastStroke()
+            self.drawing.newStroke()
         }
         .onShake {
             let feedbackGenerator: UINotificationFeedbackGenerator? = UINotificationFeedbackGenerator()
             feedbackGenerator?.notificationOccurred(.success)
-            canShowSettingsView.toggle()
-        }
-    }
-}
-
-
-public extension View {
-    @ViewBuilder
-    func expandViewOutOfSafeArea(canIgnore: Bool) -> some View {
-        if canIgnore {
-            self.ignoresSafeArea()
-        } else {
-            AnyView(self)
+            self.canShowSettingsView.toggle()
         }
     }
 }

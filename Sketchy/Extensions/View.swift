@@ -16,4 +16,13 @@ extension View {
     func displayConfetti(isActive: Binding<Bool>) -> some View {
         self.modifier(DisplayConfettiModifier(isActive: isActive))
     }
+    
+    @ViewBuilder
+    func canExpandViewOutOfSafeArea(_ execute: Bool) -> some View {
+        if execute {
+            self.ignoresSafeArea()
+        } else {
+            AnyView(self)
+        }
+    }
 }
