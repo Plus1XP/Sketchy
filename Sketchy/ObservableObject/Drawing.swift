@@ -160,7 +160,9 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     
     func removeLastStroke() {
         objectWillChange.send()
-        self.currentStroke.points.removeLast()
+        if !currentStroke.points.isEmpty {
+            self.currentStroke.points.removeLast()
+        }
     }
 
     func finishedStroke() {
