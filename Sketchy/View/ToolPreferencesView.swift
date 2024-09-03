@@ -16,12 +16,16 @@ struct ToolPreferencesView: View {
         VStack(alignment: .leading) {
             HStack {
                 Button {
-                    self.drawing.lineWidth = 3.0
-                    self.drawing.blurAmount = 0.0
-                    self.drawing.lineSpacing = 0.0
+                    withAnimation {
+                        self.drawing.lineWidth = 3.0
+                        self.drawing.blurAmount = 0.0
+                        self.drawing.lineSpacing = 0.0
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    }
                 } label: {
                     Image(systemName: "arrow.counterclockwise.circle.fill")
                 }
+                .disabled(self.drawing.lineWidth == 3.0 && self.drawing.blurAmount == 0.0 && self.drawing.lineSpacing == 0.0)
                 Spacer()
                 Text("Tool Preferences")
                     .fontWeight(.semibold)
@@ -43,6 +47,7 @@ struct ToolPreferencesView: View {
                         HStack {
                             Text("Width: \(Int(self.drawing.lineWidth))")
                             Slider(value: $drawing.lineWidth, in: 1...100)
+                                .sensoryFeedback(.increase, trigger: self.drawing.lineWidth)
                         }
                     }
                 }
@@ -51,6 +56,7 @@ struct ToolPreferencesView: View {
                         HStack {
                             Text("Softness: \(Int(self.drawing.blurAmount))")
                             Slider(value: $drawing.blurAmount, in: 0...50)
+                                .sensoryFeedback(.increase, trigger: self.drawing.blurAmount)
                         }
                     }
                 }
@@ -59,6 +65,7 @@ struct ToolPreferencesView: View {
                         HStack {
                             Text("Spacing: \(self.drawing.lineSpacing, format: .percent)")
                             Slider(value: $drawing.lineSpacing, in: 0...5, step: 0.1)
+                                .sensoryFeedback(.increase, trigger: self.drawing.lineSpacing)
                         }
                     }
                 }
