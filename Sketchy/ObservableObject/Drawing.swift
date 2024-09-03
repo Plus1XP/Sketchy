@@ -183,7 +183,16 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     func oldStrokeHistory() -> Int {
         return self.sketchModel.oldStrokes.count
     }
-
+    
+    func clearCanvas() {
+        if !self.sketchModel.oldStrokes.isEmpty {
+            objectWillChange.send()
+            self.sketchModel.oldStrokes.removeAll()
+            self.newStroke()
+            self.undoManager?.removeAllActions()
+        }
+    }
+    
     // MARK: Undo & Redo support
 
     func undo() {
@@ -209,7 +218,8 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         self.undoManager?.registerUndo(withTarget: self, handler: { drawing in
             drawing.addStrokeWithUndo(stroke)
         })
-
-        self.sketchModel.oldStrokes.removeLast()
+        if !sketchModel.oldStrokes.isEmpty {
+            self.sketchModel.oldStrokes.removeLast()
+        }
     }
 }

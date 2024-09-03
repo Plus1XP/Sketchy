@@ -11,8 +11,9 @@ struct ContentView: View {
     @EnvironmentObject var drawing: Drawing
     @Environment(\.undoManager) var undoManager
     @Environment(\.colorScheme) private var colorScheme
-    @State private var showingBrushOptions: Bool = false
+    @State private var showingToolPreferences: Bool = false
     @State private var canShowSettingsView: Bool = false
+    @State private var canShowDeleteAlert: Bool = false
     @State private var startPoint: CGPoint?
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = false
 
@@ -27,76 +28,98 @@ struct ContentView: View {
             
             // Draw current stroke
             self.drawStroke(self.drawing.currentStroke, in: context)
-            
         }
+//        .sensoryFeedback(.impact(flexibility: .soft, intensity: 0.21), trigger: self.drawing.currentStroke.points)
+        .sensoryFeedback(.impact(weight: .light, intensity: 0.16), trigger: self.drawing.currentStroke.points)
         .gesture(DragGesture(minimumDistance: 0)
             .onChanged { value in
                 if let start = startPoint {
                     switch self.drawing.selectedTool {
+                    case .brush:
+                        self.drawing.addBrush(point: value.location)
                     case .circle:
                         self.drawing.addCircle(startPoint: start, endPoint: value.location)
                     case .eraser:
                         self.drawing.useEraser(point: value.location)
+                    case .fill:
+                        // Using as filler atm
+                        self.drawing.addBrush(point: value.location)
                     case .line:
                         self.drawing.addLine(startPoint: start, endPoint: value.location)
                     case .square:
                         self.drawing.addSquare(startPoint: start, endPoint: value.location)
-                    default:
-                        self.drawing.addBrush(point: value.location)
                     }
                 } else {
                     startPoint = value.location
                 }
             }
-            .onEnded { _ in
+            .onEnded { value in
                 debugPrint("Canvas Color: \(self.drawing.backgroundColor)")
                 debugPrint("Brush Color: \(self.drawing.foregroundColor)")
+                if drawing.selectedTool == .brush {
+                    self.drawing.addBrush(point: value.location)
+                }
                 self.drawing.finishedStroke()
                 startPoint = nil
             }
         )
+//        .simultaneousGesture(
+//            DragGesture(minimumDistance: 0)
+//                .onEnded { value in
+//                    if drawing.selectedTool == .brush {
+//                        self.drawing.addBrush(point: value.location)
+//                    }
+//                }
+//        )
         .ignoresSafeArea(edges: self.canIgnoreSafeArea ? .all : [])
-        
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 ColorPicker("Color", selection: $drawing.foregroundColor)
                     .labelsHidden()
-                
-                Button(action: { self.showingBrushOptions.toggle() }) {
+                    .sensoryFeedback(.selection, trigger: drawing.foregroundColor)
+                Button(action: {
+                    self.showingToolPreferences.toggle()
+                    UISelectionFeedbackGenerator().selectionChanged()
+                }) {
                     Label("Tool Preferences", systemImage: "slider.horizontal.3")
                         .foregroundColor(.primary)
                 }
-                .popover(isPresented: $showingBrushOptions) {
+                .popover(isPresented: $showingToolPreferences) {
                     ToolPreferencesView()
                 }
                 
                 Menu {
                     Button(action: {
                         self.drawing.selectedTool = .brush
+                        UISelectionFeedbackGenerator().selectionChanged()
                     }, label: {
                         Label("Brush", systemImage: "paintbrush.pointed")
                     })
                     
                     Button(action: {
                         self.drawing.selectedTool = .line
+                        UISelectionFeedbackGenerator().selectionChanged()
                     }, label: {
                         Label("Line", systemImage: "line.diagonal")
                     })
                     
                     Button(action: {
                         self.drawing.selectedTool = .circle
+                        UISelectionFeedbackGenerator().selectionChanged()
                     }, label: {
                         Label("Circle", systemImage: "circle")
                     })
                     
                     Button(action: {
                         self.drawing.selectedTool = .square
+                        UISelectionFeedbackGenerator().selectionChanged()
                     }, label: {
                         Label("Retangle", systemImage: "square")
                     })
                     
                     Button(action: {
                         self.drawing.selectedTool = .eraser
+                        UISelectionFeedbackGenerator().selectionChanged()
                     }, label: {
                         Label("Eraser", systemImage: "eraser")
                     })
@@ -109,23 +132,48 @@ struct ContentView: View {
             ToolbarItemGroup(placement: .bottomBar) {
                 Spacer()
                 // Repeat behaviour not working unless button is in view directly
-                Button(action: self.drawing.undo) {
+                Button(action: {
+                    self.drawing.undo()
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                }, label: {
                     Label("Undo", systemImage: "arrow.uturn.backward")
-                }
+                })
                 .buttonRepeatBehavior(.enabled)
                 .disabled(self.undoManager?.canUndo == false)
                 Spacer()
-                Button(action: self.drawing.redo) {
+                Button(action: {
+                    self.drawing.redo()
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                }, label: {
                     Label("Redo", systemImage: "arrow.uturn.forward")
-                }
+                })
                 .buttonRepeatBehavior(.enabled)
                 .disabled(self.undoManager?.canRedo == false)
                 Spacer()
-                Button(action: self.drawing.removeOldStroke) {
+                Button(action: {
+                    self.drawing.removeOldStroke()
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                }, label: {
                     Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
-                }
+                })
                 .buttonRepeatBehavior(.enabled)
                 .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
+                Spacer()
+                Button(action: {
+                    self.canShowDeleteAlert.toggle()
+                    UINotificationFeedbackGenerator().notificationOccurred(.warning)
+                }, label: {
+                    Label("Clear Canvas", systemImage: "trash")
+                })
+                .disabled(self.drawing.oldStrokeHistory() == 0)
+                .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
+                    Button("OK", role: .destructive) {
+                        self.drawing.clearCanvas()
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    }
+                    Button("cancel", role: .cancel) {
+                    }
+                }
                 Spacer()
             }
         }
@@ -166,7 +214,13 @@ struct ContentView: View {
             self.drawSquare(stroke, in: context)
         }
     }
-                 
+    
+    func handleTap(at location: CGPoint) {
+        // Use the tap location for your logic
+        print("Tap registered at: \(location)")
+        // Add any specific action based on the tap location
+    }
+    
     // Method to draw brush strokes
     private func drawBrush(_ stroke: Stroke, in context: GraphicsContext) {
         let path = Path(curving: stroke.points)
@@ -219,7 +273,7 @@ struct ContentView: View {
         contextCopy.stroke(path, with: .color(stroke.color), style: StrokeStyle(lineWidth: stroke.width, lineCap: .round, lineJoin: .round, dash: [1, stroke.spacing * stroke.width])
         )
     }
-                 
+    
     // Method to draw squares
     private func drawSquare(_ stroke: Stroke, in context: GraphicsContext) {
         var path = Path()
