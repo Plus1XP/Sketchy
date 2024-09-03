@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-struct Stroke: Codable {
+struct Stroke: Codable, Identifiable {
+    var id = UUID()
     var points = [CGPoint]()
     var color = Color.primary
     var width = 3.0
     var spacing = 0.0
     var blur = 0.0
+    var tool = ToolType.brush
 }

@@ -28,6 +28,7 @@
 		2FE9916E2C8606F3000686FD /* RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE9916D2C8606F3000686FD /* RawRepresentable.swift */; };
 		2FE991702C861B31000686FD /* ArtCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE9916F2C861B31000686FD /* ArtCanvas.swift */; };
 		2FE991722C861B5F000686FD /* SketchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991712C861B5F000686FD /* SketchModel.swift */; };
+		2FE991742C863CD8000686FD /* ToolType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991732C863CD8000686FD /* ToolType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		2FE9916D2C8606F3000686FD /* RawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawRepresentable.swift; sourceTree = "<group>"; };
 		2FE9916F2C861B31000686FD /* ArtCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtCanvas.swift; sourceTree = "<group>"; };
 		2FE991712C861B5F000686FD /* SketchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchModel.swift; sourceTree = "<group>"; };
+		2FE991732C863CD8000686FD /* ToolType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 				2FDEEC8A2C821A83009BB9E3 /* Info.plist */,
 				2FDEEC8D2C821DBE009BB9E3 /* DataObject */,
 				2FDEEC8B2C821D1C009BB9E3 /* ObservableObject */,
+				2FE991752C863EEE000686FD /* ViewComponents */,
 				2FDEEC8C2C821D90009BB9E3 /* View */,
 				2FDEEC892C8216BB009BB9E3 /* Extensions */,
 				2FDEEC922C821E26009BB9E3 /* Utilities */,
@@ -142,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				2FD6FB262C83EAF400AFDD82 /* Appearance.swift */,
+				2FE991732C863CD8000686FD /* ToolType.swift */,
 				2FE9916F2C861B31000686FD /* ArtCanvas.swift */,
 				2FDEEC812C821649009BB9E3 /* Stroke.swift */,
 				2FE991712C861B5F000686FD /* SketchModel.swift */,
@@ -158,6 +162,13 @@
 				2FDEEC992C821F1E009BB9E3 /* Confetti.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		2FE991752C863EEE000686FD /* ViewComponents */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewComponents;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,6 +260,7 @@
 				2FDEEC912C821DEF009BB9E3 /* UIWindow.swift in Sources */,
 				2FDEEC982C821EBF009BB9E3 /* SettingsView.swift in Sources */,
 				2FD6FB272C83EAF400AFDD82 /* Appearance.swift in Sources */,
+				2FE991742C863CD8000686FD /* ToolType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

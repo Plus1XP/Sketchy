@@ -74,7 +74,7 @@ struct SettingsView: View {
                     }
                     HStack {
                         Image(systemName: "photo.artframe")
-                            .foregroundStyle(.black, .cyan)
+                            .foregroundStyle(colorScheme == .light ? .black : .white , .cyan)
                         ColorPicker("Canvas Color", selection: $drawing.backgroundColor, supportsOpacity: true)
                     }
                 }
@@ -189,4 +189,11 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
         .environmentObject(Drawing())
+        .preferredColorScheme(.light)
+}
+
+#Preview {
+    SettingsView()
+        .environmentObject(Drawing())
+        .preferredColorScheme(.dark)
 }

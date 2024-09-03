@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 class Drawing: ObservableObject, ReferenceFileDocument {
-    private var currentStroke = Stroke()
+    @Published var currentStroke = Stroke()
     private var sketchModel = SketchModel(artCanvas: ArtCanvas(), oldStrokes: [Stroke]())
 
     static var readableContentTypes = [UTType(exportedAs: "io.plus1xp.sketchy")]
@@ -39,6 +39,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     @Published var lineWidth = 3.0 {
         didSet {
             self.currentStroke.width = self.lineWidth
+            debugPrint("Brush Width changed: \(self.lineWidth)")
         }
     }
 
@@ -53,6 +54,12 @@ class Drawing: ObservableObject, ReferenceFileDocument {
             self.currentStroke.blur = self.blurAmount
         }
     }
+    
+    @Published var selectedTool = ToolType.brush {
+        didSet {
+            self.currentStroke.tool = self.selectedTool
+        }
+    }
 
     init() {}
 
@@ -63,13 +70,13 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         if let decodedData = configuration.file.regularFileContents {
             self.sketchModel = try JSONDecoder().decode(SketchModel.self, from: decodedData)
             debugPrint("Read File: \(self.sketchModel)")
-            
             self.backgroundColor = self.sketchModel.artCanvas.color
             if let lastStroke = self.sketchModel.oldStrokes.last {
                 self.foregroundColor = lastStroke.color
                 self.lineWidth = lastStroke.width
                 self.lineSpacing = lastStroke.spacing
                 self.blurAmount = lastStroke.blur
+                self.selectedTool = lastStroke.tool
             }
         } else {
             throw CocoaError(.fileReadCorruptFile)
@@ -109,11 +116,47 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     func setBrushColor(colorScheme: ColorScheme) {
         self.foregroundColor = colorScheme == .light ? .black : .white
     }
-
-    func add(point: CGPoint) {
+    
+    func addBrush(point: CGPoint) {
         objectWillChange.send()
         self.currentStroke.points.append(point)
     }
+    
+    func addCircle(startPoint: CGPoint, endPoint: CGPoint) {
+        objectWillChange.send()
+        self.selectedTool = .circle
+        
+        let center = CGPoint(x: (startPoint.x + endPoint.x) / 2, y: (startPoint.y + endPoint.y) / 2)
+        let radius = hypot(endPoint.x - startPoint.x, endPoint.y - startPoint.y) / 2
+        
+        self.currentStroke.points = [center, CGPoint(x: radius, y: 0)] // Storing center and radius
+    }
+    
+    func addLine(startPoint: CGPoint, endPoint: CGPoint) {
+        objectWillChange.send()
+        self.selectedTool = .line
+        self.currentStroke.points = [startPoint, endPoint]
+    }
+    
+    func addSquare(startPoint: CGPoint, endPoint: CGPoint) {
+        objectWillChange.send()
+        self.selectedTool = .square
+        
+        let origin = CGPoint(x: min(startPoint.x, endPoint.x), y: min(startPoint.y, endPoint.y))
+        let size = CGSize(width: abs(startPoint.x - endPoint.x), height: abs(startPoint.y - endPoint.y))
+        
+        let topRight = CGPoint(x: origin.x + size.width, y: origin.y)
+        let bottomRight = CGPoint(x: origin.x + size.width, y: origin.y + size.height)
+        let bottomLeft = CGPoint(x: origin.x, y: origin.y + size.height)
+        
+        self.currentStroke.points = [origin, topRight, bottomRight, bottomLeft, origin]
+    }
+    
+    func useEraser(point: CGPoint) {
+          objectWillChange.send()
+          self.selectedTool = .eraser
+          self.currentStroke.points.append(point)
+      }
     
     func removeLastStroke() {
         objectWillChange.send()
@@ -126,7 +169,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     }
 
     func newStroke() {
-        self.currentStroke = Stroke(color: self.foregroundColor, width: self.lineWidth, spacing: self.lineSpacing, blur: self.blurAmount)
+        self.currentStroke = Stroke(color: self.foregroundColor, width: self.lineWidth, spacing: self.lineSpacing, blur: self.blurAmount, tool: self.selectedTool)
     }
     
     func removeOldStroke() {
