@@ -29,6 +29,8 @@
 		2FE991702C861B31000686FD /* ArtCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE9916F2C861B31000686FD /* ArtCanvas.swift */; };
 		2FE991722C861B5F000686FD /* SketchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991712C861B5F000686FD /* SketchModel.swift */; };
 		2FE991742C863CD8000686FD /* ToolType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991732C863CD8000686FD /* ToolType.swift */; };
+		2FE991872C878AAC000686FD /* MinusButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991862C878AAC000686FD /* MinusButtonComponent.swift */; };
+		2FE991892C878ABB000686FD /* PlusButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991882C878ABB000686FD /* PlusButtonComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +58,8 @@
 		2FE9916F2C861B31000686FD /* ArtCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtCanvas.swift; sourceTree = "<group>"; };
 		2FE991712C861B5F000686FD /* SketchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchModel.swift; sourceTree = "<group>"; };
 		2FE991732C863CD8000686FD /* ToolType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolType.swift; sourceTree = "<group>"; };
+		2FE991862C878AAC000686FD /* MinusButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinusButtonComponent.swift; sourceTree = "<group>"; };
+		2FE991882C878ABB000686FD /* PlusButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusButtonComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +171,8 @@
 		2FE991752C863EEE000686FD /* ViewComponents */ = {
 			isa = PBXGroup;
 			children = (
+				2FE991862C878AAC000686FD /* MinusButtonComponent.swift */,
+				2FE991882C878ABB000686FD /* PlusButtonComponent.swift */,
 			);
 			path = ViewComponents;
 			sourceTree = "<group>";
@@ -244,12 +250,14 @@
 				2FDEEC842C821650009BB9E3 /* Drawing.swift in Sources */,
 				2FDEEC9A2C821F1E009BB9E3 /* Confetti.swift in Sources */,
 				2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */,
+				2FE991892C878ABB000686FD /* PlusButtonComponent.swift in Sources */,
 				2FDEEC762C82159D009BB9E3 /* ContentView.swift in Sources */,
 				2FDEEC962C821E5A009BB9E3 /* View.swift in Sources */,
 				2FE991702C861B31000686FD /* ArtCanvas.swift in Sources */,
 				2FDEEC942C821E43009BB9E3 /* DeviceShakeViewModifier.swift in Sources */,
 				2FDEEC822C821649009BB9E3 /* Stroke.swift in Sources */,
 				2FDEEC742C82159D009BB9E3 /* SketchyApp.swift in Sources */,
+				2FE991872C878AAC000686FD /* MinusButtonComponent.swift in Sources */,
 				2FE991722C861B5F000686FD /* SketchModel.swift in Sources */,
 				2FDEEC9D2C821F6D009BB9E3 /* ButtonStyles.swift in Sources */,
 				2FE9916E2C8606F3000686FD /* RawRepresentable.swift in Sources */,
