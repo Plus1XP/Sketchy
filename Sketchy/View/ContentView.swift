@@ -22,11 +22,11 @@ struct ContentView: View {
             
             // Draw all strokes
             for stroke in self.drawing.strokes {
-                drawStroke(stroke, in: context)
+                self.drawStroke(stroke, in: context)
             }
             
             // Draw current stroke
-            drawStroke(drawing.currentStroke, in: context)
+            self.drawStroke(self.drawing.currentStroke, in: context)
             
         }
         .gesture(DragGesture(minimumDistance: 0)
@@ -58,39 +58,16 @@ struct ContentView: View {
         .ignoresSafeArea(edges: self.canIgnoreSafeArea ? .all : [])
         
         .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Spacer()
-                // Repeat behaviour not working unless button is in view directly
-                Button(action: self.drawing.undo) {
-                    Label("Undo", systemImage: "arrow.uturn.backward")
-                }
-                .buttonRepeatBehavior(.enabled)
-                .disabled(self.undoManager?.canUndo == false)
-                
-                Button(action: self.drawing.redo) {
-                    Label("Redo", systemImage: "arrow.uturn.forward")
-                }
-                .buttonRepeatBehavior(.enabled)
-                .disabled(self.undoManager?.canRedo == false)
-                
-                Button(action: self.drawing.removeOldStroke) {
-                    Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
-                }
-                .buttonRepeatBehavior(.enabled)
-                .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
-                Spacer()
-            }
-
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 ColorPicker("Color", selection: $drawing.foregroundColor)
                     .labelsHidden()
                 
                 Button(action: { self.showingBrushOptions.toggle() }) {
-                    Label("Tool Preferences", systemImage: "slider.vertical.3")
+                    Label("Tool Preferences", systemImage: "slider.horizontal.3")
                         .foregroundColor(.primary)
                 }
                 .popover(isPresented: $showingBrushOptions) {
-                    BrushesPreferencesView()
+                    ToolPreferencesView()
                 }
                 
                 Menu {
@@ -125,8 +102,31 @@ struct ContentView: View {
                     })
                     
                 } label: {
-                    Label("Tools", systemImage: drawing.selectedTool.symbolChoice)
+                    Label("Tools", systemImage: self.drawing.selectedTool.symbolChoice)
                 }
+            }
+            
+            ToolbarItemGroup(placement: .bottomBar) {
+                Spacer()
+                // Repeat behaviour not working unless button is in view directly
+                Button(action: self.drawing.undo) {
+                    Label("Undo", systemImage: "arrow.uturn.backward")
+                }
+                .buttonRepeatBehavior(.enabled)
+                .disabled(self.undoManager?.canUndo == false)
+                Spacer()
+                Button(action: self.drawing.redo) {
+                    Label("Redo", systemImage: "arrow.uturn.forward")
+                }
+                .buttonRepeatBehavior(.enabled)
+                .disabled(self.undoManager?.canRedo == false)
+                Spacer()
+                Button(action: self.drawing.removeOldStroke) {
+                    Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
+                }
+                .buttonRepeatBehavior(.enabled)
+                .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
+                Spacer()
             }
         }
         .onAppear {
@@ -152,18 +152,18 @@ struct ContentView: View {
     private func drawStroke(_ stroke: Stroke, in context: GraphicsContext) {
         switch stroke.tool {
         case .brush:
-            drawBrush(stroke, in: context)
+            self.drawBrush(stroke, in: context)
         case .circle:
-            drawCircle(stroke, in: context)
+            self.drawCircle(stroke, in: context)
         case .eraser:
-            drawEraser(stroke, in: context)
+            self.drawEraser(stroke, in: context)
         case .fill:
             // Using as filler atm
             drawBrush(stroke, in: context)
         case .line:
-            drawLine(stroke, in: context)
+            self.drawLine(stroke, in: context)
         case .square:
-            drawSquare(stroke, in: context)
+            self.drawSquare(stroke, in: context)
         }
     }
                  

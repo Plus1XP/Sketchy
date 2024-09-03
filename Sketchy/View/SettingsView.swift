@@ -42,7 +42,7 @@ struct SettingsView: View {
             // Removes white form section backgroung
             .listRowBackground(Color.clear)
             
-            Section(header: Text("\(Image(systemName: "slider.horizontal.3")) Preferences")) {
+            Section(header: Text("\(Image(systemName: "gearshape")) Settings")) {
                 Group {
                     HStack {
                         Image(systemName: "pencil.and.ruler")
@@ -64,8 +64,8 @@ struct SettingsView: View {
                             .labelsHidden()
                     }
                     HStack {
-                        Image(systemName: appearance.symbolChoice)
-                            .foregroundStyle(appearance.primarySymbolColor, appearance.secondarySymbolColor)
+                        Image(systemName: self.appearance.symbolChoice)
+                            .foregroundStyle(self.appearance.primarySymbolColor, self.appearance.secondarySymbolColor)
                         Picker(selection: $appearance, label: Text("System Appearence")) {
                             Text("Auto").tag(AppearanceType.automatic)
                             Text("Light").tag(AppearanceType.light)
@@ -74,7 +74,7 @@ struct SettingsView: View {
                     }
                     HStack {
                         Image(systemName: "photo.artframe")
-                            .foregroundStyle(colorScheme == .light ? .black : .white , .cyan)
+                            .foregroundStyle(self.colorScheme == .light ? .black : .white , .cyan)
                         ColorPicker("Canvas Color", selection: $drawing.backgroundColor, supportsOpacity: true)
                     }
                 }
@@ -165,7 +165,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            if checkTodayIsSpecialDay(day: 16, month: 4) {
+            if checkTodayIsSpecialDay(day: 22, month: 3) {
                 HStack {
                     Spacer()
                     Button("🎁", action: {
@@ -178,8 +178,17 @@ struct SettingsView: View {
                 .buttonStyle(BorderlessButtonStyle())
                 // Removes white form section backgroung
                 .listRowBackground(Color.clear)
-                
             }
+            HStack {
+                Spacer()
+                Text("For Ruby")
+                    .foregroundColor(.primary)
+                    .font(.caption)
+//                    .fontWeight(.bold)
+                Spacer()
+            }
+            // Removes white form section backgroung
+            .listRowBackground(Color.clear)
         }
         .presentationDragIndicator(.visible)
         .displayConfetti(isActive: $showConfetti)

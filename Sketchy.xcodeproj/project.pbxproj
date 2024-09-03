@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2F5B279B2C82506F004D09BA /* BrushesPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* BrushesPreferencesView.swift */; };
+		2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */; };
 		2FD6FB272C83EAF400AFDD82 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6FB262C83EAF400AFDD82 /* Appearance.swift */; };
 		2FDEEC742C82159D009BB9E3 /* SketchyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC732C82159D009BB9E3 /* SketchyApp.swift */; };
 		2FDEEC762C82159D009BB9E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC752C82159D009BB9E3 /* ContentView.swift */; };
@@ -32,7 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2F5B279A2C82506F004D09BA /* BrushesPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrushesPreferencesView.swift; sourceTree = "<group>"; };
+		2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPreferencesView.swift; sourceTree = "<group>"; };
 		2FD6FB262C83EAF400AFDD82 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		2FDEEC702C82159D009BB9E3 /* Sketchy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sketchy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FDEEC732C82159D009BB9E3 /* SketchyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchyApp.swift; sourceTree = "<group>"; };
@@ -136,7 +136,7 @@
 			children = (
 				2FDEEC752C82159D009BB9E3 /* ContentView.swift */,
 				2FDEEC972C821EBF009BB9E3 /* SettingsView.swift */,
-				2F5B279A2C82506F004D09BA /* BrushesPreferencesView.swift */,
+				2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -243,7 +243,7 @@
 			files = (
 				2FDEEC842C821650009BB9E3 /* Drawing.swift in Sources */,
 				2FDEEC9A2C821F1E009BB9E3 /* Confetti.swift in Sources */,
-				2F5B279B2C82506F004D09BA /* BrushesPreferencesView.swift in Sources */,
+				2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */,
 				2FDEEC762C82159D009BB9E3 /* ContentView.swift in Sources */,
 				2FDEEC962C821E5A009BB9E3 /* View.swift in Sources */,
 				2FE991702C861B31000686FD /* ArtCanvas.swift in Sources */,

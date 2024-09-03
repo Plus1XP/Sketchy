@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BrushesPreferencesView: View {
+struct ToolPreferencesView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var drawing: Drawing
@@ -23,7 +23,7 @@ struct BrushesPreferencesView: View {
                     Image(systemName: "arrow.counterclockwise.circle.fill")
                 }
                 Spacer()
-                Text("Brush")
+                Text("Tool Preferences")
                     .fontWeight(.semibold)
                 Spacer()
                 Button {
@@ -57,7 +57,7 @@ struct BrushesPreferencesView: View {
                 Section(header: Text("\(Image(systemName: "circle.dashed")) Line Spacing")) {
                     Group {
                         HStack {
-                            Text("Spacing: \(drawing.lineSpacing, format: .percent)")
+                            Text("Spacing: \(self.drawing.lineSpacing, format: .percent)")
                             Slider(value: $drawing.lineSpacing, in: 0...5, step: 0.1)
                         }
                     }
@@ -70,6 +70,6 @@ struct BrushesPreferencesView: View {
 }
 
 #Preview {
-    BrushesPreferencesView()
+    ToolPreferencesView()
         .environmentObject(Drawing())
 }

@@ -18,11 +18,11 @@ struct SketchyApp: App {
         }
         .onChange(of: scenePhase) {
             print("Scene Changed")
-            setAppearance()
+            self.setAppearance()
         }
         .onChange(of: appearance) {
             print("Appearance settings changed")
-            setAppearance()
+            self.setAppearance()
         }
     }
     
