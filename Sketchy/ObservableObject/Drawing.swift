@@ -32,6 +32,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     @Published var foregroundColor = Color.primary {
         didSet {
             self.currentStroke.color = self.foregroundColor
+            newStroke()
             debugPrint("Brush Color changed: \(self.foregroundColor)")
         }
     }
@@ -184,12 +185,17 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         return self.sketchModel.oldStrokes.count
     }
     
-    func clearCanvas() {
+    func clearCanvas(colorScheme: ColorScheme) {
         if !self.sketchModel.oldStrokes.isEmpty {
             objectWillChange.send()
             self.sketchModel.oldStrokes.removeAll()
-            self.newStroke()
             self.undoManager?.removeAllActions()
+            self.lineWidth = 3.0
+            self.lineSpacing = 0.0
+            self.blurAmount = 0.0
+            self.selectedTool = .brush
+            self.setCanvasDefaults(colorScheme: colorScheme)
+            self.newStroke()
         }
     }
     

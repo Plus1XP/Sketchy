@@ -15,7 +15,9 @@ struct ContentView: View {
     @State private var canShowSettingsView: Bool = false
     @State private var canShowDeleteAlert: Bool = false
     @State private var startPoint: CGPoint = .zero
-    @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = false
+    @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
+    @AppStorage("isCanvasHapticsEnabled") var isCanvasHapticsEnabled: Bool = true
+    @AppStorage("canvasHapticsIntensity") var canvasHapticsIntensity: Double = 0.28
 
     var body: some View {
         Canvas { context, size in
@@ -26,10 +28,12 @@ struct ContentView: View {
                 self.drawStroke(stroke, in: context)
             }
         }
-        .sensoryFeedback(.impact(flexibility: .soft, intensity: 0.28), trigger: self.drawing.currentStroke.points)
-//        .sensoryFeedback(.impact(weight: .light, intensity: 0.26), trigger: self.drawing.currentStroke.points)
         .gesture(DragGesture(minimumDistance: 0)
             .onChanged { value in
+                debugPrint("Drawing..\(value.location)")
+                if isCanvasHapticsEnabled {
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: canvasHapticsIntensity)
+                }
                 if drawing.currentStroke.points.isEmpty {
                     // Initialize the startPoint on the first gesture change
                     startPoint = value.startLocation
@@ -78,35 +82,35 @@ struct ContentView: View {
                         self.drawing.selectedTool = .brush
                         UISelectionFeedbackGenerator().selectionChanged()
                     }, label: {
-                        Label("Brush", systemImage: "paintbrush.pointed")
+                        Label(ToolType.brush.label, systemImage: ToolType.brush.symbolChoice)
                     })
                     
                     Button(action: {
                         self.drawing.selectedTool = .line
                         UISelectionFeedbackGenerator().selectionChanged()
                     }, label: {
-                        Label("Line", systemImage: "line.diagonal")
+                        Label(ToolType.line.label, systemImage: ToolType.line.symbolChoice)
                     })
                     
                     Button(action: {
                         self.drawing.selectedTool = .circle
                         UISelectionFeedbackGenerator().selectionChanged()
                     }, label: {
-                        Label("Circle", systemImage: "circle")
+                        Label(ToolType.circle.label, systemImage: ToolType.circle.symbolChoice)
                     })
                     
                     Button(action: {
                         self.drawing.selectedTool = .square
                         UISelectionFeedbackGenerator().selectionChanged()
                     }, label: {
-                        Label("Retangle", systemImage: "square")
+                        Label(ToolType.square.label, systemImage: ToolType.square.symbolChoice)
                     })
                     
                     Button(action: {
                         self.drawing.selectedTool = .eraser
                         UISelectionFeedbackGenerator().selectionChanged()
                     }, label: {
-                        Label("Eraser", systemImage: "eraser")
+                        Label(ToolType.eraser.label, systemImage: ToolType.eraser.symbolChoice)
                     })
                     
                 } label: {
@@ -153,7 +157,7 @@ struct ContentView: View {
                 .disabled(self.drawing.oldStrokeHistory() == 0)
                 .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
                     Button("OK", role: .destructive) {
-                        self.drawing.clearCanvas()
+                        self.drawing.clearCanvas(colorScheme: colorScheme)
                         UINotificationFeedbackGenerator().notificationOccurred(.success)
                     }
                     Button("cancel", role: .cancel) {

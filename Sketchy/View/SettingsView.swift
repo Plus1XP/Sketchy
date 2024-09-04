@@ -12,8 +12,11 @@ struct SettingsView: View {
     @EnvironmentObject var drawing: Drawing
     @State var showConfetti: Bool = false
     @State var canShowSafeAreaInfo: Bool = false
+    @State var canShowCanvasHapticsInfo: Bool = false
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
     @AppStorage("appearance") var appearance: AppearanceType = .automatic
+    @AppStorage("isCanvasHapticsEnabled") var isCanvasHapticsEnabled: Bool = true
+    @AppStorage("canvasHapticsIntensity") var canvasHapticsIntensity: Double = 0.28
     // Fill in App ID when app is added to appstore connect!
     private let appName: String = "Sketchy App"
     private let appID: String = "6670319622"
@@ -76,6 +79,35 @@ struct SettingsView: View {
                         Image(systemName: "photo.artframe")
                             .foregroundStyle(self.colorScheme == .light ? .black : .white , .cyan)
                         ColorPicker("Canvas Color", selection: $drawing.backgroundColor, supportsOpacity: true)
+                    }
+                    HStack {
+                        VStack {
+                            HStack {
+                                Image("custom.hand.draw.trianglebadge.exclamationmark")
+                                    .foregroundStyle(.yellow, .primary)
+                                Text("Canvas Haptics")
+                                Button(action: {
+                                    self.canShowCanvasHapticsInfo.toggle()
+                                }, label: {
+                                    Image(systemName: "info.circle")
+                                })
+                                .popover(isPresented:  $canShowCanvasHapticsInfo) {
+                                    Text("Simulates the feeling of moving your finger across a surface.")
+                                        .font(.footnote)
+                                        .padding()
+                                        .presentationCompactAdaptation(.popover)
+                                }
+                                Spacer()
+                                Toggle("Canvas Haptics", isOn: $isCanvasHapticsEnabled)
+                                    .labelsHidden()
+                            }
+                            if isCanvasHapticsEnabled {
+                                HStack {
+                                    Text("Intensity Level: \(String(format: "%.2f", canvasHapticsIntensity))")
+                                    Slider(value: $canvasHapticsIntensity, in: 0.28...0.8)
+                                }
+                            }
+                        }
                     }
                 }
             }

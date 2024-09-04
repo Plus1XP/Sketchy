@@ -56,7 +56,7 @@ extension AppearanceType {
         case .automatic:
             "moonphase.first.quarter"
         case .dark:
-            "moon"
+            "moon.stars"
         case .light:
             "sun.max"
         }
