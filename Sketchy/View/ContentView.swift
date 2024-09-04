@@ -14,7 +14,7 @@ struct ContentView: View {
     @State private var showingToolPreferences: Bool = false
     @State private var canShowSettingsView: Bool = false
     @State private var canShowDeleteAlert: Bool = false
-    @State private var startPoint: CGPoint?
+    @State private var startPoint: CGPoint = .zero
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = false
 
     var body: some View {
@@ -25,52 +25,37 @@ struct ContentView: View {
             for stroke in self.drawing.strokes {
                 self.drawStroke(stroke, in: context)
             }
-            
-            // Draw current stroke
-            self.drawStroke(self.drawing.currentStroke, in: context)
         }
-//        .sensoryFeedback(.impact(flexibility: .soft, intensity: 0.21), trigger: self.drawing.currentStroke.points)
-        .sensoryFeedback(.impact(weight: .light, intensity: 0.16), trigger: self.drawing.currentStroke.points)
+        .sensoryFeedback(.impact(flexibility: .soft, intensity: 0.28), trigger: self.drawing.currentStroke.points)
+//        .sensoryFeedback(.impact(weight: .light, intensity: 0.26), trigger: self.drawing.currentStroke.points)
         .gesture(DragGesture(minimumDistance: 0)
             .onChanged { value in
-                if let start = startPoint {
-                    switch self.drawing.selectedTool {
-                    case .brush:
-                        self.drawing.addBrush(point: value.location)
-                    case .circle:
-                        self.drawing.addCircle(startPoint: start, endPoint: value.location)
-                    case .eraser:
-                        self.drawing.useEraser(point: value.location)
-                    case .fill:
-                        // Using as filler atm
-                        self.drawing.addBrush(point: value.location)
-                    case .line:
-                        self.drawing.addLine(startPoint: start, endPoint: value.location)
-                    case .square:
-                        self.drawing.addSquare(startPoint: start, endPoint: value.location)
-                    }
-                } else {
-                    startPoint = value.location
+                if drawing.currentStroke.points.isEmpty {
+                    // Initialize the startPoint on the first gesture change
+                    startPoint = value.startLocation
+                }
+                switch self.drawing.selectedTool {
+                case .brush:
+                    self.drawing.addBrush(point: value.location)
+                case .circle:
+                    self.drawing.addCircle(startPoint: startPoint, endPoint: value.location)
+                case .eraser:
+                    self.drawing.useEraser(point: value.location)
+                case .fill:
+                    // Using as filler atm
+                    self.drawing.addBrush(point: value.location)
+                case .line:
+                    self.drawing.addLine(startPoint: startPoint, endPoint: value.location)
+                case .square:
+                    self.drawing.addSquare(startPoint: startPoint, endPoint: value.location)
                 }
             }
             .onEnded { value in
                 debugPrint("Canvas Color: \(self.drawing.backgroundColor)")
                 debugPrint("Brush Color: \(self.drawing.foregroundColor)")
-                if drawing.selectedTool == .brush {
-                    self.drawing.addBrush(point: value.location)
-                }
                 self.drawing.finishedStroke()
-                startPoint = nil
             }
         )
-//        .simultaneousGesture(
-//            DragGesture(minimumDistance: 0)
-//                .onEnded { value in
-//                    if drawing.selectedTool == .brush {
-//                        self.drawing.addBrush(point: value.location)
-//                    }
-//                }
-//        )
         .ignoresSafeArea(edges: self.canIgnoreSafeArea ? .all : [])
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -213,12 +198,6 @@ struct ContentView: View {
         case .square:
             self.drawSquare(stroke, in: context)
         }
-    }
-    
-    func handleTap(at location: CGPoint) {
-        // Use the tap location for your logic
-        print("Tap registered at: \(location)")
-        // Add any specific action based on the tap location
     }
     
     // Method to draw brush strokes
