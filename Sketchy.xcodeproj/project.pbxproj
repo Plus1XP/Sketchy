@@ -31,6 +31,11 @@
 		2FE991742C863CD8000686FD /* ToolType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991732C863CD8000686FD /* ToolType.swift */; };
 		2FE991872C878AAC000686FD /* MinusButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991862C878AAC000686FD /* MinusButtonComponent.swift */; };
 		2FE991892C878ABB000686FD /* PlusButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991882C878ABB000686FD /* PlusButtonComponent.swift */; };
+		2FE9918B2C8921C7000686FD /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE9918A2C8921C7000686FD /* WelcomeView.swift */; };
+		2FE9918D2C8921E4000686FD /* WelcomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE9918C2C8921E4000686FD /* WelcomeModel.swift */; };
+		2FE9918F2C892219000686FD /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE9918E2C892219000686FD /* String.swift */; };
+		2FE991912C892267000686FD /* WelcomeViewComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991902C892267000686FD /* WelcomeViewComponents.swift */; };
+		2FE991932C89CB7C000686FD /* Canvasview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE991922C89CB7C000686FD /* Canvasview.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +65,11 @@
 		2FE991732C863CD8000686FD /* ToolType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolType.swift; sourceTree = "<group>"; };
 		2FE991862C878AAC000686FD /* MinusButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinusButtonComponent.swift; sourceTree = "<group>"; };
 		2FE991882C878ABB000686FD /* PlusButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusButtonComponent.swift; sourceTree = "<group>"; };
+		2FE9918A2C8921C7000686FD /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		2FE9918C2C8921E4000686FD /* WelcomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeModel.swift; sourceTree = "<group>"; };
+		2FE9918E2C892219000686FD /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		2FE991902C892267000686FD /* WelcomeViewComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewComponents.swift; sourceTree = "<group>"; };
+		2FE991922C89CB7C000686FD /* Canvasview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvasview.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +133,7 @@
 				2FDEEC902C821DEF009BB9E3 /* UIWindow.swift */,
 				2FDEEC952C821E5A009BB9E3 /* View.swift */,
 				2FE9916D2C8606F3000686FD /* RawRepresentable.swift */,
+				2FE9918E2C892219000686FD /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -139,8 +150,10 @@
 			isa = PBXGroup;
 			children = (
 				2FDEEC752C82159D009BB9E3 /* ContentView.swift */,
-				2FDEEC972C821EBF009BB9E3 /* SettingsView.swift */,
+				2FE9918A2C8921C7000686FD /* WelcomeView.swift */,
+				2FE991922C89CB7C000686FD /* Canvasview.swift */,
 				2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */,
+				2FDEEC972C821EBF009BB9E3 /* SettingsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -153,6 +166,7 @@
 				2FE9916F2C861B31000686FD /* ArtCanvas.swift */,
 				2FDEEC812C821649009BB9E3 /* Stroke.swift */,
 				2FE991712C861B5F000686FD /* SketchModel.swift */,
+				2FE9918C2C8921E4000686FD /* WelcomeModel.swift */,
 			);
 			path = DataObject;
 			sourceTree = "<group>";
@@ -173,6 +187,7 @@
 			children = (
 				2FE991862C878AAC000686FD /* MinusButtonComponent.swift */,
 				2FE991882C878ABB000686FD /* PlusButtonComponent.swift */,
+				2FE991902C892267000686FD /* WelcomeViewComponents.swift */,
 			);
 			path = ViewComponents;
 			sourceTree = "<group>";
@@ -250,6 +265,7 @@
 				2FDEEC842C821650009BB9E3 /* Drawing.swift in Sources */,
 				2FDEEC9A2C821F1E009BB9E3 /* Confetti.swift in Sources */,
 				2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */,
+				2FE991912C892267000686FD /* WelcomeViewComponents.swift in Sources */,
 				2FE991892C878ABB000686FD /* PlusButtonComponent.swift in Sources */,
 				2FDEEC762C82159D009BB9E3 /* ContentView.swift in Sources */,
 				2FDEEC962C821E5A009BB9E3 /* View.swift in Sources */,
@@ -257,13 +273,17 @@
 				2FDEEC942C821E43009BB9E3 /* DeviceShakeViewModifier.swift in Sources */,
 				2FDEEC822C821649009BB9E3 /* Stroke.swift in Sources */,
 				2FDEEC742C82159D009BB9E3 /* SketchyApp.swift in Sources */,
+				2FE9918B2C8921C7000686FD /* WelcomeView.swift in Sources */,
 				2FE991872C878AAC000686FD /* MinusButtonComponent.swift in Sources */,
 				2FE991722C861B5F000686FD /* SketchModel.swift in Sources */,
 				2FDEEC9D2C821F6D009BB9E3 /* ButtonStyles.swift in Sources */,
+				2FE991932C89CB7C000686FD /* Canvasview.swift in Sources */,
 				2FE9916E2C8606F3000686FD /* RawRepresentable.swift in Sources */,
 				2FDEEC882C821690009BB9E3 /* Path.swift in Sources */,
 				2FDEEC862C821689009BB9E3 /* Codable.swift in Sources */,
+				2FE9918F2C892219000686FD /* String.swift in Sources */,
 				2FDEEC8F2C821DE2009BB9E3 /* UIDevice.swift in Sources */,
+				2FE9918D2C8921E4000686FD /* WelcomeModel.swift in Sources */,
 				2FDEEC9F2C822060009BB9E3 /* HelperFunctions.swift in Sources */,
 				2FDEEC912C821DEF009BB9E3 /* UIWindow.swift in Sources */,
 				2FDEEC982C821EBF009BB9E3 /* SettingsView.swift in Sources */,
