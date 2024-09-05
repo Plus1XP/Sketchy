@@ -6,18 +6,23 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ContentView: View {
     @EnvironmentObject var drawing: Drawing
     @Environment(\.undoManager) var undoManager
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.verticalSizeClass) var verticalScreenSize
     @State private var showingToolPreferences: Bool = false
     @State private var canShowSettingsView: Bool = false
     @State private var canShowDeleteAlert: Bool = false
     @State private var startPoint: CGPoint = .zero
+    @State private var lastOrientation: UIDeviceOrientation? = nil
+    @State private var orientation: UIDeviceOrientation? = nil
+    @State private var orientationChangePublisher: AnyCancellable?
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
     @AppStorage("isCanvasHapticsEnabled") var isCanvasHapticsEnabled: Bool = true
-    @AppStorage("canvasHapticsIntensity") var canvasHapticsIntensity: Double = 0.28
+    @AppStorage("canvasHapticsIntensity") var canvasHapticsIntensity: Double = 0.38
 
     var body: some View {
         Canvas { context, size in
@@ -73,10 +78,6 @@ struct ContentView: View {
                     Label("Tool Preferences", systemImage: "slider.horizontal.3")
                         .foregroundColor(.primary)
                 }
-                .popover(isPresented: $showingToolPreferences) {
-                    ToolPreferencesView()
-                }
-                
                 Menu {
                     Button(action: {
                         self.drawing.selectedTool = .brush
@@ -117,59 +118,122 @@ struct ContentView: View {
                     Label("Tools", systemImage: self.drawing.selectedTool.symbolChoice)
                 }
             }
-            
-            ToolbarItemGroup(placement: .bottomBar) {
-                Spacer()
-                // Repeat behaviour not working unless button is in view directly
-                Button(action: {
-                    self.drawing.undo()
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                }, label: {
-                    Label("Undo", systemImage: "arrow.uturn.backward")
-                })
-                .buttonRepeatBehavior(.enabled)
-                .disabled(self.undoManager?.canUndo == false)
-                Spacer()
-                Button(action: {
-                    self.drawing.redo()
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                }, label: {
-                    Label("Redo", systemImage: "arrow.uturn.forward")
-                })
-                .buttonRepeatBehavior(.enabled)
-                .disabled(self.undoManager?.canRedo == false)
-                Spacer()
-                Button(action: {
-                    self.drawing.removeOldStroke()
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                }, label: {
-                    Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
-                })
-                .buttonRepeatBehavior(.enabled)
-                .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
-                Spacer()
-                Button(action: {
-                    self.canShowDeleteAlert.toggle()
-                    UINotificationFeedbackGenerator().notificationOccurred(.warning)
-                }, label: {
-                    Label("Clear Canvas", systemImage: "trash")
-                })
-                .disabled(self.drawing.oldStrokeHistory() == 0)
-                .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
-                    Button("OK", role: .destructive) {
-                        self.drawing.clearCanvas(colorScheme: colorScheme)
-                        UINotificationFeedbackGenerator().notificationOccurred(.success)
-                    }
-                    Button("cancel", role: .cancel) {
+            if UIDevice.current.userInterfaceIdiom == .phone && verticalScreenSize == .regular {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    HStack() {
+                        Spacer()
+                        // Repeat behaviour not working unless button is in view directly
+                        Button(action: {
+                            self.drawing.undo()
+                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                        }, label: {
+                            Label("Undo", systemImage: "arrow.uturn.backward")
+                        })
+                        .buttonRepeatBehavior(.enabled)
+                        .disabled(self.undoManager?.canUndo == false)
+                        Button(action: {
+                            self.drawing.redo()
+                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                        }, label: {
+                            Label("Redo", systemImage: "arrow.uturn.forward")
+                        })
+                        .buttonRepeatBehavior(.enabled)
+                        .disabled(self.undoManager?.canRedo == false)
+                        Button(action: {
+                            self.drawing.removeOldStroke()
+                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                        }, label: {
+                            Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
+                        })
+                        .buttonRepeatBehavior(.enabled)
+                        .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
+                        Button(action: {
+                            self.canShowDeleteAlert.toggle()
+                            UINotificationFeedbackGenerator().notificationOccurred(.warning)
+                        }, label: {
+                            Label("Clear Canvas", systemImage: "trash")
+                        })
+                        .disabled(self.drawing.oldStrokeHistory() == 0)
+                        .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
+                            Button("OK", role: .destructive) {
+                                self.drawing.clearCanvas(colorScheme: colorScheme)
+                                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                            }
+                            Button("cancel", role: .cancel) {
+                            }
+                        }
                     }
                 }
-                Spacer()
+            } else {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    HStack {
+                        Divider()
+//                            .frame(width: 1)
+//                            .overlay(.secondary)
+                        // Repeat behaviour not working unless button is in view directly
+                        Button(action: {
+                            self.drawing.undo()
+                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                        }, label: {
+                            Label("Undo", systemImage: "arrow.uturn.backward")
+                        })
+                        .buttonRepeatBehavior(.enabled)
+                        .disabled(self.undoManager?.canUndo == false)
+                        Button(action: {
+                            self.drawing.redo()
+                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                        }, label: {
+                            Label("Redo", systemImage: "arrow.uturn.forward")
+                        })
+                        .buttonRepeatBehavior(.enabled)
+                        .disabled(self.undoManager?.canRedo == false)
+                        Button(action: {
+                            self.drawing.removeOldStroke()
+                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                        }, label: {
+                            Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
+                        })
+                        .buttonRepeatBehavior(.enabled)
+                        .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
+                        Button(action: {
+                            self.canShowDeleteAlert.toggle()
+                            UINotificationFeedbackGenerator().notificationOccurred(.warning)
+                        }, label: {
+                            Label("Clear Canvas", systemImage: "trash")
+                        })
+                        .disabled(self.drawing.oldStrokeHistory() == 0)
+                        .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
+                            Button("OK", role: .destructive) {
+                                self.drawing.clearCanvas(colorScheme: colorScheme)
+                                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                            }
+                            Button("cancel", role: .cancel) {
+                            }
+                        }
+                    }
+                }
             }
         }
         .onAppear {
             self.drawing.undoManager = self.undoManager
             debugPrint("Loading Canvas Preferences")
             self.drawing.setCanvasDefaults(colorScheme: self.colorScheme)
+            self.orientationChangePublisher = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
+                .compactMap { notification in
+                    UIDevice.current.orientation
+                }
+                .sink { newOrientation in
+                    orientation = newOrientation
+                    print("isLandscape: \(orientation?.isLandscape ?? false))")
+                    print("isPortrait: \(orientation?.isPortrait ?? false))")
+                    print("isFlat: \(orientation?.isFlat ?? false))")
+                }
+        }
+        .onDisappear{
+            orientationChangePublisher?.cancel()
+        }
+        .sheet(isPresented: $showingToolPreferences) {
+            ToolPreferencesView()
         }
         .sheet(isPresented: $canShowSettingsView) {
             SettingsView()

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var drawing: Drawing
     @State var showConfetti: Bool = false
     @State var canShowSafeAreaInfo: Bool = false
@@ -16,7 +17,7 @@ struct SettingsView: View {
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
     @AppStorage("appearance") var appearance: AppearanceType = .automatic
     @AppStorage("isCanvasHapticsEnabled") var isCanvasHapticsEnabled: Bool = true
-    @AppStorage("canvasHapticsIntensity") var canvasHapticsIntensity: Double = 0.28
+    @AppStorage("canvasHapticsIntensity") var canvasHapticsIntensity: Double = 0.38
     // Fill in App ID when app is added to appstore connect!
     private let appName: String = "Sketchy App"
     private let appID: String = "6670319622"
@@ -41,6 +42,14 @@ struct SettingsView: View {
                     .foregroundColor(.primary)
                     .font(.title)
                     .fontWeight(.bold)
+                Spacer()
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.gray, self.colorScheme == .light ? Color(UIColor.tertiarySystemFill) : Color(UIColor.tertiarySystemBackground))
+                        .font(.title)
+                }
             }
             // Removes white form section backgroung
             .listRowBackground(Color.clear)
@@ -103,7 +112,9 @@ struct SettingsView: View {
                             }
                             if isCanvasHapticsEnabled {
                                 HStack {
-                                    Text("Intensity Level: \(String(format: "%.2f", canvasHapticsIntensity))")
+                                    Text("Intensity: ") +
+                                    Text(String(format: "%.2f", canvasHapticsIntensity))
+                                        .fontWeight(.medium)
                                     Slider(value: $canvasHapticsIntensity, in: 0.28...0.8)
                                 }
                             }
@@ -163,6 +174,10 @@ struct SettingsView: View {
                     }
                 }
             }
+//            Section(header: Text("\(Image(systemName: "info.circle")) About"), footer: HStack{
+//                Spacer()
+//                Text("For Ruby \(Image(systemName: "heart"))")
+//                Spacer()}) {
             Section(header: Text("\(Image(systemName: "info.circle")) About")) {
                 Group {
                     HStack {
@@ -213,10 +228,9 @@ struct SettingsView: View {
             }
             HStack {
                 Spacer()
-                Text("For Ruby")
-                    .foregroundColor(.primary)
+                Text("For Ruby \(Image(systemName: "heart"))")
+                    .foregroundColor(.secondary)
                     .font(.caption)
-//                    .fontWeight(.bold)
                 Spacer()
             }
             // Removes white form section backgroung

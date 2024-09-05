@@ -24,6 +24,7 @@ struct ToolPreferencesView: View {
                     }
                 } label: {
                     Image(systemName: "arrow.counterclockwise.circle.fill")
+                        .font(.title)
                 }
                 .disabled(self.drawing.lineWidth == 3.0 && self.drawing.blurAmount == 0.0 && self.drawing.lineSpacing == 0.0)
                 Spacer()
@@ -34,8 +35,8 @@ struct ToolPreferencesView: View {
                     dismiss()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(.gray, self.colorScheme == .light ? Color(UIColor.systemBackground) : Color(UIColor.tertiarySystemBackground))
-                        .font(.title2)
+                        .foregroundStyle(.gray, self.colorScheme == .light ? Color(UIColor.tertiarySystemFill) : Color(UIColor.tertiarySystemBackground))
+                        .font(.title)
                 }
             }
             .padding(.leading, 20)
@@ -45,7 +46,9 @@ struct ToolPreferencesView: View {
                 Section(header: Text("\(Image(systemName: "pencil.tip")) Line Width")) {
                     Group {
                         HStack {
-                            Text("Width: \(Int(self.drawing.lineWidth))")
+                            Text("Thickness: ") +
+                            Text(Int(self.drawing.lineWidth).description)
+                                .fontWeight(.medium)
                             Slider(value: $drawing.lineWidth, in: 1...100)
                                 .sensoryFeedback(.increase, trigger: self.drawing.lineWidth)
                         }
@@ -54,7 +57,9 @@ struct ToolPreferencesView: View {
                 Section(header: Text("\(Image(systemName: "scribble.variable")) Line blur")) {
                     Group {
                         HStack {
-                            Text("Softness: \(Int(self.drawing.blurAmount))")
+                            Text("Softness: ") +
+                            Text(Int(self.drawing.blurAmount).description)
+                                .fontWeight(.medium)
                             Slider(value: $drawing.blurAmount, in: 0...50)
                                 .sensoryFeedback(.increase, trigger: self.drawing.blurAmount)
                         }
@@ -63,7 +68,9 @@ struct ToolPreferencesView: View {
                 Section(header: Text("\(Image(systemName: "circle.dashed")) Line Spacing")) {
                     Group {
                         HStack {
-                            Text("Spacing: \(self.drawing.lineSpacing, format: .percent)")
+                            Text("Distance: ") +
+                            Text(self.drawing.lineSpacing, format: .percent)
+                                .fontWeight(.medium)
                             Slider(value: $drawing.lineSpacing, in: 0...5, step: 0.1)
                                 .sensoryFeedback(.increase, trigger: self.drawing.lineSpacing)
                         }
