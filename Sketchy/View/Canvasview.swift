@@ -65,7 +65,7 @@ struct CanvasView: View {
                 self.drawing.finishedStroke()
             }
         )
-        .ignoresSafeArea(edges: self.canIgnoreSafeArea ? .all : [])
+        .ignoresSafeArea(edges: self.drawing.ignoreSafeArea ? .all : [])
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 ColorPicker("Color", selection: $drawing.foregroundColor)
@@ -156,7 +156,7 @@ struct CanvasView: View {
                         .disabled(self.drawing.oldStrokeHistory() == 0)
                         .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
                             Button("OK", role: .destructive) {
-                                self.drawing.clearCanvas(colorScheme: colorScheme)
+                                self.drawing.clearCanvas(colorScheme: colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea)
                                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                             }
                             Button("cancel", role: .cancel) {
@@ -204,7 +204,7 @@ struct CanvasView: View {
                         .disabled(self.drawing.oldStrokeHistory() == 0)
                         .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
                             Button("OK", role: .destructive) {
-                                self.drawing.clearCanvas(colorScheme: colorScheme)
+                                self.drawing.clearCanvas(colorScheme: colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea)
                                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                             }
                             Button("cancel", role: .cancel) {
@@ -217,7 +217,7 @@ struct CanvasView: View {
         .onAppear {
             self.drawing.undoManager = self.undoManager
             debugPrint("Loading Canvas Preferences")
-            self.drawing.setCanvasDefaults(colorScheme: self.colorScheme)
+            self.drawing.setCanvasDefaults(colorScheme: self.colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea)
             self.orientationChangePublisher = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
                 .compactMap { notification in
                     UIDevice.current.orientation

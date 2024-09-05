@@ -22,6 +22,13 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         return all
     }
     
+    @Published var ignoreSafeArea = true {
+        didSet {
+            self.sketchModel.artCanvas.exceedSafeArea = self.ignoreSafeArea
+            debugPrint("Canvas Size changed: \(self.ignoreSafeArea)")
+        }
+    }
+    
     @Published var backgroundColor = Color.clear {
         didSet {
             self.sketchModel.artCanvas.color = self.backgroundColor
@@ -72,6 +79,9 @@ class Drawing: ObservableObject, ReferenceFileDocument {
             self.sketchModel = try JSONDecoder().decode(SketchModel.self, from: decodedData)
             debugPrint("Read File: \(self.sketchModel)")
             self.backgroundColor = self.sketchModel.artCanvas.color
+            if let safeAreaValue = self.sketchModel.artCanvas.exceedSafeArea {
+                self.ignoreSafeArea = safeAreaValue
+            }
             if let lastStroke = self.sketchModel.oldStrokes.last {
                 self.foregroundColor = lastStroke.color
                 self.lineWidth = lastStroke.width
@@ -97,7 +107,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
 
     // MARK: Drawing interactions
     
-    func setCanvasDefaults(colorScheme: ColorScheme) {
+    func setCanvasDefaults(colorScheme: ColorScheme, canIgnoreSafeArea: Bool) {
         if self.sketchModel.oldStrokes.isEmpty {
             debugPrint("Color Scheme: \(colorScheme)")
             if colorScheme == .light {
@@ -107,7 +117,12 @@ class Drawing: ObservableObject, ReferenceFileDocument {
                 self.setCanvasColor(colorScheme: colorScheme)
                 self.setBrushColor(colorScheme: colorScheme)
             }
+            self.setSafeArea(canIgnoreSafeArea: canIgnoreSafeArea)
         }
+    }
+    
+    func setSafeArea(canIgnoreSafeArea: Bool) {
+        self.ignoreSafeArea = canIgnoreSafeArea
     }
     
     func setCanvasColor(colorScheme: ColorScheme) {
@@ -185,7 +200,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         return self.sketchModel.oldStrokes.count
     }
     
-    func clearCanvas(colorScheme: ColorScheme) {
+    func clearCanvas(colorScheme: ColorScheme, canIgnoreSafeArea: Bool) {
         if !self.sketchModel.oldStrokes.isEmpty {
             objectWillChange.send()
             self.sketchModel.oldStrokes.removeAll()
@@ -194,7 +209,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
             self.lineSpacing = 0.0
             self.blurAmount = 0.0
             self.selectedTool = .brush
-            self.setCanvasDefaults(colorScheme: colorScheme)
+            self.setCanvasDefaults(colorScheme: colorScheme, canIgnoreSafeArea: canIgnoreSafeArea)
             self.newStroke()
         }
     }

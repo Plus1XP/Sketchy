@@ -9,6 +9,6 @@ import SwiftUI
 
 struct ArtCanvas: Codable {
     var color = Color.clear
-    var exceedSafeArea = true
-    var portraitMode = true
+    var exceedSafeArea: Bool? = nil
+    var portraitMode: Bool? = nil
 }
