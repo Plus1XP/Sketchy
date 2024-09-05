@@ -12,10 +12,15 @@ import Combine
 enum ToolType: String, Codable, CaseIterable, Identifiable  {
     case brush
     case circle
+    case diamond
     case eraser
-    case fill
+    case hexagon
     case line
+    case octagon
+    case pentagon
+    case star
     case square
+    case triangle
     
     var id: Self {
         return self
@@ -27,14 +32,24 @@ enum ToolType: String, Codable, CaseIterable, Identifiable  {
             "Brush"
         case .circle:
             "Circle"
+        case .diamond:
+            "Diamond"
         case .eraser:
             "Eraser"
-        case .fill:
-            "Fill"
+        case .hexagon:
+            "Hexagon"
         case .line:
             "Line"
+        case .octagon:
+            "Octagon"
+        case .pentagon:
+            "Pentagon"
+        case .star:
+            "Star"
         case .square:
             "Square"
+        case .triangle:
+            "Triangle"
         }
     }
 }
@@ -46,14 +61,24 @@ extension ToolType {
             "paintbrush.pointed"
         case .circle:
             "circle"
+        case .diamond:
+            "diamond"
         case .eraser:
-            "eraser"
-        case .fill:
-            "paintbrush"
+            "eraser.line.dashed"
+        case .hexagon:
+            "hexagon"
         case .line:
             "line.diagonal"
+        case .octagon:
+            "octagon"
+        case .pentagon:
+            "pentagon"
+        case .star:
+            "star"
         case .square:
             "square"
+        case .triangle:
+            "triangle"
         }
     }
 }

@@ -41,7 +41,7 @@ struct ToolPreferencesView: View {
                     .fontWeight(.semibold)
                 Spacer()
                 Button {
-                    dismiss()
+                    self.dismiss()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundStyle(.gray, self.colorScheme == .light ? Color(UIColor.tertiarySystemFill) : Color(UIColor.tertiarySystemBackground))
@@ -96,7 +96,7 @@ struct ToolPreferencesView: View {
                             Text("Fill Color: ")
                             ColorPicker("Fill Color", selection: $drawing.fillColor)
                                 .labelsHidden()
-                                .sensoryFeedback(.selection, trigger: drawing.fillColor)
+                                .sensoryFeedback(.selection, trigger: self.drawing.fillColor)
                         }
                     }
                 }

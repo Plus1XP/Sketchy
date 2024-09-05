@@ -44,7 +44,7 @@ struct SettingsView: View {
                     .fontWeight(.bold)
                 Spacer()
                 Button {
-                    dismiss()
+                    self.dismiss()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundStyle(.gray, self.colorScheme == .light ? Color(UIColor.tertiarySystemFill) : Color(UIColor.tertiarySystemBackground))

@@ -52,15 +52,24 @@ struct CanvasView: View {
                     self.drawing.addBrush(point: value.location)
                 case .circle:
                     self.drawing.addCircle(startPoint: startPoint, endPoint: value.location)
+                case .diamond:
+                    self.drawing.addDiamond(startPoint: startPoint, endPoint: value.location)
                 case .eraser:
                     self.drawing.useEraser(point: value.location)
-                case .fill:
-                    // Using as filler atm
-                    self.drawing.addBrush(point: value.location)
+                case .hexagon:
+                    self.drawing.addHexagon(startPoint: startPoint, endPoint: value.location)
                 case .line:
                     self.drawing.addLine(startPoint: startPoint, endPoint: value.location)
+                case .octagon:
+                    self.drawing.addOctagon(startPoint: startPoint, endPoint: value.location)
+                case .pentagon:
+                    self.drawing.addPentagon(startPoint: startPoint, endPoint: value.location)
+                case .star:
+                    self.drawing.addStar(startPoint: startPoint, endPoint: value.location)
                 case .square:
                     self.drawing.addSquare(startPoint: startPoint, endPoint: value.location)
+                case .triangle:
+                    self.drawing.addTriangle(startPoint: startPoint, endPoint: value.location)
                 }
             }
             .onEnded { value in
@@ -107,11 +116,53 @@ struct CanvasView: View {
                         })
                         
                         Button(action: {
+                            self.drawing.selectedTool = .triangle
+                            UISelectionFeedbackGenerator().selectionChanged()
+                        }) {
+                            Label(ToolType.triangle.label, systemImage: ToolType.triangle.symbolChoice)
+                        }
+                        
+                        Button(action: {
                             self.drawing.selectedTool = .square
                             UISelectionFeedbackGenerator().selectionChanged()
                         }, label: {
                             Label(ToolType.square.label, systemImage: ToolType.square.symbolChoice)
                         })
+                        
+                        Button(action: {
+                            self.drawing.selectedTool = .diamond
+                            UISelectionFeedbackGenerator().selectionChanged()
+                        }) {
+                            Label(ToolType.diamond.label, systemImage: ToolType.diamond.symbolChoice)
+                        }
+                        
+                        Button(action: {
+                            self.drawing.selectedTool = .pentagon
+                            UISelectionFeedbackGenerator().selectionChanged()
+                        }) {
+                            Label(ToolType.pentagon.label, systemImage: ToolType.pentagon.symbolChoice)
+                        }
+                        
+                        Button(action: {
+                            self.drawing.selectedTool = .hexagon
+                            UISelectionFeedbackGenerator().selectionChanged()
+                        }) {
+                            Label(ToolType.hexagon.label, systemImage: ToolType.hexagon.symbolChoice)
+                        }
+                        
+                        Button(action: {
+                            self.drawing.selectedTool = .octagon
+                            UISelectionFeedbackGenerator().selectionChanged()
+                        }) {
+                            Label(ToolType.octagon.label, systemImage: ToolType.octagon.symbolChoice)
+                        }
+                        
+                        Button(action: {
+                            self.drawing.selectedTool = .star
+                            UISelectionFeedbackGenerator().selectionChanged()
+                        }) {
+                            Label(ToolType.star.label, systemImage: ToolType.star.symbolChoice)
+                        }
                         
                         Button(action: {
                             self.drawing.selectedTool = .eraser
@@ -279,15 +330,24 @@ struct CanvasView: View {
             self.drawBrush(stroke, in: context)
         case .circle:
             self.drawCircle(stroke, in: context)
+        case .diamond:
+            self.drawPolygon(stroke, in: context)
         case .eraser:
             self.drawEraser(stroke, in: context)
-        case .fill:
-            // Using as filler atm
-            drawBrush(stroke, in: context)
+        case .hexagon:
+            self.drawPolygon(stroke, in: context)
         case .line:
             self.drawLine(stroke, in: context)
+        case .octagon:
+            self.drawPolygon(stroke, in: context)
+        case .pentagon:
+            self.drawPolygon(stroke, in: context)
+        case .star:
+            self.drawPolygon(stroke, in: context)
         case .square:
-            self.drawSquare(stroke, in: context)
+            self.drawPolygon(stroke, in: context)
+        case .triangle:
+            self.drawPolygon(stroke, in: context)
         }
     }
     
@@ -347,8 +407,7 @@ struct CanvasView: View {
         )
     }
     
-    // Method to draw squares
-    private func drawSquare(_ stroke: Stroke, in context: GraphicsContext) {
+    private func drawPolygon(_ stroke: Stroke, in context: GraphicsContext) {
         var path = Path()
         path.addLines(stroke.points)
         
@@ -357,7 +416,7 @@ struct CanvasView: View {
             contextCopy.addFilter(.blur(radius: stroke.blur))
         }
         if stroke.fill {
-            context.fill(path, with: .color(stroke.fillColor))
+            contextCopy.fill(path, with: .color(stroke.fillColor))
         }
         contextCopy.stroke(path, with: .color(stroke.color), style: StrokeStyle(lineWidth: stroke.width, lineCap: .round, lineJoin: .round, dash: [1, stroke.spacing * stroke.width])
         )

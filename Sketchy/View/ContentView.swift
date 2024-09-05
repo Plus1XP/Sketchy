@@ -12,12 +12,10 @@ struct ContentView: View {
     @AppStorage("canShowOnBoarding") var canShowOnBoarding: Bool = true
     
     var body: some View {
-        ZStack {
-            if canShowOnBoarding {
-                WelcomeView()
-            } else {
-                CanvasView()
-            }
+        if self.canShowOnBoarding {
+            WelcomeView()
+        } else {
+            CanvasView()
         }
     }
 }

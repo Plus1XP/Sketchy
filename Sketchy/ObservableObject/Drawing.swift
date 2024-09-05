@@ -11,11 +11,8 @@ import UniformTypeIdentifiers
 class Drawing: ObservableObject, ReferenceFileDocument {
     @Published var currentStroke = Stroke()
     private var sketchModel = SketchModel(artCanvas: ArtCanvas(), oldStrokes: [Stroke]())
-
     static var readableContentTypes = [UTType(exportedAs: "io.plus1xp.sketchy")]
-
     var undoManager: UndoManager?
-
     var strokes: [Stroke] {
         var all = self.sketchModel.oldStrokes
         all.append(self.currentStroke)
@@ -156,19 +153,54 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     func setBrushColor(colorScheme: ColorScheme) {
         self.foregroundColor = colorScheme == .light ? .black : .white
     }
+
+    // Functions to generate shape points
+    func generatePolygonPoints(sides: Int, center: CGPoint, radius: CGFloat) -> [CGPoint] {
+        guard sides >= 3 else { return [] } // A polygon must have at least 3 sides
+        var points: [CGPoint] = []
+        for i in 0..<sides {
+            let angle = (CGFloat(i) * 2 * .pi / CGFloat(sides)) - .pi / 2
+            let point = CGPoint(x: center.x + cos(angle) * radius, y: center.y + sin(angle) * radius)
+            points.append(point)
+        }
+
+        // Close the path by adding the first point at the end
+        points.append(points.first!)
+        return points
+    }
+   
+    func generateOctagonPoints(center: CGPoint, radius: CGFloat) -> [CGPoint] {
+        var result: [CGPoint] = []
+        let adjustment = CGFloat.pi / 8 // Adjusting for proper rotation of octagon
+        for i in 0..<8 {  // 8 points for the octagon
+            let angle = (CGFloat(i) * CGFloat.pi / 4) - adjustment  // Each angle is 45 degrees (pi/4 radians)
+            let point = CGPoint( x: center.x + cos(angle) * radius, y: center.y + sin(angle) * radius)
+            result.append(point)
+        }
+
+        // Close the path by adding the first point at the end
+        result.append(result.first!)
+        return result
+    }
+
+    func generateStarPoints(center: CGPoint, radius: CGFloat, points: Int = 5) -> [CGPoint] {
+        var result: [CGPoint] = []
+        let adjustment = CGFloat.pi / 2
+        for i in 0..<(points * 2) {
+            let angle = (CGFloat(i) * .pi / CGFloat(points)) - adjustment
+            let length = i % 2 == 0 ? radius : radius / 2
+            let point = CGPoint(x: center.x + cos(angle) * length, y: center.y + sin(angle) * length)
+            result.append(point)
+        }
+
+        // Close the path by adding the first point at the end
+        result.append(result.first!)
+        return result
+    }
     
     func addBrush(point: CGPoint) {
         objectWillChange.send()
         self.currentStroke.points.append(point)
-    }
-    
-    func addCircle(startPoint: CGPoint, endPoint: CGPoint) {
-        objectWillChange.send()
-        
-        let center = CGPoint(x: (startPoint.x + endPoint.x) / 2, y: (startPoint.y + endPoint.y) / 2)
-        let radius = hypot(endPoint.x - startPoint.x, endPoint.y - startPoint.y) / 2
-        
-        self.currentStroke.points = [center, CGPoint(x: radius, y: 0)] // Storing center and radius
     }
     
     func addLine(startPoint: CGPoint, endPoint: CGPoint) {
@@ -176,17 +208,70 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         self.currentStroke.points = [startPoint, endPoint]
     }
     
+    func addCircle(startPoint: CGPoint, endPoint: CGPoint) {
+        objectWillChange.send()
+        let center = CGPoint(x: (startPoint.x + endPoint.x) / 2, y: (startPoint.y + endPoint.y) / 2)
+        let radius = hypot(endPoint.x - startPoint.x, endPoint.y - startPoint.y) / 2
+        self.currentStroke.points = [center, CGPoint(x: radius, y: 0)] // Storing center and radius
+    }
+    
+    func addTriangle(startPoint: CGPoint, endPoint: CGPoint) {
+        objectWillChange.send()
+        let center = CGPoint(x: (startPoint.x + endPoint.x) / 2, y: (startPoint.y + endPoint.y) / 2)
+        let radius = hypot(endPoint.x - startPoint.x, endPoint.y - startPoint.y) / 2
+        self.currentStroke.points = generatePolygonPoints(sides: 3, center: center, radius: radius)
+    }
+    
     func addSquare(startPoint: CGPoint, endPoint: CGPoint) {
         objectWillChange.send()
-        
         let origin = CGPoint(x: min(startPoint.x, endPoint.x), y: min(startPoint.y, endPoint.y))
         let size = CGSize(width: abs(startPoint.x - endPoint.x), height: abs(startPoint.y - endPoint.y))
-        
         let topRight = CGPoint(x: origin.x + size.width, y: origin.y)
         let bottomRight = CGPoint(x: origin.x + size.width, y: origin.y + size.height)
         let bottomLeft = CGPoint(x: origin.x, y: origin.y + size.height)
-        
         self.currentStroke.points = [origin, topRight, bottomRight, bottomLeft, origin]
+    }
+
+    func addPentagon(startPoint: CGPoint, endPoint: CGPoint) {
+        objectWillChange.send()
+        let center = CGPoint(x: (startPoint.x + endPoint.x) / 2, y: (startPoint.y + endPoint.y) / 2)
+        let radius = hypot(endPoint.x - startPoint.x, endPoint.y - startPoint.y) / 2
+        self.currentStroke.points = generatePolygonPoints(sides: 5, center: center, radius: radius)
+    }
+
+    func addHexagon(startPoint: CGPoint, endPoint: CGPoint) {
+        objectWillChange.send()
+        let center = CGPoint(x: (startPoint.x + endPoint.x) / 2, y: (startPoint.y + endPoint.y) / 2)
+        let radius = hypot(endPoint.x - startPoint.x, endPoint.y - startPoint.y) / 2
+        self.currentStroke.points = generatePolygonPoints(sides: 6, center: center, radius: radius)
+    }
+    
+    func addOctagon(startPoint: CGPoint, endPoint: CGPoint) {
+        objectWillChange.send()
+        let center = CGPoint(x: (startPoint.x + endPoint.x) / 2, y: (startPoint.y + endPoint.y) / 2)
+        let radius = hypot(endPoint.x - startPoint.x, endPoint.y - startPoint.y) / 2
+        self.currentStroke.points = generateOctagonPoints(center: center, radius: radius)
+    }
+    
+    func addDiamond(startPoint: CGPoint, endPoint: CGPoint) {
+        objectWillChange.send()
+        let center = CGPoint(x: (startPoint.x + endPoint.x) / 2, y: (startPoint.y + endPoint.y) / 2)
+        let width = abs(endPoint.x - startPoint.x)
+        let height = abs(endPoint.y - startPoint.y)
+        let halfWidth = width / 2
+        let halfHeight = height / 2
+        let top = CGPoint(x: center.x, y: center.y - halfHeight)
+        let right = CGPoint(x: center.x + halfWidth, y: center.y)
+        let bottom = CGPoint(x: center.x, y: center.y + halfHeight)
+        let left = CGPoint(x: center.x - halfWidth, y: center.y)
+        self.currentStroke.points = [top, right, bottom, left, top]
+    }
+    
+    func addStar(startPoint: CGPoint, endPoint: CGPoint) {
+        objectWillChange.send()
+        let center = CGPoint(x: (startPoint.x + endPoint.x) / 2, y: (startPoint.y + endPoint.y) / 2)
+        let radius = hypot(endPoint.x - startPoint.x, endPoint.y - startPoint.y) / 2
+        self.currentStroke.points = generateStarPoints(center: center, radius: radius)
     }
     
     func useEraser(point: CGPoint) {

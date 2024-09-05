@@ -27,7 +27,7 @@ struct WelcomeView: View {
                         .cornerRadius(10)
                         .accessibilityHidden(true)
                     
-                    Text("Welcome to\n\(Text(appName).foregroundColor(.accentColor))")
+                    Text("Welcome to\n\(Text(self.appName).foregroundColor(.accentColor))")
                         .multilineTextAlignment(.center)
                         .font(.largeTitle.bold())
                     
@@ -72,9 +72,9 @@ struct WelcomeView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.trailing)
-
                     
-                    ForEach(welcomeModel) { feature in
+                    
+                    ForEach(self.welcomeModel) { feature in
                         HStack {
                             // Image will replace symbol if available
                             ZStack {
@@ -111,8 +111,8 @@ struct WelcomeView: View {
                 .foregroundColor(.secondary)
             
             Button("Continue", action: {
-                canShowOnBoarding = false
-                close()
+                self.canShowOnBoarding = false
+                self.close()
             })
             .frame(maxWidth: .infinity, minHeight: 44)
             .background(Color.accentColor)
@@ -123,7 +123,7 @@ struct WelcomeView: View {
     }
     
     func close() {
-        presentationMode.wrappedValue.dismiss()
+        self.presentationMode.wrappedValue.dismiss()
     }
 }
 
