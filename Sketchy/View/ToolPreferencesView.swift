@@ -11,20 +11,29 @@ struct ToolPreferencesView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var drawing: Drawing
+    @State var animate: Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 Button {
                     withAnimation {
+                        self.animate.toggle()
                         self.drawing.lineWidth = 3.0
                         self.drawing.blurAmount = 0.0
                         self.drawing.lineSpacing = 0.0
                         UINotificationFeedbackGenerator().notificationOccurred(.success)
                     }
                 } label: {
-                    Image(systemName: "arrow.counterclockwise.circle.fill")
+                    Image(systemName: "slider.horizontal.2.gobackward")
                         .font(.title)
+                        .symbolEffect(
+                            .bounce.up.byLayer,
+                            options: .speed(1).repeat(1),
+                            value: self.animate
+                        )
+                        .contentTransition(.symbolEffect(.replace))
+                        .rotationEffect(.degrees(self.animate ? -360 : 0))
                 }
                 .disabled(self.drawing.lineWidth == 3.0 && self.drawing.blurAmount == 0.0 && self.drawing.lineSpacing == 0.0)
                 Spacer()
@@ -65,7 +74,7 @@ struct ToolPreferencesView: View {
                         }
                     }
                 }
-                Section(header: Text("\(Image(systemName: "circle.dashed")) Line Spacing")) {
+                Section(header: Text("\(Image(systemName: "ellipsis")) Line Spacing")) {
                     Group {
                         HStack {
                             Text("Distance: ") +
@@ -73,6 +82,21 @@ struct ToolPreferencesView: View {
                                 .fontWeight(.medium)
                             Slider(value: $drawing.lineSpacing, in: 0...5, step: 0.1)
                                 .sensoryFeedback(.increase, trigger: self.drawing.lineSpacing)
+                        }
+                    }
+                }
+                Section(header: Text("\(Image(systemName: "slider.horizontal.below.square.and.square.filled")) Shape Presets")) {
+                    Group {
+                        HStack {
+                            Text("Fill Shape: ")
+                            Toggle("Fill Shape:", isOn: $drawing.canFill)
+                                .labelsHidden()
+                                .sensoryFeedback(.increase, trigger: self.drawing.canFill)
+                            Spacer()
+                            Text("Fill Color: ")
+                            ColorPicker("Fill Color", selection: $drawing.fillColor)
+                                .labelsHidden()
+                                .sensoryFeedback(.selection, trigger: drawing.fillColor)
                         }
                     }
                 }

@@ -20,6 +20,10 @@ struct CanvasView: View {
     @State private var lastOrientation: UIDeviceOrientation? = nil
     @State private var orientation: UIDeviceOrientation? = nil
     @State private var orientationChangePublisher: AnyCancellable?
+    @State var animateUndo: Bool = false
+    @State var animateRedo: Bool = false
+    @State var animateUndoHistory: Bool = false
+    @State var animateTrash: Bool = false
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
     @AppStorage("isCanvasHapticsEnabled") var isCanvasHapticsEnabled: Bool = true
     @AppStorage("canvasHapticsIntensity") var canvasHapticsIntensity: Double = 0.38
@@ -68,54 +72,56 @@ struct CanvasView: View {
         .ignoresSafeArea(edges: self.drawing.ignoreSafeArea ? .all : [])
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                ColorPicker("Color", selection: $drawing.foregroundColor)
-                    .labelsHidden()
-                    .sensoryFeedback(.selection, trigger: drawing.foregroundColor)
-                Button(action: {
-                    self.showingToolPreferences.toggle()
-                    UISelectionFeedbackGenerator().selectionChanged()
-                }) {
-                    Label("Tool Preferences", systemImage: "slider.horizontal.3")
-                        .foregroundColor(.primary)
-                }
-                Menu {
+                HStack {
+                    ColorPicker("Color", selection: $drawing.foregroundColor)
+                        .labelsHidden()
+                        .sensoryFeedback(.selection, trigger: drawing.foregroundColor)
                     Button(action: {
-                        self.drawing.selectedTool = .brush
+                        self.showingToolPreferences.toggle()
                         UISelectionFeedbackGenerator().selectionChanged()
-                    }, label: {
-                        Label(ToolType.brush.label, systemImage: ToolType.brush.symbolChoice)
-                    })
-                    
-                    Button(action: {
-                        self.drawing.selectedTool = .line
-                        UISelectionFeedbackGenerator().selectionChanged()
-                    }, label: {
-                        Label(ToolType.line.label, systemImage: ToolType.line.symbolChoice)
-                    })
-                    
-                    Button(action: {
-                        self.drawing.selectedTool = .circle
-                        UISelectionFeedbackGenerator().selectionChanged()
-                    }, label: {
-                        Label(ToolType.circle.label, systemImage: ToolType.circle.symbolChoice)
-                    })
-                    
-                    Button(action: {
-                        self.drawing.selectedTool = .square
-                        UISelectionFeedbackGenerator().selectionChanged()
-                    }, label: {
-                        Label(ToolType.square.label, systemImage: ToolType.square.symbolChoice)
-                    })
-                    
-                    Button(action: {
-                        self.drawing.selectedTool = .eraser
-                        UISelectionFeedbackGenerator().selectionChanged()
-                    }, label: {
-                        Label(ToolType.eraser.label, systemImage: ToolType.eraser.symbolChoice)
-                    })
-                    
-                } label: {
-                    Label("Tools", systemImage: self.drawing.selectedTool.symbolChoice)
+                    }) {
+                        Label("Tool Preferences", systemImage: "slider.horizontal.3")
+                            .foregroundColor(.accentColor)
+                            .symbolEffect( .bounce, options: .speed(2), value: self.showingToolPreferences)
+                    }
+                    Menu {
+                        Button(action: {
+                            self.drawing.selectedTool = .brush
+                            UISelectionFeedbackGenerator().selectionChanged()
+                        }, label: {
+                            Label(ToolType.brush.label, systemImage: ToolType.brush.symbolChoice)
+                        })
+                        
+                        Button(action: {
+                            self.drawing.selectedTool = .line
+                            UISelectionFeedbackGenerator().selectionChanged()
+                        }, label: {
+                            Label(ToolType.line.label, systemImage: ToolType.line.symbolChoice)
+                        })
+                        
+                        Button(action: {
+                            self.drawing.selectedTool = .circle
+                            UISelectionFeedbackGenerator().selectionChanged()
+                        }, label: {
+                            Label(ToolType.circle.label, systemImage: ToolType.circle.symbolChoice)
+                        })
+                        
+                        Button(action: {
+                            self.drawing.selectedTool = .square
+                            UISelectionFeedbackGenerator().selectionChanged()
+                        }, label: {
+                            Label(ToolType.square.label, systemImage: ToolType.square.symbolChoice)
+                        })
+                        
+                        Button(action: {
+                            self.drawing.selectedTool = .eraser
+                            UISelectionFeedbackGenerator().selectionChanged()
+                        }, label: {
+                            Label(ToolType.eraser.label, systemImage: ToolType.eraser.symbolChoice)
+                        })
+                    } label: {
+                        Label("Tools", systemImage: self.drawing.selectedTool.symbolChoice)
+                    }
                 }
             }
             if UIDevice.current.userInterfaceIdiom == .phone && verticalScreenSize == .regular {
@@ -124,26 +130,32 @@ struct CanvasView: View {
                         Spacer()
                         // Repeat behaviour not working unless button is in view directly
                         Button(action: {
+                            self.animateUndo.toggle()
                             self.drawing.undo()
                             UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
                         }, label: {
                             Label("Undo", systemImage: "arrow.uturn.backward")
+                                .symbolEffect( .bounce, options: .speed(2), value: self.animateUndo)
                         })
                         .buttonRepeatBehavior(.enabled)
                         .disabled(self.undoManager?.canUndo == false)
                         Button(action: {
+                            self.animateRedo.toggle()
                             self.drawing.redo()
                             UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
                         }, label: {
                             Label("Redo", systemImage: "arrow.uturn.forward")
+                                .symbolEffect( .bounce, options: .speed(2), value: self.animateRedo)
                         })
                         .buttonRepeatBehavior(.enabled)
                         .disabled(self.undoManager?.canRedo == false)
                         Button(action: {
+                            self.animateUndoHistory.toggle()
                             self.drawing.removeOldStroke()
                             UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
                         }, label: {
                             Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
+                                .symbolEffect(.bounce.up.byLayer, options: .speed(1), value: self.animateUndoHistory)
                         })
                         .buttonRepeatBehavior(.enabled)
                         .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
@@ -152,6 +164,8 @@ struct CanvasView: View {
                             UINotificationFeedbackGenerator().notificationOccurred(.warning)
                         }, label: {
                             Label("Clear Canvas", systemImage: "trash")
+                                .symbolEffect(.pulse.wholeSymbol, options: .speed(3), value: self.canShowDeleteAlert)
+                                .contentTransition(.symbolEffect(.replace))
                         })
                         .disabled(self.drawing.oldStrokeHistory() == 0)
                         .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
@@ -160,6 +174,7 @@ struct CanvasView: View {
                                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                             }
                             Button("cancel", role: .cancel) {
+
                             }
                         }
                     }
@@ -172,26 +187,32 @@ struct CanvasView: View {
 //                            .overlay(.secondary)
                         // Repeat behaviour not working unless button is in view directly
                         Button(action: {
+                            self.animateUndo.toggle()
                             self.drawing.undo()
                             UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
                         }, label: {
                             Label("Undo", systemImage: "arrow.uturn.backward")
+                                .symbolEffect( .bounce, options: .speed(2), value: self.animateUndo)
                         })
                         .buttonRepeatBehavior(.enabled)
                         .disabled(self.undoManager?.canUndo == false)
                         Button(action: {
+                            self.animateRedo.toggle()
                             self.drawing.redo()
                             UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
                         }, label: {
                             Label("Redo", systemImage: "arrow.uturn.forward")
+                                .symbolEffect( .bounce, options: .speed(2), value: self.animateRedo)
                         })
                         .buttonRepeatBehavior(.enabled)
                         .disabled(self.undoManager?.canRedo == false)
                         Button(action: {
+                            self.animateUndoHistory.toggle()
                             self.drawing.removeOldStroke()
                             UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
                         }, label: {
                             Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
+                                .symbolEffect(.bounce.up.byLayer, options: .speed(1), value: self.animateUndoHistory)
                         })
                         .buttonRepeatBehavior(.enabled)
                         .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
@@ -200,6 +221,8 @@ struct CanvasView: View {
                             UINotificationFeedbackGenerator().notificationOccurred(.warning)
                         }, label: {
                             Label("Clear Canvas", systemImage: "trash")
+                                .symbolEffect(.pulse.wholeSymbol, options: .speed(3), value: self.canShowDeleteAlert)
+                                .contentTransition(.symbolEffect(.replace))
                         })
                         .disabled(self.drawing.oldStrokeHistory() == 0)
                         .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
@@ -302,6 +325,9 @@ struct CanvasView: View {
         if stroke.blur > 0 {
             contextCopy.addFilter(.blur(radius: stroke.blur))
         }
+        if stroke.fill {
+            context.fill(circlePath, with: .color(stroke.fillColor))
+        }
         contextCopy.stroke(circlePath, with: .color(stroke.color), style: StrokeStyle(lineWidth: stroke.width, lineCap: .round, lineJoin: .round, dash: [1, stroke.spacing * stroke.width])
         )
     }
@@ -329,6 +355,9 @@ struct CanvasView: View {
         var contextCopy = context
         if stroke.blur > 0 {
             contextCopy.addFilter(.blur(radius: stroke.blur))
+        }
+        if stroke.fill {
+            context.fill(path, with: .color(stroke.fillColor))
         }
         contextCopy.stroke(path, with: .color(stroke.color), style: StrokeStyle(lineWidth: stroke.width, lineCap: .round, lineJoin: .round, dash: [1, stroke.spacing * stroke.width])
         )

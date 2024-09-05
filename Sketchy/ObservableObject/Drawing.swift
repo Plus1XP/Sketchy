@@ -54,18 +54,40 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     @Published var lineSpacing = 0.0 {
         didSet {
             self.currentStroke.spacing = self.lineSpacing
+            debugPrint("Brush Spacing changed: \(self.lineSpacing)")
         }
     }
 
     @Published var blurAmount = 0.0 {
         didSet {
             self.currentStroke.blur = self.blurAmount
+            debugPrint("Brush Blur changed: \(self.blurAmount)")
+        }
+    }
+    
+    @Published var canFill = false {
+        didSet {
+            self.currentStroke.fill = self.canFill
+            debugPrint("Shape Fill changed: \(self.canFill)")
+            if canFill {
+                self.fillColor = self.foregroundColor
+            } else {
+                self.fillColor = Color.clear
+            }
+        }
+    }
+    
+    @Published var fillColor = Color.clear {
+        didSet {
+            self.currentStroke.fillColor = self.fillColor
+            debugPrint("Fill Color changed: \(String(describing: self.fillColor))")
         }
     }
     
     @Published var selectedTool = ToolType.brush {
         didSet {
             self.currentStroke.tool = self.selectedTool
+            debugPrint("Tool Selection changed: \(self.selectedTool)")
         }
     }
 
@@ -87,6 +109,8 @@ class Drawing: ObservableObject, ReferenceFileDocument {
                 self.lineWidth = lastStroke.width
                 self.lineSpacing = lastStroke.spacing
                 self.blurAmount = lastStroke.blur
+                self.canFill = lastStroke.fill
+                self.fillColor = lastStroke.fillColor
                 self.selectedTool = lastStroke.tool
             }
         } else {
@@ -140,7 +164,6 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     
     func addCircle(startPoint: CGPoint, endPoint: CGPoint) {
         objectWillChange.send()
-        self.selectedTool = .circle
         
         let center = CGPoint(x: (startPoint.x + endPoint.x) / 2, y: (startPoint.y + endPoint.y) / 2)
         let radius = hypot(endPoint.x - startPoint.x, endPoint.y - startPoint.y) / 2
@@ -150,13 +173,11 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     
     func addLine(startPoint: CGPoint, endPoint: CGPoint) {
         objectWillChange.send()
-        self.selectedTool = .line
         self.currentStroke.points = [startPoint, endPoint]
     }
     
     func addSquare(startPoint: CGPoint, endPoint: CGPoint) {
         objectWillChange.send()
-        self.selectedTool = .square
         
         let origin = CGPoint(x: min(startPoint.x, endPoint.x), y: min(startPoint.y, endPoint.y))
         let size = CGSize(width: abs(startPoint.x - endPoint.x), height: abs(startPoint.y - endPoint.y))
@@ -170,7 +191,6 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     
     func useEraser(point: CGPoint) {
           objectWillChange.send()
-          self.selectedTool = .eraser
           self.currentStroke.points.append(point)
       }
     
@@ -187,7 +207,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     }
 
     func newStroke() {
-        self.currentStroke = Stroke(color: self.foregroundColor, width: self.lineWidth, spacing: self.lineSpacing, blur: self.blurAmount, tool: self.selectedTool)
+        self.currentStroke = Stroke(color: self.foregroundColor, width: self.lineWidth, spacing: self.lineSpacing, blur: self.blurAmount, fill: self.canFill, fillColor: self.fillColor, tool: self.selectedTool)
     }
     
     func removeOldStroke() {
@@ -208,6 +228,8 @@ class Drawing: ObservableObject, ReferenceFileDocument {
             self.lineWidth = 3.0
             self.lineSpacing = 0.0
             self.blurAmount = 0.0
+            self.canFill = false
+            self.fillColor = .clear
             self.selectedTool = .brush
             self.setCanvasDefaults(colorScheme: colorScheme, canIgnoreSafeArea: canIgnoreSafeArea)
             self.newStroke()

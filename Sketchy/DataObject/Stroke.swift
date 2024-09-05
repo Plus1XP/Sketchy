@@ -14,5 +14,7 @@ struct Stroke: Codable, Identifiable {
     var width = 3.0
     var spacing = 0.0
     var blur = 0.0
+    var fill = false
+    var fillColor = Color.clear
     var tool = ToolType.brush
 }
