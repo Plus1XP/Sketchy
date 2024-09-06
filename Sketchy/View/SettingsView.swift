@@ -80,7 +80,7 @@ struct SettingsView: View {
                             Image(systemName: "info.circle")
                         })
                         .popover(isPresented:  $canShowSafeAreaInfo) {
-                            Text("This will lock the current canvas to the entire screen.")
+                            Text("This will lock the current canvas to the entire screen. *Changes applied to new Sketches")
                                 .font(.footnote)
                                 .padding()
                                 .presentationCompactAdaptation(.popover)
