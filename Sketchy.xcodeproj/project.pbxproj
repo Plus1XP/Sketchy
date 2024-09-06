@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F42B9072C8B40E300A887DF /* Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9062C8B40E300A887DF /* Orientation.swift */; };
 		2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */; };
 		2FD6FB272C83EAF400AFDD82 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6FB262C83EAF400AFDD82 /* Appearance.swift */; };
 		2FDEEC742C82159D009BB9E3 /* SketchyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC732C82159D009BB9E3 /* SketchyApp.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F42B9062C8B40E300A887DF /* Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientation.swift; sourceTree = "<group>"; };
 		2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPreferencesView.swift; sourceTree = "<group>"; };
 		2FD6FB262C83EAF400AFDD82 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		2FDEEC702C82159D009BB9E3 /* Sketchy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sketchy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				2FD6FB262C83EAF400AFDD82 /* Appearance.swift */,
+				2F42B9062C8B40E300A887DF /* Orientation.swift */,
 				2FE991732C863CD8000686FD /* ToolType.swift */,
 				2FE9916F2C861B31000686FD /* ArtCanvas.swift */,
 				2FDEEC812C821649009BB9E3 /* Stroke.swift */,
@@ -286,6 +289,7 @@
 				2FE9918D2C8921E4000686FD /* WelcomeModel.swift in Sources */,
 				2FDEEC9F2C822060009BB9E3 /* HelperFunctions.swift in Sources */,
 				2FDEEC912C821DEF009BB9E3 /* UIWindow.swift in Sources */,
+				2F42B9072C8B40E300A887DF /* Orientation.swift in Sources */,
 				2FDEEC982C821EBF009BB9E3 /* SettingsView.swift in Sources */,
 				2FD6FB272C83EAF400AFDD82 /* Appearance.swift in Sources */,
 				2FE991742C863CD8000686FD /* ToolType.swift in Sources */,

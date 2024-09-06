@@ -9,8 +9,9 @@ import SwiftUI
 
 @main
 struct SketchyApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
-    @AppStorage("appearance") var appearance: AppearanceType = .automatic
+    @AppStorage("appearance") var appearanceType: AppearanceType = .automatic
 
     var body: some Scene {
         DocumentGroup(newDocument: Drawing.init) { file in
@@ -20,7 +21,7 @@ struct SketchyApp: App {
             print("Scene Changed")
             self.setAppearance()
         }
-        .onChange(of: appearance) {
+        .onChange(of: appearanceType) {
             print("Appearance settings changed")
             self.setAppearance()
         }
@@ -34,7 +35,21 @@ struct SketchyApp: App {
 //        window?.overrideUserInterfaceStyle = appearance.userInerfaceStyle ?? .unspecified
         let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         if let firstWindow = scene?.windows.first {
-            firstWindow.overrideUserInterfaceStyle = appearance.userInerfaceStyle ?? .unspecified
+            firstWindow.overrideUserInterfaceStyle = appearanceType.userInerfaceStyle ?? .unspecified
         }
+    }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    
+    static var orientationLock = UIInterfaceOrientationMask.all
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        // something to do
+        return true
+    }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window:UIWindow?) -> UIInterfaceOrientationMask {
+        return AppDelegate.orientationLock
     }
 }

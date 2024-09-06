@@ -12,10 +12,13 @@ struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var drawing: Drawing
     @State var showConfetti: Bool = false
+    @State var canShowOrientationInfo: Bool = false
     @State var canShowSafeAreaInfo: Bool = false
     @State var canShowCanvasHapticsInfo: Bool = false
+    @State var canShowLockCanvasInfo: Bool = false
+    @AppStorage("appearanceType") var appearanceType: AppearanceType = .automatic
+    @AppStorage("orientationType") var orientationType: OrientationType = .automatic
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
-    @AppStorage("appearance") var appearance: AppearanceType = .automatic
     @AppStorage("isCanvasHapticsEnabled") var isCanvasHapticsEnabled: Bool = true
     @AppStorage("canvasHapticsIntensity") var canvasHapticsIntensity: Double = 0.38
     // Fill in App ID when app is added to appstore connect!
@@ -54,12 +57,12 @@ struct SettingsView: View {
             // Removes white form section backgroung
             .listRowBackground(Color.clear)
             
-            Section(header: Text("\(Image(systemName: "gearshape")) Settings")) {
+            Section(header: Text("\(Image(systemName: "gearshape")) Settings"), footer: Text("\(Image(systemName: "exclamationmark.circle")) Any changes to canvas orientation & size will take effect on new sketches only.\nThis can be bypassed using the override buttons.")) {
                 Group {
                     HStack {
-                        Image(systemName: self.appearance.symbolChoice)
-                            .foregroundStyle(self.appearance.primarySymbolColor, self.appearance.secondarySymbolColor)
-                        Picker(selection: $appearance, label: Text("System Appearence")) {
+                        Image(systemName: self.appearanceType.symbolChoice)
+                            .foregroundStyle(self.appearanceType.primarySymbolColor, self.appearanceType.secondarySymbolColor)
+                        Picker(selection: $appearanceType, label: Text("System Appearence")) {
                             Text("Auto").tag(AppearanceType.automatic)
                             Text("Light").tag(AppearanceType.light)
                             Text("Dark").tag(AppearanceType.dark)
@@ -71,6 +74,20 @@ struct SettingsView: View {
                         ColorPicker("Canvas Color", selection: $drawing.backgroundColor, supportsOpacity: true)
                     }
                     HStack {
+                        Image(systemName: self.orientationType.symbolChoice)
+                            .foregroundStyle(self.orientationType.primarySymbolColor, self.orientationType.secondarySymbolColor)
+                        Picker(selection: $orientationType, label: Text("Canvas Orientation")) {
+                            Text("Auto").tag(OrientationType.automatic)
+                            Text("Portrait").tag(OrientationType.portrait)
+                            Text("Landscape").tag(OrientationType.landscape)
+                        }
+                        .onChange(of: self.orientationType, {
+                            if self.drawing.isOldStrokesEmpty() {
+                                self.drawing.setOrientation(orientation: self.orientationType)
+                            }
+                        })
+                    }
+                    HStack {
                         Image(systemName: "pencil.and.ruler")
                             .foregroundStyle(.brown)
                         Text("Full Size Canvas")
@@ -80,7 +97,7 @@ struct SettingsView: View {
                             Image(systemName: "info.circle")
                         })
                         .popover(isPresented:  $canShowSafeAreaInfo) {
-                            Text("This will lock the current canvas to the entire screen. *Changes applied to new Sketches")
+                            Text("This will lock the current canvas to the entire screen.")
                                 .font(.footnote)
                                 .padding()
                                 .presentationCompactAdaptation(.popover)
@@ -88,6 +105,11 @@ struct SettingsView: View {
                         Spacer()
                         Toggle("Exceed Safe Area", isOn: $canIgnoreSafeArea)
                             .labelsHidden()
+                            .onChange(of: self.canIgnoreSafeArea, {
+                                if self.drawing.isOldStrokesEmpty() {
+                                    self.drawing.setSafeArea(canIgnoreSafeArea: self.canIgnoreSafeArea)
+                                }
+                            })
                     }
                     HStack {
                         VStack {
@@ -119,6 +141,13 @@ struct SettingsView: View {
                                 }
                             }
                         }
+                    }
+                    HStack {
+                        Text("Override:")
+                        Toggle("Fullscreen", isOn: $drawing.safeAreaOverride)
+                            .toggleStyle(.button)
+                        Toggle("Orientation", isOn: $drawing.orientationOverride)
+                            .toggleStyle(.button)
                     }
                 }
             }

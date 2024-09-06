@@ -19,10 +19,21 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         return all
     }
     
+    @Published var safeAreaOverride = false
+    
+    @Published var orientationOverride = false
+    
     @Published var ignoreSafeArea = true {
         didSet {
-            self.sketchModel.artCanvas.exceedSafeArea = self.ignoreSafeArea
+            self.sketchModel.artCanvas.fullSize = self.ignoreSafeArea
             debugPrint("Canvas Size changed: \(self.ignoreSafeArea)")
+        }
+    }
+    
+    @Published var orientation = OrientationType.automatic {
+        didSet {
+            self.sketchModel.artCanvas.orientation = self.orientation
+            debugPrint("Portrait changed: \(self.orientation)")
         }
     }
     
@@ -98,9 +109,8 @@ class Drawing: ObservableObject, ReferenceFileDocument {
             self.sketchModel = try JSONDecoder().decode(SketchModel.self, from: decodedData)
             debugPrint("Read File: \(self.sketchModel)")
             self.backgroundColor = self.sketchModel.artCanvas.color
-            if let safeAreaValue = self.sketchModel.artCanvas.exceedSafeArea {
-                self.ignoreSafeArea = safeAreaValue
-            }
+            self.ignoreSafeArea = self.sketchModel.artCanvas.fullSize
+            self.orientation = self.sketchModel.artCanvas.orientation
             if let lastStroke = self.sketchModel.oldStrokes.last {
                 self.foregroundColor = lastStroke.color
                 self.lineWidth = lastStroke.width
@@ -128,8 +138,8 @@ class Drawing: ObservableObject, ReferenceFileDocument {
 
     // MARK: Drawing interactions
     
-    func setCanvasDefaults(colorScheme: ColorScheme, canIgnoreSafeArea: Bool) {
-        if self.sketchModel.oldStrokes.isEmpty {
+    func setCanvasDefaults(colorScheme: ColorScheme, canIgnoreSafeArea: Bool, orientation: OrientationType) {
+        if self.isOldStrokesEmpty() {
             debugPrint("Color Scheme: \(colorScheme)")
             if colorScheme == .light {
                 self.setCanvasColor(colorScheme: colorScheme)
@@ -139,11 +149,22 @@ class Drawing: ObservableObject, ReferenceFileDocument {
                 self.setBrushColor(colorScheme: colorScheme)
             }
             self.setSafeArea(canIgnoreSafeArea: canIgnoreSafeArea)
+            self.setOrientation(orientation: orientation)
+            self.safeAreaOverride = false
+            self.orientationOverride = false
         }
+    }
+    
+    func isOldStrokesEmpty() -> Bool {
+        return self.sketchModel.oldStrokes.isEmpty
     }
     
     func setSafeArea(canIgnoreSafeArea: Bool) {
         self.ignoreSafeArea = canIgnoreSafeArea
+    }
+    
+    func setOrientation(orientation: OrientationType) {
+        self.orientation = orientation
     }
     
     func setCanvasColor(colorScheme: ColorScheme) {
@@ -152,6 +173,22 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     
     func setBrushColor(colorScheme: ColorScheme) {
         self.foregroundColor = colorScheme == .light ? .black : .white
+    }
+    
+    func overideFullSizeCanvas(userPrefs: Bool) -> Bool {
+        if self.safeAreaOverride {
+            return userPrefs
+        } else {
+            return self.ignoreSafeArea
+        }
+    }
+    
+    func overideOrientation(userPrefs: OrientationType) -> OrientationType {
+        if self.orientationOverride {
+            return userPrefs
+        } else {
+            return self.orientation
+        }
     }
 
     // Functions to generate shape points
@@ -305,7 +342,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         return self.sketchModel.oldStrokes.count
     }
     
-    func clearCanvas(colorScheme: ColorScheme, canIgnoreSafeArea: Bool) {
+    func clearCanvas(colorScheme: ColorScheme, canIgnoreSafeArea: Bool, orientation: OrientationType) {
         if !self.sketchModel.oldStrokes.isEmpty {
             objectWillChange.send()
             self.sketchModel.oldStrokes.removeAll()
@@ -316,7 +353,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
             self.canFill = false
             self.fillColor = .clear
             self.selectedTool = .brush
-            self.setCanvasDefaults(colorScheme: colorScheme, canIgnoreSafeArea: canIgnoreSafeArea)
+            self.setCanvasDefaults(colorScheme: colorScheme, canIgnoreSafeArea: canIgnoreSafeArea, orientation: orientation)
             self.newStroke()
         }
     }
