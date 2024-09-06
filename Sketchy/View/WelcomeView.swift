@@ -15,7 +15,7 @@ struct WelcomeView: View {
 
     let appName = "Sketchy"
     let welcomeModel = [
-        WelcomeModel(title: "Undo Histroy", description: "Undo and Redo lasts for the entire session, when you exit it'll forget. Undo history will keep track of changes from the last session", image: "custom.arrow.uturn.backward.badge.clock"),
+        WelcomeModel(title: "Historic undo", description: "Undo and Redo is for your most recent changes, when you exit it'll forget. Historic Undo will keep track of changes from your past sessions", image: "custom.arrow.uturn.backward.badge.clock"),
         WelcomeModel(title: "One last thing", description: "If you get stuck and need some help, or you want to change some settings. Just give give the device a little shake!", image: "phone.shake")
     ]
     
@@ -38,14 +38,14 @@ struct WelcomeView: View {
                             .foregroundColor(.accentColor)
                             .accessibilityHidden(true)
                         VStack(alignment: .leading) {
-                            Text("Exceed Safe Area")
+                            Text("Full Size Canvas")
                                 .font(.headline)
                             Text("Would you like to use the entire screen as the canvas?")
                                 .foregroundColor(.secondary)
                         }
                         .accessibilityElement(children: .combine)
                         Spacer()
-                        Toggle("Exceed Safe Area", isOn: $canIgnoreSafeArea)
+                        Toggle("Full Size Canvas", isOn: $canIgnoreSafeArea)
                             .labelsHidden()
                             .toggleStyle(.switch)
                     }
@@ -59,9 +59,9 @@ struct WelcomeView: View {
                             .foregroundStyle(.yellow, Color.accentColor)
                             .accessibilityHidden(true)
                         VStack(alignment: .leading) {
-                            Text("Canvas Haptics")
+                            Text("Canvas Vibrations")
                                 .font(.headline)
-                            Text("would you like to Simulates the feeling of moving your finger across a surface?")
+                            Text("Would you like to Simulates the feeling of moving your finger across a surface?")
                                 .foregroundColor(.secondary)
                         }
                         .accessibilityElement(children: .combine)

@@ -57,25 +57,6 @@ struct SettingsView: View {
             Section(header: Text("\(Image(systemName: "gearshape")) Settings")) {
                 Group {
                     HStack {
-                        Image(systemName: "pencil.and.ruler")
-                            .foregroundStyle(.brown)
-                        Text("Exceed Safe Area")
-                        Button(action: {
-                            self.canShowSafeAreaInfo.toggle()
-                        }, label: {
-                            Image(systemName: "info.circle")
-                        })
-                        .popover(isPresented:  $canShowSafeAreaInfo) {
-                            Text("Uses the entire screen as the canvas.")
-                                .font(.footnote)
-                                .padding()
-                                .presentationCompactAdaptation(.popover)
-                        }
-                        Spacer()
-                        Toggle("Exceed Safe Area", isOn: $canIgnoreSafeArea)
-                            .labelsHidden()
-                    }
-                    HStack {
                         Image(systemName: self.appearance.symbolChoice)
                             .foregroundStyle(self.appearance.primarySymbolColor, self.appearance.secondarySymbolColor)
                         Picker(selection: $appearance, label: Text("System Appearence")) {
@@ -90,18 +71,37 @@ struct SettingsView: View {
                         ColorPicker("Canvas Color", selection: $drawing.backgroundColor, supportsOpacity: true)
                     }
                     HStack {
+                        Image(systemName: "pencil.and.ruler")
+                            .foregroundStyle(.brown)
+                        Text("Full Size Canvas")
+                        Button(action: {
+                            self.canShowSafeAreaInfo.toggle()
+                        }, label: {
+                            Image(systemName: "info.circle")
+                        })
+                        .popover(isPresented:  $canShowSafeAreaInfo) {
+                            Text("This will lock the current canvas to the entire screen.")
+                                .font(.footnote)
+                                .padding()
+                                .presentationCompactAdaptation(.popover)
+                        }
+                        Spacer()
+                        Toggle("Exceed Safe Area", isOn: $canIgnoreSafeArea)
+                            .labelsHidden()
+                    }
+                    HStack {
                         VStack {
                             HStack {
                                 Image("custom.hand.draw.trianglebadge.exclamationmark")
                                     .foregroundStyle(.yellow, .primary)
-                                Text("Canvas Haptics")
+                                Text("Canvas Vibrations")
                                 Button(action: {
                                     self.canShowCanvasHapticsInfo.toggle()
                                 }, label: {
                                     Image(systemName: "info.circle")
                                 })
                                 .popover(isPresented:  $canShowCanvasHapticsInfo) {
-                                    Text("Simulates the feeling of moving your finger across a surface.")
+                                    Text("Uses the haptic engine to simulate the feeling of moving your finger across a surface.")
                                         .font(.footnote)
                                         .padding()
                                         .presentationCompactAdaptation(.popover)
