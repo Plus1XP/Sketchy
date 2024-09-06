@@ -13,13 +13,14 @@ struct CanvasView: View {
     @Environment(\.undoManager) var undoManager
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.verticalSizeClass) var verticalScreenSize
-    @State private var showingToolPreferences: Bool = false
-    @State private var canShowSettingsView: Bool = false
-    @State private var canShowDeleteAlert: Bool = false
     @State private var startPoint: CGPoint = .zero
     @State private var lastOrientation: UIDeviceOrientation? = nil
     @State private var orientation: UIDeviceOrientation? = nil
     @State private var orientationChangePublisher: AnyCancellable?
+    @State private var showingToolPreferences: Bool = false
+    @State private var canShowSettingsView: Bool = false
+    @State private var canShowDeleteAlert: Bool = false
+    @State private var canExpandUndoBar: Bool = false
     @State var animateUndo: Bool = false
     @State var animateRedo: Bool = false
     @State var animateUndoHistory: Bool = false
@@ -177,57 +178,74 @@ struct CanvasView: View {
             }
             if UIDevice.current.userInterfaceIdiom == .phone && verticalScreenSize == .regular {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    HStack() {
-                        Spacer()
-                        // Repeat behaviour not working unless button is in view directly
-                        Button(action: {
-                            self.animateUndo.toggle()
-                            self.drawing.undo()
-                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                        }, label: {
-                            Label("Undo", systemImage: "arrow.uturn.backward")
-                                .symbolEffect( .bounce, options: .speed(2), value: self.animateUndo)
-                        })
-                        .buttonRepeatBehavior(.enabled)
-                        .disabled(self.undoManager?.canUndo == false)
-                        Button(action: {
-                            self.animateRedo.toggle()
-                            self.drawing.redo()
-                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                        }, label: {
-                            Label("Redo", systemImage: "arrow.uturn.forward")
-                                .symbolEffect( .bounce, options: .speed(2), value: self.animateRedo)
-                        })
-                        .buttonRepeatBehavior(.enabled)
-                        .disabled(self.undoManager?.canRedo == false)
-                        Button(action: {
-                            self.animateUndoHistory.toggle()
-                            self.drawing.removeOldStroke()
-                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                        }, label: {
-                            Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
-                                .symbolEffect(.bounce.up.byLayer, options: .speed(1), value: self.animateUndoHistory)
-                        })
-                        .buttonRepeatBehavior(.enabled)
-                        .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
-                        Button(action: {
-                            self.canShowDeleteAlert.toggle()
-                            UINotificationFeedbackGenerator().notificationOccurred(.warning)
-                        }, label: {
-                            Label("Clear Canvas", systemImage: "trash")
-                                .symbolEffect(.pulse.wholeSymbol, options: .speed(3), value: self.canShowDeleteAlert)
-                                .contentTransition(.symbolEffect(.replace))
-                        })
-                        .disabled(self.drawing.oldStrokeHistory() == 0)
-                        .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
-                            Button("OK", role: .destructive) {
-                                self.drawing.clearCanvas(colorScheme: colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea)
-                                UINotificationFeedbackGenerator().notificationOccurred(.success)
-                            }
-                            Button("cancel", role: .cancel) {
+                    if canExpandUndoBar {
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                self.canExpandUndoBar.toggle()
+                                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
 
+                            }, label: {
+                                Label("Collapse", systemImage: "chevron.right.circle")
+                            })
+                            // Repeat behaviour not working unless button is in view directly
+                            Button(action: {
+                                self.animateUndo.toggle()
+                                self.drawing.undo()
+                                UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                            }, label: {
+                                Label("Undo", systemImage: "arrow.uturn.backward")
+                                    .symbolEffect( .bounce, options: .speed(2), value: self.animateUndo)
+                            })
+                            .buttonRepeatBehavior(.enabled)
+                            .disabled(self.undoManager?.canUndo == false)
+                            Button(action: {
+                                self.animateRedo.toggle()
+                                self.drawing.redo()
+                                UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                            }, label: {
+                                Label("Redo", systemImage: "arrow.uturn.forward")
+                                    .symbolEffect( .bounce, options: .speed(2), value: self.animateRedo)
+                            })
+                            .buttonRepeatBehavior(.enabled)
+                            .disabled(self.undoManager?.canRedo == false)
+                            Button(action: {
+                                self.animateUndoHistory.toggle()
+                                self.drawing.removeOldStroke()
+                                UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
+                            }, label: {
+                                Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
+                                    .symbolEffect(.bounce.up.byLayer, options: .speed(1), value: self.animateUndoHistory)
+                            })
+                            .buttonRepeatBehavior(.enabled)
+                            .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
+                            Button(action: {
+                                self.canShowDeleteAlert.toggle()
+                                UINotificationFeedbackGenerator().notificationOccurred(.warning)
+                            }, label: {
+                                Label("Clear Canvas", systemImage: "trash")
+                                    .symbolEffect(.pulse.wholeSymbol, options: .speed(3), value: self.canShowDeleteAlert)
+                                    .contentTransition(.symbolEffect(.replace))
+                            })
+                            .disabled(self.drawing.oldStrokeHistory() == 0)
+                            .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
+                                Button("OK", role: .destructive) {
+                                    self.drawing.clearCanvas(colorScheme: colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea)
+                                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                                }
+                                Button("cancel", role: .cancel) {
+                                    
+                                }
                             }
                         }
+                    } else {
+                        Spacer()
+                        Button(action: {
+                            self.canExpandUndoBar.toggle()
+                            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+                        }, label: {
+                            Label("Expand", systemImage: "chevron.left.circle")
+                        })
                     }
                 }
             } else {
