@@ -106,24 +106,59 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     // Initialize from FileWrapper (decode JSON)
     required init(configuration: ReadConfiguration) throws {
         if let decodedData = configuration.file.regularFileContents {
-            self.sketchModel = try JSONDecoder().decode(SketchModel.self, from: decodedData)
-            debugPrint("Read File: \(self.sketchModel)")
-            self.backgroundColor = self.sketchModel.artCanvas.color
-            self.ignoreSafeArea = self.sketchModel.artCanvas.fullSize
-            self.orientation = self.sketchModel.artCanvas.orientation
-            if let lastStroke = self.sketchModel.oldStrokes.last {
-                self.foregroundColor = lastStroke.color
-                self.lineWidth = lastStroke.width
-                self.lineSpacing = lastStroke.spacing
-                self.blurAmount = lastStroke.blur
-                self.canFill = lastStroke.fill
-                self.fillColor = lastStroke.fillColor
-                self.selectedTool = lastStroke.tool
+            // Try decoding with the new v2 model first
+            do {
+                self.sketchModel = try JSONDecoder().decode(SketchModel.self, from: decodedData)
+                debugPrint("Read New File Type: \(self.sketchModel)")
+                // Use the artCanvas information from the new format
+                self.backgroundColor = self.sketchModel.artCanvas.color
+                self.ignoreSafeArea = self.sketchModel.artCanvas.fullSize
+                self.orientation = self.sketchModel.artCanvas.orientation
+                if let lastStroke = self.sketchModel.oldStrokes.last {
+                    self.foregroundColor = lastStroke.color
+                    self.lineWidth = lastStroke.width
+                    self.lineSpacing = lastStroke.spacing
+                    self.blurAmount = lastStroke.blur
+                    self.canFill = lastStroke.fill
+                    self.fillColor = lastStroke.fillColor
+                    self.selectedTool = lastStroke.tool
+                }
+                debugPrint("Successfully decoded new format")
+            } catch {
+                // Fallback: Handle the old format
+                // If decoding fails, try decoding with the old model
+                do {
+                    // Try to decode the old v1 format
+                    let oldStrokes = try JSONDecoder().decode([LegacyStroke].self, from: decodedData)
+                    debugPrint("Read Old File Type: \(oldStrokes)")
+                    // Map old strokes to new strokes
+                    let newStrokes = oldStrokes.map { oldStroke in
+                        Stroke(
+                            id: UUID(), // Assign a new UUID
+                            points: oldStroke.points,
+                            color: oldStroke.color,
+                            width: oldStroke.width,
+                            spacing: oldStroke.spacing,
+                            blur: oldStroke.blur,
+                            fill: false, // Default value for new fields
+                            fillColor: Color.clear, // Default value for new fields
+                            tool: .brush // Default value for new fields
+                        )
+                    }
+                    // Choice of using customArtCanvas or a new Init with defaults.
+                    self.sketchModel = SketchModel(artCanvas: ArtCanvas(), oldStrokes: newStrokes)
+                    debugPrint("Successfully decoded and migrated old format")
+                } catch {
+                    debugPrint("Decoding error: \(error)")
+                    throw CocoaError(.fileReadCorruptFile)
+                }
             }
         } else {
+            debugPrint("Failed to read before loading")
             throw CocoaError(.fileReadCorruptFile)
         }
     }
+    
     
     func snapshot(contentType: UTType) throws -> SketchModel {
         return self.sketchModel
