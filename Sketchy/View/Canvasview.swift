@@ -181,16 +181,16 @@ struct CanvasView: View {
             }
             if UIDevice.current.userInterfaceIdiom == .phone && verticalScreenSize == .regular {
                 ToolbarItemGroup(placement: .bottomBar) {
+                    Spacer()
                     if canExpandUndoBar {
                         HStack {
-                            Spacer()
                             Button(action: {
                                 self.canExpandUndoBar.toggle()
                                 UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
-
                             }, label: {
                                 Label("Collapse", systemImage: "chevron.right.circle")
                             })
+                            
                             // Repeat behaviour not working unless button is in view directly
                             Button(action: {
                                 self.animateUndo.toggle()
@@ -198,20 +198,22 @@ struct CanvasView: View {
                                 UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
                             }, label: {
                                 Label("Undo", systemImage: "arrow.uturn.backward")
-                                    .symbolEffect( .bounce, options: .speed(2), value: self.animateUndo)
+                                    .symbolEffect(.bounce, options: .speed(2), value: self.animateUndo)
                             })
                             .buttonRepeatBehavior(.enabled)
                             .disabled(self.undoManager?.canUndo == false)
+
                             Button(action: {
                                 self.animateRedo.toggle()
                                 self.drawing.redo()
                                 UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
                             }, label: {
                                 Label("Redo", systemImage: "arrow.uturn.forward")
-                                    .symbolEffect( .bounce, options: .speed(2), value: self.animateRedo)
+                                    .symbolEffect(.bounce, options: .speed(2), value: self.animateRedo)
                             })
                             .buttonRepeatBehavior(.enabled)
                             .disabled(self.undoManager?.canRedo == false)
+
                             Button(action: {
                                 self.animateUndoHistory.toggle()
                                 self.drawing.removeOldStroke()
@@ -222,6 +224,7 @@ struct CanvasView: View {
                             })
                             .buttonRepeatBehavior(.enabled)
                             .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
+
                             Button(action: {
                                 self.canShowDeleteAlert.toggle()
                                 UINotificationFeedbackGenerator().notificationOccurred(.warning)
@@ -236,13 +239,14 @@ struct CanvasView: View {
                                     self.drawing.clearCanvas(colorScheme: colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea, orientation: self.orientationType)
                                     UINotificationFeedbackGenerator().notificationOccurred(.success)
                                 }
-                                Button("cancel", role: .cancel) {
-                                    
-                                }
+                                Button("Cancel", role: .cancel) { }
                             }
                         }
+                        .background(.ultraThinMaterial)
+                        .frame(width: 235)
+                        .cornerRadius(35)
+                        .transition(.move(edge: .trailing))
                     } else {
-                        Spacer()
                         Button(action: {
                             self.canExpandUndoBar.toggle()
                             UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
