@@ -57,7 +57,7 @@ struct SettingsView: View {
             // Removes white form section backgroung
             .listRowBackground(Color.clear)
             
-            Section(header: Text("\(Image(systemName: "gearshape")) Settings"), footer: Text("\(Image(systemName: "exclamationmark.circle")) Any changes to canvas orientation & size will take effect on new sketches only.\nThis can be bypassed using the override buttons.")) {
+            Section(header: Text("\(Image(systemName: "gearshape")) Settings"), footer: Text("\(Image(systemName: "exclamationmark.circle")) Any changes to canvas orientation & fullscreen canvas will take effect on new sketches only.\nThis can be bypassed using the override buttons.")) {
                 Group {
                     HStack {
                         Image(systemName: self.appearanceType.symbolChoice)
@@ -90,14 +90,14 @@ struct SettingsView: View {
                     HStack {
                         Image(systemName: "pencil.and.ruler")
                             .foregroundStyle(.brown)
-                        Text("Full Size Canvas")
+                        Text("Fullscreen Canvas")
                         Button(action: {
                             self.canShowSafeAreaInfo.toggle()
                         }, label: {
                             Image(systemName: "info.circle")
                         })
                         .popover(isPresented:  $canShowSafeAreaInfo) {
-                            Text("This will lock the current canvas to the entire screen.")
+                            Text("Uses the fullscreen as the canvas, including painting over the toolbar.")
                                 .font(.footnote)
                                 .padding()
                                 .presentationCompactAdaptation(.popover)

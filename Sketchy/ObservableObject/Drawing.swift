@@ -25,7 +25,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     
     @Published var ignoreSafeArea = true {
         didSet {
-            self.sketchModel.artCanvas.fullScreen = self.ignoreSafeArea
+            self.sketchModel.artCanvas.fullscreen = self.ignoreSafeArea
             debugPrint("Canvas Size changed: \(self.ignoreSafeArea)")
         }
     }
@@ -119,7 +119,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
                 debugPrint("Read New File Type: \(self.sketchModel)")
                 // Use the artCanvas information from the new format
                 self.backgroundColor = self.sketchModel.artCanvas.color
-                self.ignoreSafeArea = self.sketchModel.artCanvas.fullScreen
+                self.ignoreSafeArea = self.sketchModel.artCanvas.fullscreen
                 self.orientation = self.sketchModel.artCanvas.orientation
                 self.lock = self.sketchModel.artCanvas.lock
                 if let lastStroke = self.sketchModel.oldStrokes.last {

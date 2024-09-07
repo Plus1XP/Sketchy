@@ -1,5 +1,5 @@
 //
-//  Appearance.swift
+//  AppearanceType.swift
 //  Sketchy
 //
 //  Created by nabbit on 01/09/2024.
