@@ -46,6 +46,7 @@ struct CanvasView: View {
                 debugPrint("Drawing..\(value.location)")
                 if isCanvasHapticsEnabled {
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: canvasHapticsIntensity)
+                    
                 }
                 if drawing.currentStroke.points.isEmpty {
                     // Initialize the startPoint on the first gesture change
@@ -345,17 +346,47 @@ struct CanvasView: View {
                 UIViewController.attemptRotationToDeviceOrientation()
             }
 //            orientationChangePublisher?.cancel()
-        }.onChange(of: self.drawing.orientationOverride, {
-            DispatchQueue.main.async {
-                switch self.orientationType {
-                case .automatic:
-                    AppDelegate.orientationLock = UIInterfaceOrientationMask.all
-                case .portrait:
-                    AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
-                case .landscape:
-                    AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
+        }
+        .onChange(of: self.drawing.orientation, {
+            if self.drawing.isOldStrokesEmpty() {
+                DispatchQueue.main.async {
+                    switch self.orientationType {
+                    case .automatic:
+                        AppDelegate.orientationLock = UIInterfaceOrientationMask.all
+                    case .portrait:
+                        AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
+                    case .landscape:
+                        AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
+                    }
+                    UIViewController.attemptRotationToDeviceOrientation()
                 }
-                UIViewController.attemptRotationToDeviceOrientation()
+            }
+        })
+        .onChange(of: self.drawing.orientationOverride, {
+            if self.drawing.orientationOverride {
+                DispatchQueue.main.async {
+                    switch self.orientationType {
+                    case .automatic:
+                        AppDelegate.orientationLock = UIInterfaceOrientationMask.all
+                    case .portrait:
+                        AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
+                    case .landscape:
+                        AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
+                    }
+                    UIViewController.attemptRotationToDeviceOrientation()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    switch self.drawing.orientation {
+                    case .automatic:
+                        AppDelegate.orientationLock = UIInterfaceOrientationMask.all
+                    case .portrait:
+                        AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
+                    case .landscape:
+                        AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
+                    }
+                    UIViewController.attemptRotationToDeviceOrientation()
+                }
             }
         })
         .sheet(isPresented: $showingToolPreferences) {
