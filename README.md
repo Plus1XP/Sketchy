@@ -36,3 +36,9 @@ Whether you're doodling, sketching, or painting, Sketchy is your perfect compani
 Download today and let your imagination run wild!
 
 ## Screenshots
+
+### iOS
+| ![](images/ios1.png)| ![](images/ios2.png)|
+|---------------------|---------------------|
+| ![](images/ios3.png)| ![](images/ios4.png)|
+| ![](images/ios5.png)| ![](images/ios6.png)|
