@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ArtCanvas: Codable {
     var color = Color.clear
-    var fullSize: Bool = true
+    var fullScreen: Bool = true
     var orientation: OrientationType = .automatic
+    var lock: Bool = false
 }
