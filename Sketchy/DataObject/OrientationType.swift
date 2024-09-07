@@ -1,5 +1,5 @@
 //
-//  Orientation.swift
+//  OrientationType.swift
 //  Sketchy
 //
 //  Created by nabbit on 06/09/2024.

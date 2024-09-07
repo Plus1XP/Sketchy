@@ -11,7 +11,7 @@ import SwiftUI
 struct SketchyApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
-    @AppStorage("appearance") var appearanceType: AppearanceType = .automatic
+    @AppStorage("appearanceType") var appearanceType: AppearanceType = .automatic
 
     var body: some Scene {
         DocumentGroup(newDocument: Drawing.init) { file in
