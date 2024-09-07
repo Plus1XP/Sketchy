@@ -10,7 +10,7 @@
 		2F42B9072C8B40E300A887DF /* Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9062C8B40E300A887DF /* Orientation.swift */; };
 		2F42B9092C8BBF2900A887DF /* LegacyStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9082C8BBF2900A887DF /* LegacyStroke.swift */; };
 		2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */; };
-		2FD6FB272C83EAF400AFDD82 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6FB262C83EAF400AFDD82 /* Appearance.swift */; };
+		2FD6FB272C83EAF400AFDD82 /* AppearanceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6FB262C83EAF400AFDD82 /* AppearanceType.swift */; };
 		2FDEEC742C82159D009BB9E3 /* SketchyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC732C82159D009BB9E3 /* SketchyApp.swift */; };
 		2FDEEC762C82159D009BB9E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC752C82159D009BB9E3 /* ContentView.swift */; };
 		2FDEEC782C82159E009BB9E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FDEEC772C82159E009BB9E3 /* Assets.xcassets */; };
@@ -44,7 +44,7 @@
 		2F42B9062C8B40E300A887DF /* Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientation.swift; sourceTree = "<group>"; };
 		2F42B9082C8BBF2900A887DF /* LegacyStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyStroke.swift; sourceTree = "<group>"; };
 		2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPreferencesView.swift; sourceTree = "<group>"; };
-		2FD6FB262C83EAF400AFDD82 /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
+		2FD6FB262C83EAF400AFDD82 /* AppearanceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceType.swift; sourceTree = "<group>"; };
 		2FDEEC702C82159D009BB9E3 /* Sketchy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sketchy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FDEEC732C82159D009BB9E3 /* SketchyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchyApp.swift; sourceTree = "<group>"; };
 		2FDEEC752C82159D009BB9E3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -165,7 +165,7 @@
 		2FDEEC8D2C821DBE009BB9E3 /* DataObject */ = {
 			isa = PBXGroup;
 			children = (
-				2FD6FB262C83EAF400AFDD82 /* Appearance.swift */,
+				2FD6FB262C83EAF400AFDD82 /* AppearanceType.swift */,
 				2F42B9062C8B40E300A887DF /* Orientation.swift */,
 				2FE991732C863CD8000686FD /* ToolType.swift */,
 				2FE9916F2C861B31000686FD /* ArtCanvas.swift */,
@@ -295,7 +295,7 @@
 				2FDEEC912C821DEF009BB9E3 /* UIWindow.swift in Sources */,
 				2F42B9072C8B40E300A887DF /* Orientation.swift in Sources */,
 				2FDEEC982C821EBF009BB9E3 /* SettingsView.swift in Sources */,
-				2FD6FB272C83EAF400AFDD82 /* Appearance.swift in Sources */,
+				2FD6FB272C83EAF400AFDD82 /* AppearanceType.swift in Sources */,
 				2FE991742C863CD8000686FD /* ToolType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -428,7 +428,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_ASSET_PATHS = "\"Sketchy/Preview Content\"";
 				DEVELOPMENT_TEAM = L4UU7WP4CE;
 				ENABLE_PREVIEWS = YES;
@@ -446,7 +446,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.plus1xp.sketchy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -461,7 +461,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_ASSET_PATHS = "\"Sketchy/Preview Content\"";
 				DEVELOPMENT_TEAM = L4UU7WP4CE;
 				ENABLE_PREVIEWS = YES;
@@ -479,7 +479,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.plus1xp.sketchy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
