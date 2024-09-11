@@ -23,9 +23,9 @@ struct CanvasView: View {
     @State private var canShowOrientationAlert: Bool = false
     @State private var canShowCanvasSizeAlert: Bool = false
     @State private var canExpandUndoBar: Bool = false
-    @State var animateUndo: Bool = false
-    @State var animateRedo: Bool = false
-    @State var animateUndoHistory: Bool = false
+//    @State var animateUndo: Bool = false
+//    @State var animateRedo: Bool = false
+//    @State var animateUndoHistory: Bool = false
     @State var animateTrash: Bool = false
     @AppStorage("orientationType") var orientationType: OrientationType = .automatic
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
@@ -89,218 +89,24 @@ struct CanvasView: View {
                     ColorPicker("Color", selection: $drawing.foregroundColor)
                         .labelsHidden()
                         .sensoryFeedback(.selection, trigger: drawing.foregroundColor)
-                    Button(action: {
-                        self.showingToolPreferences.toggle()
-                        UISelectionFeedbackGenerator().selectionChanged()
-                    }) {
-                        Label("Tool Preferences", systemImage: "slider.horizontal.3")
-                            .foregroundColor(.accentColor)
-                            .symbolEffect( .bounce, options: .speed(2), value: self.showingToolPreferences)
-                    }
-                    Menu {
-                        Button(action: {
-                            self.drawing.selectedTool = .brush
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }, label: {
-                            Label(ToolType.brush.label, systemImage: ToolType.brush.symbolChoice)
-                        })
-                        
-                        Button(action: {
-                            self.drawing.selectedTool = .line
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }, label: {
-                            Label(ToolType.line.label, systemImage: ToolType.line.symbolChoice)
-                        })
-                        
-                        Button(action: {
-                            self.drawing.selectedTool = .circle
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }, label: {
-                            Label(ToolType.circle.label, systemImage: ToolType.circle.symbolChoice)
-                        })
-                        
-                        Button(action: {
-                            self.drawing.selectedTool = .triangle
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }) {
-                            Label(ToolType.triangle.label, systemImage: ToolType.triangle.symbolChoice)
-                        }
-                        
-                        Button(action: {
-                            self.drawing.selectedTool = .square
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }, label: {
-                            Label(ToolType.square.label, systemImage: ToolType.square.symbolChoice)
-                        })
-                        
-                        Button(action: {
-                            self.drawing.selectedTool = .diamond
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }) {
-                            Label(ToolType.diamond.label, systemImage: ToolType.diamond.symbolChoice)
-                        }
-                        
-                        Button(action: {
-                            self.drawing.selectedTool = .pentagon
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }) {
-                            Label(ToolType.pentagon.label, systemImage: ToolType.pentagon.symbolChoice)
-                        }
-                        
-                        Button(action: {
-                            self.drawing.selectedTool = .hexagon
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }) {
-                            Label(ToolType.hexagon.label, systemImage: ToolType.hexagon.symbolChoice)
-                        }
-                        
-                        Button(action: {
-                            self.drawing.selectedTool = .octagon
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }) {
-                            Label(ToolType.octagon.label, systemImage: ToolType.octagon.symbolChoice)
-                        }
-                        
-                        Button(action: {
-                            self.drawing.selectedTool = .star
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }) {
-                            Label(ToolType.star.label, systemImage: ToolType.star.symbolChoice)
-                        }
-                        
-                        Button(action: {
-                            self.drawing.selectedTool = .eraser
-                            UISelectionFeedbackGenerator().selectionChanged()
-                        }, label: {
-                            Label(ToolType.eraser.label, systemImage: ToolType.eraser.symbolChoice)
-                        })
-                    } label: {
-                        Label("Tools", systemImage: self.drawing.selectedTool.symbolChoice)
-                    }
+                    ToolPreferencesMenuButton(showToolPreferences: $showingToolPreferences)
+                    BrushSelectionMenuButton(selectedTool: $drawing.selectedTool)
                 }
             }
             if UIDevice.current.userInterfaceIdiom == .phone && verticalScreenSize == .regular {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Spacer()
-                    if canExpandUndoBar {
-                        HStack {
-                            Button(action: {
-                                self.canExpandUndoBar.toggle()
-                                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
-                            }, label: {
-                                Label("Collapse", systemImage: "chevron.right.circle")
-                            })
-                            
-                            // Repeat behaviour not working unless button is in view directly
-                            Button(action: {
-                                self.animateUndo.toggle()
-                                self.drawing.undo()
-                                UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                            }, label: {
-                                Label("Undo", systemImage: "arrow.uturn.backward")
-                                    .symbolEffect(.bounce, options: .speed(2), value: self.animateUndo)
-                            })
-                            .buttonRepeatBehavior(.enabled)
-                            .disabled(self.undoManager?.canUndo == false)
-
-                            Button(action: {
-                                self.animateRedo.toggle()
-                                self.drawing.redo()
-                                UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                            }, label: {
-                                Label("Redo", systemImage: "arrow.uturn.forward")
-                                    .symbolEffect(.bounce, options: .speed(2), value: self.animateRedo)
-                            })
-                            .buttonRepeatBehavior(.enabled)
-                            .disabled(self.undoManager?.canRedo == false)
-
-                            Button(action: {
-                                self.animateUndoHistory.toggle()
-                                self.drawing.removeOldStroke()
-                                UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                            }, label: {
-                                Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
-                                    .symbolEffect(.bounce.up.byLayer, options: .speed(1), value: self.animateUndoHistory)
-                            })
-                            .buttonRepeatBehavior(.enabled)
-                            .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
-
-                            Button(action: {
-                                self.canShowDeleteAlert.toggle()
-                                UINotificationFeedbackGenerator().notificationOccurred(.warning)
-                            }, label: {
-                                Label("Clear Canvas", systemImage: "trash")
-                                    .symbolEffect(.pulse.wholeSymbol, options: .speed(3), value: self.canShowDeleteAlert)
-                                    .contentTransition(.symbolEffect(.replace))
-                            })
-                            .disabled(self.drawing.oldStrokeHistory() == 0)
-                            .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
-                                Button("OK", role: .destructive) {
-                                    self.drawing.clearCanvas(colorScheme: colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea, orientation: self.orientationType)
-                                    UINotificationFeedbackGenerator().notificationOccurred(.success)
-                                }
-                                Button("Cancel", role: .cancel) { }
+                    ExpandableUndoToolBarGroup(canExpand: $canExpandUndoBar, canShowDeleteAlert: $canShowDeleteAlert)
+                        .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
+                            Button("OK", role: .destructive) {
+                                self.drawing.clearCanvas(colorScheme: colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea, orientation: self.orientationType)
+                                UINotificationFeedbackGenerator().notificationOccurred(.success)
                             }
+                            Button("Cancel", role: .cancel) { }
                         }
-                        .background(.ultraThinMaterial)
-                        .frame(width: 235)
-                        .cornerRadius(35)
-                        .transition(.move(edge: .trailing))
-                    } else {
-                        Button(action: {
-                            self.canExpandUndoBar.toggle()
-                            UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
-                        }, label: {
-                            Label("Expand", systemImage: "chevron.left.circle")
-                        })
-                    }
                 }
             } else {
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    HStack {
-                        Divider()
-//                            .frame(width: 1)
-//                            .overlay(.secondary)
-                        // Repeat behaviour not working unless button is in view directly
-                        Button(action: {
-                            self.animateUndo.toggle()
-                            self.drawing.undo()
-                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                        }, label: {
-                            Label("Undo", systemImage: "arrow.uturn.backward")
-                                .symbolEffect( .bounce, options: .speed(2), value: self.animateUndo)
-                        })
-                        .buttonRepeatBehavior(.enabled)
-                        .disabled(self.undoManager?.canUndo == false)
-                        Button(action: {
-                            self.animateRedo.toggle()
-                            self.drawing.redo()
-                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                        }, label: {
-                            Label("Redo", systemImage: "arrow.uturn.forward")
-                                .symbolEffect( .bounce, options: .speed(2), value: self.animateRedo)
-                        })
-                        .buttonRepeatBehavior(.enabled)
-                        .disabled(self.undoManager?.canRedo == false)
-                        Button(action: {
-                            self.animateUndoHistory.toggle()
-                            self.drawing.removeOldStroke()
-                            UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.8)
-                        }, label: {
-                            Label("Undo History", image: "custom.arrow.uturn.backward.badge.clock")
-                                .symbolEffect(.bounce.up.byLayer, options: .speed(1), value: self.animateUndoHistory)
-                        })
-                        .buttonRepeatBehavior(.enabled)
-                        .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
-                        Button(action: {
-                            self.canShowDeleteAlert.toggle()
-                            UINotificationFeedbackGenerator().notificationOccurred(.warning)
-                        }, label: {
-                            Label("Clear Canvas", systemImage: "trash")
-                                .symbolEffect(.pulse.wholeSymbol, options: .speed(3), value: self.canShowDeleteAlert)
-                                .contentTransition(.symbolEffect(.replace))
-                        })
-                        .disabled(self.drawing.oldStrokeHistory() == 0)
+                    UndoToolBarGroup(canShowDeleteAlert: $canShowDeleteAlert)
                         .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
                             Button("OK", role: .destructive) {
                                 self.drawing.clearCanvas(colorScheme: colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea, orientation: self.orientationType)
@@ -309,7 +115,6 @@ struct CanvasView: View {
                             Button("cancel", role: .cancel) {
                             }
                         }
-                    }
                 }
             }
         }

@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F190F3D2C91A644001D01F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F3C2C91A644001D01F1 /* AppDelegate.swift */; };
+		2F190F3F2C91A8EA001D01F1 /* BrushSelectionMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F3E2C91A8EA001D01F1 /* BrushSelectionMenuButton.swift */; };
+		2F190F412C91AACF001D01F1 /* ToolPreferencesMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F402C91AACF001D01F1 /* ToolPreferencesMenuButton.swift */; };
+		2F190F432C91ABCC001D01F1 /* ExpandableUndoToolBarGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F422C91ABCC001D01F1 /* ExpandableUndoToolBarGroup.swift */; };
+		2F190F452C91AE8D001D01F1 /* UndoToolBarGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F442C91AE8D001D01F1 /* UndoToolBarGroup.swift */; };
+		2F190F472C91B044001D01F1 /* UndoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F462C91B044001D01F1 /* UndoButton.swift */; };
+		2F190F492C91B04B001D01F1 /* RedoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F482C91B04B001D01F1 /* RedoButton.swift */; };
+		2F190F4B2C91B056001D01F1 /* HistoricUndoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F4A2C91B056001D01F1 /* HistoricUndoButton.swift */; };
+		2F190F4D2C91B062001D01F1 /* ClearCanvasButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F4C2C91B062001D01F1 /* ClearCanvasButton.swift */; };
 		2F42B9072C8B40E300A887DF /* OrientationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9062C8B40E300A887DF /* OrientationType.swift */; };
 		2F42B9092C8BBF2900A887DF /* LegacyStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9082C8BBF2900A887DF /* LegacyStroke.swift */; };
 		2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */; };
@@ -41,6 +50,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F190F3C2C91A644001D01F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2F190F3E2C91A8EA001D01F1 /* BrushSelectionMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrushSelectionMenuButton.swift; sourceTree = "<group>"; };
+		2F190F402C91AACF001D01F1 /* ToolPreferencesMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPreferencesMenuButton.swift; sourceTree = "<group>"; };
+		2F190F422C91ABCC001D01F1 /* ExpandableUndoToolBarGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableUndoToolBarGroup.swift; sourceTree = "<group>"; };
+		2F190F442C91AE8D001D01F1 /* UndoToolBarGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoToolBarGroup.swift; sourceTree = "<group>"; };
+		2F190F462C91B044001D01F1 /* UndoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoButton.swift; sourceTree = "<group>"; };
+		2F190F482C91B04B001D01F1 /* RedoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedoButton.swift; sourceTree = "<group>"; };
+		2F190F4A2C91B056001D01F1 /* HistoricUndoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricUndoButton.swift; sourceTree = "<group>"; };
+		2F190F4C2C91B062001D01F1 /* ClearCanvasButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearCanvasButton.swift; sourceTree = "<group>"; };
 		2F42B9062C8B40E300A887DF /* OrientationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationType.swift; sourceTree = "<group>"; };
 		2F42B9082C8BBF2900A887DF /* LegacyStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyStroke.swift; sourceTree = "<group>"; };
 		2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPreferencesView.swift; sourceTree = "<group>"; };
@@ -107,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				2FDEEC732C82159D009BB9E3 /* SketchyApp.swift */,
+				2F190F3C2C91A644001D01F1 /* AppDelegate.swift */,
 				2FDEEC772C82159E009BB9E3 /* Assets.xcassets */,
 				2FDEEC8A2C821A83009BB9E3 /* Info.plist */,
 				2FDEEC8D2C821DBE009BB9E3 /* DataObject */,
@@ -191,9 +210,17 @@
 		2FE991752C863EEE000686FD /* ViewComponents */ = {
 			isa = PBXGroup;
 			children = (
+				2FE991902C892267000686FD /* WelcomeViewComponents.swift */,
+				2F190F3E2C91A8EA001D01F1 /* BrushSelectionMenuButton.swift */,
+				2F190F402C91AACF001D01F1 /* ToolPreferencesMenuButton.swift */,
+				2F190F422C91ABCC001D01F1 /* ExpandableUndoToolBarGroup.swift */,
+				2F190F442C91AE8D001D01F1 /* UndoToolBarGroup.swift */,
+				2F190F462C91B044001D01F1 /* UndoButton.swift */,
+				2F190F482C91B04B001D01F1 /* RedoButton.swift */,
+				2F190F4A2C91B056001D01F1 /* HistoricUndoButton.swift */,
+				2F190F4C2C91B062001D01F1 /* ClearCanvasButton.swift */,
 				2FE991862C878AAC000686FD /* MinusButtonComponent.swift */,
 				2FE991882C878ABB000686FD /* PlusButtonComponent.swift */,
-				2FE991902C892267000686FD /* WelcomeViewComponents.swift */,
 			);
 			path = ViewComponents;
 			sourceTree = "<group>";
@@ -271,6 +298,8 @@
 				2F42B9092C8BBF2900A887DF /* LegacyStroke.swift in Sources */,
 				2FDEEC842C821650009BB9E3 /* Drawing.swift in Sources */,
 				2FDEEC9A2C821F1E009BB9E3 /* Confetti.swift in Sources */,
+				2F190F4D2C91B062001D01F1 /* ClearCanvasButton.swift in Sources */,
+				2F190F452C91AE8D001D01F1 /* UndoToolBarGroup.swift in Sources */,
 				2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */,
 				2FE991912C892267000686FD /* WelcomeViewComponents.swift in Sources */,
 				2FE991892C878ABB000686FD /* PlusButtonComponent.swift in Sources */,
@@ -279,20 +308,27 @@
 				2FE991702C861B31000686FD /* ArtCanvas.swift in Sources */,
 				2FDEEC942C821E43009BB9E3 /* DeviceShakeViewModifier.swift in Sources */,
 				2FDEEC822C821649009BB9E3 /* Stroke.swift in Sources */,
+				2F190F432C91ABCC001D01F1 /* ExpandableUndoToolBarGroup.swift in Sources */,
 				2FDEEC742C82159D009BB9E3 /* SketchyApp.swift in Sources */,
 				2FE9918B2C8921C7000686FD /* WelcomeView.swift in Sources */,
 				2FE991872C878AAC000686FD /* MinusButtonComponent.swift in Sources */,
 				2FE991722C861B5F000686FD /* SketchModel.swift in Sources */,
+				2F190F3F2C91A8EA001D01F1 /* BrushSelectionMenuButton.swift in Sources */,
 				2FDEEC9D2C821F6D009BB9E3 /* ButtonStyles.swift in Sources */,
 				2FE991932C89CB7C000686FD /* Canvasview.swift in Sources */,
 				2FE9916E2C8606F3000686FD /* RawRepresentable.swift in Sources */,
+				2F190F492C91B04B001D01F1 /* RedoButton.swift in Sources */,
+				2F190F3D2C91A644001D01F1 /* AppDelegate.swift in Sources */,
 				2FDEEC882C821690009BB9E3 /* Path.swift in Sources */,
 				2FDEEC862C821689009BB9E3 /* Codable.swift in Sources */,
 				2FE9918F2C892219000686FD /* String.swift in Sources */,
 				2FDEEC8F2C821DE2009BB9E3 /* UIDevice.swift in Sources */,
+				2F190F4B2C91B056001D01F1 /* HistoricUndoButton.swift in Sources */,
+				2F190F472C91B044001D01F1 /* UndoButton.swift in Sources */,
 				2FE9918D2C8921E4000686FD /* WelcomeModel.swift in Sources */,
 				2FDEEC9F2C822060009BB9E3 /* HelperFunctions.swift in Sources */,
 				2FDEEC912C821DEF009BB9E3 /* UIWindow.swift in Sources */,
+				2F190F412C91AACF001D01F1 /* ToolPreferencesMenuButton.swift in Sources */,
 				2F42B9072C8B40E300A887DF /* OrientationType.swift in Sources */,
 				2FDEEC982C821EBF009BB9E3 /* SettingsView.swift in Sources */,
 				2FD6FB272C83EAF400AFDD82 /* AppearanceType.swift in Sources */,
