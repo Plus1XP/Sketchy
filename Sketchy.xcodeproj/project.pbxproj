@@ -16,9 +16,8 @@
 		2F190F492C91B04B001D01F1 /* RedoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F482C91B04B001D01F1 /* RedoButton.swift */; };
 		2F190F4B2C91B056001D01F1 /* HistoricUndoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F4A2C91B056001D01F1 /* HistoricUndoButton.swift */; };
 		2F190F4D2C91B062001D01F1 /* ClearCanvasButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F4C2C91B062001D01F1 /* ClearCanvasButton.swift */; };
-		2F190F4F2C91E7BD001D01F1 /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F4E2C91E7BD001D01F1 /* CustomSlider.swift */; };
-		2F190F512C91EA96001D01F1 /* ScrollViewOffsetReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F502C91EA96001D01F1 /* ScrollViewOffsetReader.swift */; };
-		2F190F532C91EF68001D01F1 /* SegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F522C91EF68001D01F1 /* SegmentView.swift */; };
+		2F190F4F2C91E7BD001D01F1 /* ModernSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F4E2C91E7BD001D01F1 /* ModernSlider.swift */; };
+		2F190F552C920EDA001D01F1 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F542C920EDA001D01F1 /* ColorScheme.swift */; };
 		2F42B9072C8B40E300A887DF /* OrientationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9062C8B40E300A887DF /* OrientationType.swift */; };
 		2F42B9092C8BBF2900A887DF /* LegacyStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9082C8BBF2900A887DF /* LegacyStroke.swift */; };
 		2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */; };
@@ -62,9 +61,8 @@
 		2F190F482C91B04B001D01F1 /* RedoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedoButton.swift; sourceTree = "<group>"; };
 		2F190F4A2C91B056001D01F1 /* HistoricUndoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricUndoButton.swift; sourceTree = "<group>"; };
 		2F190F4C2C91B062001D01F1 /* ClearCanvasButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearCanvasButton.swift; sourceTree = "<group>"; };
-		2F190F4E2C91E7BD001D01F1 /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
-		2F190F502C91EA96001D01F1 /* ScrollViewOffsetReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewOffsetReader.swift; sourceTree = "<group>"; };
-		2F190F522C91EF68001D01F1 /* SegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentView.swift; sourceTree = "<group>"; };
+		2F190F4E2C91E7BD001D01F1 /* ModernSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernSlider.swift; sourceTree = "<group>"; };
+		2F190F542C920EDA001D01F1 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		2F42B9062C8B40E300A887DF /* OrientationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationType.swift; sourceTree = "<group>"; };
 		2F42B9082C8BBF2900A887DF /* LegacyStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyStroke.swift; sourceTree = "<group>"; };
 		2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPreferencesView.swift; sourceTree = "<group>"; };
@@ -163,6 +161,7 @@
 				2FDEEC952C821E5A009BB9E3 /* View.swift */,
 				2FE9916D2C8606F3000686FD /* RawRepresentable.swift */,
 				2FE9918E2C892219000686FD /* String.swift */,
+				2F190F542C920EDA001D01F1 /* ColorScheme.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -209,6 +208,7 @@
 				2FDEEC9C2C821F6D009BB9E3 /* ButtonStyles.swift */,
 				2FDEEC932C821E43009BB9E3 /* DeviceShakeViewModifier.swift */,
 				2FDEEC992C821F1E009BB9E3 /* Confetti.swift */,
+				2F190F4E2C91E7BD001D01F1 /* ModernSlider.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -227,9 +227,6 @@
 				2F190F4C2C91B062001D01F1 /* ClearCanvasButton.swift */,
 				2FE991862C878AAC000686FD /* MinusButtonComponent.swift */,
 				2FE991882C878ABB000686FD /* PlusButtonComponent.swift */,
-				2F190F4E2C91E7BD001D01F1 /* CustomSlider.swift */,
-				2F190F502C91EA96001D01F1 /* ScrollViewOffsetReader.swift */,
-				2F190F522C91EF68001D01F1 /* SegmentView.swift */,
 			);
 			path = ViewComponents;
 			sourceTree = "<group>";
@@ -314,8 +311,8 @@
 				2FE991892C878ABB000686FD /* PlusButtonComponent.swift in Sources */,
 				2FDEEC762C82159D009BB9E3 /* ContentView.swift in Sources */,
 				2FDEEC962C821E5A009BB9E3 /* View.swift in Sources */,
-				2F190F4F2C91E7BD001D01F1 /* CustomSlider.swift in Sources */,
-				2F190F512C91EA96001D01F1 /* ScrollViewOffsetReader.swift in Sources */,
+				2F190F552C920EDA001D01F1 /* ColorScheme.swift in Sources */,
+				2F190F4F2C91E7BD001D01F1 /* ModernSlider.swift in Sources */,
 				2FE991702C861B31000686FD /* ArtCanvas.swift in Sources */,
 				2FDEEC942C821E43009BB9E3 /* DeviceShakeViewModifier.swift in Sources */,
 				2FDEEC822C821649009BB9E3 /* Stroke.swift in Sources */,
@@ -340,7 +337,6 @@
 				2FDEEC9F2C822060009BB9E3 /* HelperFunctions.swift in Sources */,
 				2FDEEC912C821DEF009BB9E3 /* UIWindow.swift in Sources */,
 				2F190F412C91AACF001D01F1 /* ToolPreferencesMenuButton.swift in Sources */,
-				2F190F532C91EF68001D01F1 /* SegmentView.swift in Sources */,
 				2F42B9072C8B40E300A887DF /* OrientationType.swift in Sources */,
 				2FDEEC982C821EBF009BB9E3 /* SettingsView.swift in Sources */,
 				2FD6FB272C83EAF400AFDD82 /* AppearanceType.swift in Sources */,

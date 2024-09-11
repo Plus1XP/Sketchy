@@ -55,45 +55,33 @@ struct ToolPreferencesView: View {
                 Section(header: Text("\(Image(systemName: "pencil.tip")) Line Width")) {
                     Group {
                         HStack {
-                            VStack {
-                                Text(Int(self.drawing.lineWidth).description)
-                                    .fontWeight(.medium)
-                                CustomSlider(count: Binding<Int>(get: { Int(drawing.lineWidth) },
-                                                                 set: { drawing.lineWidth = Double($0) }), from: 1, to: 100, steps: 10, style: .styleOne)
+                            ModernSlider(systemImage: "pencil.tip", value: $drawing.lineWidth)
                                 .sensoryFeedback(.increase, trigger: self.drawing.lineWidth)
-                                Text("Thickness")
-                                    .font(.footnote)
-                            }
+                            
+                            Text(Int(self.drawing.lineWidth).description)
+                                .fontWeight(.medium)
                         }
                     }
                 }
                 Section(header: Text("\(Image(systemName: "scribble.variable")) Line blur")) {
                     Group {
                         HStack {
-                            VStack {
-                                Text(Int(self.drawing.blurAmount).description)
-                                    .fontWeight(.medium)
-                                CustomSlider(count: Binding<Int>(get: { Int(drawing.blurAmount) },
-                                                                 set: { drawing.blurAmount = Double($0) }), from: 0, to: 50, steps: 10, style: .styleOne)
+                            ModernSlider(systemImage: "scribble.variable", value: $drawing.blurAmount)
                                 .sensoryFeedback(.increase, trigger: self.drawing.blurAmount)
-                                Text("Softness")
-                                    .font(.footnote)
-                            }
+                            
+                            Text(Int(self.drawing.blurAmount).description)
+                                .fontWeight(.medium)
                         }
                     }
                 }
                 Section(header: Text("\(Image(systemName: "ellipsis")) Line Spacing")) {
                     Group {
                         HStack {
-                            VStack {
-                                Text(self.drawing.lineSpacing, format: .percent)
-                                    .fontWeight(.medium)
-                                CustomSlider(count: Binding<Int>(get: { Int(drawing.lineSpacing) },
-                                                                 set: { drawing.lineSpacing = Double($0) }), from: 0, to: 5, steps: 1, style: .styleOne)
+                            ModernSlider(systemImage: "ellipsis", value: $drawing.lineSpacing)
                                 .sensoryFeedback(.increase, trigger: self.drawing.lineSpacing)
-                                Text("Distance")
-                                    .font(.footnote)
-                            }
+                            
+                            Text(Int(self.drawing.lineSpacing).description)
+                                .fontWeight(.medium)
                         }
                     }
                 }
