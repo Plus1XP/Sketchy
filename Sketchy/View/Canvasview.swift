@@ -14,19 +14,10 @@ struct CanvasView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.verticalSizeClass) var verticalScreenSize
     @State private var startPoint: CGPoint = .zero
-    @State private var lastOrientation: UIDeviceOrientation? = nil
-    @State private var orientation: UIDeviceOrientation? = nil
-    @State private var orientationChangePublisher: AnyCancellable?
     @State private var showingToolPreferences: Bool = false
     @State private var canShowSettingsView: Bool = false
     @State private var canShowDeleteAlert: Bool = false
-    @State private var canShowOrientationAlert: Bool = false
-    @State private var canShowCanvasSizeAlert: Bool = false
     @State private var canExpandUndoBar: Bool = false
-//    @State var animateUndo: Bool = false
-//    @State var animateRedo: Bool = false
-//    @State var animateUndoHistory: Bool = false
-    @State var animateTrash: Bool = false
     @AppStorage("orientationType") var orientationType: OrientationType = .automatic
     @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
     @AppStorage("isCanvasHapticsEnabled") var isCanvasHapticsEnabled: Bool = true
@@ -122,75 +113,21 @@ struct CanvasView: View {
             self.drawing.undoManager = self.undoManager
             debugPrint("Loading Canvas Preferences")
             self.drawing.setCanvasDefaults(colorScheme: self.colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea, orientation: self.orientationType)
-            DispatchQueue.main.async {
-                switch self.drawing.orientation {
-                case .automatic:
-                    AppDelegate.orientationLock = UIInterfaceOrientationMask.all
-                case .portrait:
-                    AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
-                case .landscape:
-                    AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
-                }
-                UIViewController.attemptRotationToDeviceOrientation()
-            }
-//            self.orientationChangePublisher = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
-//                .compactMap { notification in
-//                    UIDevice.current.orientation
-//                }
-//                .sink { newOrientation in
-//                    orientation = newOrientation
-//                    print("isLandscape: \(orientation?.isLandscape ?? false))")
-//                    print("isPortrait: \(orientation?.isPortrait ?? false))")
-//                    print("isFlat: \(orientation?.isFlat ?? false))")
-//                }
+            self.setDeviceOrientation(orientation: drawing.orientation)
         }
         .onDisappear{
-            DispatchQueue.main.async {
-                AppDelegate.orientationLock = UIInterfaceOrientationMask.allButUpsideDown
-                UIViewController.attemptRotationToDeviceOrientation()
-            }
-//            orientationChangePublisher?.cancel()
+            self.resetDeviceOrientation()
         }
         .onChange(of: self.drawing.orientation, {
             if self.drawing.isOldStrokesEmpty() {
-                DispatchQueue.main.async {
-                    switch self.orientationType {
-                    case .automatic:
-                        AppDelegate.orientationLock = UIInterfaceOrientationMask.all
-                    case .portrait:
-                        AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
-                    case .landscape:
-                        AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
-                    }
-                    UIViewController.attemptRotationToDeviceOrientation()
-                }
+                self.setDeviceOrientation(orientation: self.orientationType)
             }
         })
         .onChange(of: self.drawing.orientationOverride, {
             if self.drawing.orientationOverride {
-                DispatchQueue.main.async {
-                    switch self.orientationType {
-                    case .automatic:
-                        AppDelegate.orientationLock = UIInterfaceOrientationMask.all
-                    case .portrait:
-                        AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
-                    case .landscape:
-                        AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
-                    }
-                    UIViewController.attemptRotationToDeviceOrientation()
-                }
+                self.setDeviceOrientation(orientation: self.orientationType)
             } else {
-                DispatchQueue.main.async {
-                    switch self.drawing.orientation {
-                    case .automatic:
-                        AppDelegate.orientationLock = UIInterfaceOrientationMask.all
-                    case .portrait:
-                        AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
-                    case .landscape:
-                        AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
-                    }
-                    UIViewController.attemptRotationToDeviceOrientation()
-                }
+                self.setDeviceOrientation(orientation: self.drawing.orientation)
             }
         })
         .sheet(isPresented: $showingToolPreferences) {
@@ -199,14 +136,6 @@ struct CanvasView: View {
         .sheet(isPresented: $canShowSettingsView) {
             SettingsView()
         }
-//        .alert("Canvas Orientation Mismatch", isPresented: $canShowOrientationAlert) {
-//            Button("Change", role: .destructive) {
-//                orientationType = drawing.orientation
-//            }
-//            Button("Keep", role: .cancel) {
-//                
-//            }
-//        }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             debugPrint("Moving to the Foreground!")
             self.drawing.removeLastStroke()
@@ -216,6 +145,27 @@ struct CanvasView: View {
             let feedbackGenerator: UINotificationFeedbackGenerator? = UINotificationFeedbackGenerator()
             feedbackGenerator?.notificationOccurred(.success)
             self.canShowSettingsView.toggle()
+        }
+    }
+    
+    private func setDeviceOrientation(orientation: OrientationType) {
+        DispatchQueue.main.async {
+            switch orientation {
+            case .automatic:
+                AppDelegate.orientationLock = UIInterfaceOrientationMask.all
+            case .portrait:
+                AppDelegate.orientationLock = UIInterfaceOrientationMask.portrait
+            case .landscape:
+                AppDelegate.orientationLock = UIInterfaceOrientationMask.landscape
+            }
+            UIViewController.attemptRotationToDeviceOrientation()
+        }
+    }
+    
+    private func resetDeviceOrientation() {
+        DispatchQueue.main.async {
+            AppDelegate.orientationLock = UIInterfaceOrientationMask.allButUpsideDown
+            UIViewController.attemptRotationToDeviceOrientation()
         }
     }
     
