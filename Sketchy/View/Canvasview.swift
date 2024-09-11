@@ -38,7 +38,7 @@ struct CanvasView: View {
                 if isCanvasHapticsEnabled {
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: canvasHapticsIntensity)
                 }
-                if drawing.currentStroke.points.isEmpty {
+                if self.drawing.isCurrentStrokeEmpty() {
                     // Initialize the startPoint on the first gesture change
                     startPoint = value.startLocation
                 }

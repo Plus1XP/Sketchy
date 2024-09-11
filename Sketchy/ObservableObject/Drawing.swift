@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 class Drawing: ObservableObject, ReferenceFileDocument {
-    @Published var currentStroke = Stroke()
+    private var currentStroke = Stroke()
     private var sketchModel = SketchModel(artCanvas: ArtCanvas(), oldStrokes: [Stroke]())
     static var readableContentTypes = [UTType(exportedAs: "io.plus1xp.sketchy")]
     var undoManager: UndoManager?
@@ -196,6 +196,10 @@ class Drawing: ObservableObject, ReferenceFileDocument {
             self.safeAreaOverride = false
             self.orientationOverride = false
         }
+    }
+    
+    func isCurrentStrokeEmpty() -> Bool {
+        return self.currentStroke.points.isEmpty
     }
     
     func isOldStrokesEmpty() -> Bool {
