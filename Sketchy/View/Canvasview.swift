@@ -70,7 +70,7 @@ struct CanvasView: View {
                 self.drawing.finishedStroke()
             }
         )
-        .ignoresSafeArea(edges: self.drawing.overideFullSizeCanvas(userPrefs: self.userConfig.canIgnoreSafeArea) ? .all : [])
+        .ignoresSafeArea(edges: self.setSafeAreas(canIgnoreSafeArea: self.userConfig.canIgnoreSafeArea))
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 HStack {
@@ -142,6 +142,14 @@ struct CanvasView: View {
             let feedbackGenerator: UINotificationFeedbackGenerator? = UINotificationFeedbackGenerator()
             feedbackGenerator?.notificationOccurred(.success)
             self.canShowSettingsView.toggle()
+        }
+    }
+    
+    private func setSafeAreas(canIgnoreSafeArea: Bool) -> Edge.Set {        
+        if self.drawing.overideFullSizeCanvas(userPrefs: canIgnoreSafeArea) {
+            Edge.Set.all
+        } else {
+            []
         }
     }
     
