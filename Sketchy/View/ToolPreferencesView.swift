@@ -110,5 +110,12 @@ struct ToolPreferencesView: View {
 
 #Preview {
     ToolPreferencesView()
+        .preferredColorScheme(.light)
+        .environmentObject(Drawing())
+}
+
+#Preview {
+    ToolPreferencesView()
+        .preferredColorScheme(.dark)
         .environmentObject(Drawing())
 }

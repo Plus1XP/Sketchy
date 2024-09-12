@@ -185,13 +185,13 @@ private struct SliderView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .overlay(
                 Capsule()
-                    .stroke(colorScheme.trackStroke, lineWidth: 0.25)
+                    .stroke(colorScheme == .light ? colorScheme.trackStroke : .white, lineWidth: 0.25)
             )
     }
 
     private var sliderFill: some View {
         Capsule()
-            .fill(sliderColor)
+            .fill(colorScheme == .light ? sliderColor : Color(UIColor.secondarySystemBackground))
             .frame(width: sliderFillWidth, height: sliderHeight)
             .overlay(
                 Capsule()
@@ -234,5 +234,11 @@ private struct ConditionalBackground: ViewModifier {
 
 #Preview {
     ModernSlider("Brightness", systemImage: "sun.max.fill", value: .constant(50))
+        .preferredColorScheme(.light)
+}
+
+#Preview {
+    ModernSlider("Brightness", systemImage: "sun.max.fill", value: .constant(50))
+        .preferredColorScheme(.dark)
 }
 
