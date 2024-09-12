@@ -9,19 +9,16 @@ import SwiftUI
 import Combine
 
 struct CanvasView: View {
-    @EnvironmentObject var drawing: Drawing
     @Environment(\.undoManager) var undoManager
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.verticalSizeClass) var verticalScreenSize
+    @EnvironmentObject var drawing: Drawing
+    @EnvironmentObject var userConfig: UserConfiguration
     @State private var startPoint: CGPoint = .zero
     @State private var showingToolPreferences: Bool = false
     @State private var canShowSettingsView: Bool = false
     @State private var canShowDeleteAlert: Bool = false
     @State private var canExpandUndoBar: Bool = false
-    @AppStorage("orientationType") var orientationType: OrientationType = .automatic
-    @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
-    @AppStorage("isCanvasHapticsEnabled") var isCanvasHapticsEnabled: Bool = true
-    @AppStorage("canvasHapticsIntensity") var canvasHapticsIntensity: Double = 0.38
 
     var body: some View {
         Canvas { context, size in
@@ -35,36 +32,36 @@ struct CanvasView: View {
         .gesture(DragGesture(minimumDistance: 0)
             .onChanged { value in
                 debugPrint("Drawing..\(value.location)")
-                if isCanvasHapticsEnabled {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: canvasHapticsIntensity)
+                if self.userConfig.isCanvasHapticsEnabled {
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: self.userConfig.canvasHapticsIntensity)
                 }
                 if self.drawing.isCurrentStrokeEmpty() {
                     // Initialize the startPoint on the first gesture change
-                    startPoint = value.startLocation
+                    self.startPoint = value.startLocation
                 }
                 switch self.drawing.selectedTool {
                 case .brush:
                     self.drawing.addBrush(point: value.location)
                 case .circle:
-                    self.drawing.addCircle(startPoint: startPoint, endPoint: value.location)
+                    self.drawing.addCircle(startPoint: self.startPoint, endPoint: value.location)
                 case .diamond:
-                    self.drawing.addDiamond(startPoint: startPoint, endPoint: value.location)
+                    self.drawing.addDiamond(startPoint: self.startPoint, endPoint: value.location)
                 case .eraser:
                     self.drawing.useEraser(point: value.location)
                 case .hexagon:
-                    self.drawing.addHexagon(startPoint: startPoint, endPoint: value.location)
+                    self.drawing.addHexagon(startPoint: self.startPoint, endPoint: value.location)
                 case .line:
-                    self.drawing.addLine(startPoint: startPoint, endPoint: value.location)
+                    self.drawing.addLine(startPoint: self.startPoint, endPoint: value.location)
                 case .octagon:
-                    self.drawing.addOctagon(startPoint: startPoint, endPoint: value.location)
+                    self.drawing.addOctagon(startPoint: self.startPoint, endPoint: value.location)
                 case .pentagon:
-                    self.drawing.addPentagon(startPoint: startPoint, endPoint: value.location)
+                    self.drawing.addPentagon(startPoint: self.startPoint, endPoint: value.location)
                 case .star:
-                    self.drawing.addStar(startPoint: startPoint, endPoint: value.location)
+                    self.drawing.addStar(startPoint: self.startPoint, endPoint: value.location)
                 case .square:
-                    self.drawing.addSquare(startPoint: startPoint, endPoint: value.location)
+                    self.drawing.addSquare(startPoint: self.startPoint, endPoint: value.location)
                 case .triangle:
-                    self.drawing.addTriangle(startPoint: startPoint, endPoint: value.location)
+                    self.drawing.addTriangle(startPoint: self.startPoint, endPoint: value.location)
                 }
             }
             .onEnded { value in
@@ -73,23 +70,23 @@ struct CanvasView: View {
                 self.drawing.finishedStroke()
             }
         )
-        .ignoresSafeArea(edges: self.drawing.overideFullSizeCanvas(userPrefs: self.canIgnoreSafeArea) ? .all : [])
+        .ignoresSafeArea(edges: self.drawing.overideFullSizeCanvas(userPrefs: self.userConfig.canIgnoreSafeArea) ? .all : [])
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 HStack {
                     ColorPicker("Color", selection: $drawing.foregroundColor)
                         .labelsHidden()
-                        .sensoryFeedback(.selection, trigger: drawing.foregroundColor)
+                        .sensoryFeedback(.selection, trigger: self.drawing.foregroundColor)
                     ToolPreferencesMenuButton(showToolPreferences: $showingToolPreferences)
                     BrushSelectionMenuButton(selectedTool: $drawing.selectedTool)
                 }
             }
-            if UIDevice.current.userInterfaceIdiom == .phone && verticalScreenSize == .regular {
+            if UIDevice.current.userInterfaceIdiom == .phone && self.verticalScreenSize == .regular {
                 ToolbarItemGroup(placement: .bottomBar) {
                     ExpandableUndoToolBarGroup(canExpand: $canExpandUndoBar, canShowDeleteAlert: $canShowDeleteAlert)
                         .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
                             Button("OK", role: .destructive) {
-                                self.drawing.clearCanvas(colorScheme: colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea, orientation: self.orientationType)
+                                self.drawing.clearCanvas(colorScheme: self.colorScheme, canIgnoreSafeArea: self.userConfig.canIgnoreSafeArea, orientation: self.userConfig.orientationType)
                                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                             }
                             Button("Cancel", role: .cancel) { }
@@ -100,7 +97,7 @@ struct CanvasView: View {
                     UndoToolBarGroup(canShowDeleteAlert: $canShowDeleteAlert)
                         .alert("Are you sure you want to clear the canvas?", isPresented: $canShowDeleteAlert) {
                             Button("OK", role: .destructive) {
-                                self.drawing.clearCanvas(colorScheme: colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea, orientation: self.orientationType)
+                                self.drawing.clearCanvas(colorScheme: self.colorScheme, canIgnoreSafeArea: self.userConfig.canIgnoreSafeArea, orientation: self.userConfig.orientationType)
                                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                             }
                             Button("cancel", role: .cancel) {
@@ -112,20 +109,20 @@ struct CanvasView: View {
         .onAppear {
             self.drawing.undoManager = self.undoManager
             debugPrint("Loading Canvas Preferences")
-            self.drawing.setCanvasDefaults(colorScheme: self.colorScheme, canIgnoreSafeArea: self.canIgnoreSafeArea, orientation: self.orientationType)
-            self.setDeviceOrientation(orientation: drawing.orientation)
+            self.drawing.setCanvasDefaults(colorScheme: self.colorScheme, canIgnoreSafeArea: self.userConfig.canIgnoreSafeArea, orientation: self.userConfig.orientationType)
+            self.setDeviceOrientation(orientation: self.drawing.orientation)
         }
         .onDisappear{
             self.resetDeviceOrientation()
         }
         .onChange(of: self.drawing.orientation, {
             if self.drawing.isOldStrokesEmpty() {
-                self.setDeviceOrientation(orientation: self.orientationType)
+                self.setDeviceOrientation(orientation: self.userConfig.orientationType)
             }
         })
         .onChange(of: self.drawing.orientationOverride, {
             if self.drawing.orientationOverride {
-                self.setDeviceOrientation(orientation: self.orientationType)
+                self.setDeviceOrientation(orientation: self.userConfig.orientationType)
             } else {
                 self.setDeviceOrientation(orientation: self.drawing.orientation)
             }
@@ -271,4 +268,5 @@ struct CanvasView: View {
 #Preview {
     CanvasView()
         .environmentObject(Drawing())
+        .environmentObject(UserConfiguration())
 }

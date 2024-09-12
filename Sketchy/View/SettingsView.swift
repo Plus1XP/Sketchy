@@ -11,16 +11,12 @@ struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var drawing: Drawing
+    @EnvironmentObject var userConfig: UserConfiguration
     @State var showConfetti: Bool = false
     @State var canShowOrientationInfo: Bool = false
     @State var canShowSafeAreaInfo: Bool = false
     @State var canShowCanvasHapticsInfo: Bool = false
     @State var canShowLockCanvasInfo: Bool = false
-    @AppStorage("appearanceType") var appearanceType: AppearanceType = .automatic
-    @AppStorage("orientationType") var orientationType: OrientationType = .automatic
-    @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
-    @AppStorage("isCanvasHapticsEnabled") var isCanvasHapticsEnabled: Bool = true
-    @AppStorage("canvasHapticsIntensity") var canvasHapticsIntensity: Double = 0.38
     // Fill in App ID when app is added to appstore connect!
     private let appName: String = "Sketchy App"
     private let appID: String = "6670319622"
@@ -60,9 +56,9 @@ struct SettingsView: View {
             Section(header: Text("\(Image(systemName: "gearshape")) Settings"), footer: Text("\(Image(systemName: "exclamationmark.circle")) Any changes to canvas orientation & fullscreen canvas will take effect on new sketches only.\nThis can be bypassed using the override buttons.")) {
                 Group {
                     HStack {
-                        Image(systemName: self.appearanceType.symbolChoice)
-                            .foregroundStyle(self.appearanceType.primarySymbolColor, self.appearanceType.secondarySymbolColor)
-                        Picker(selection: $appearanceType, label: Text("System Appearence")) {
+                        Image(systemName: self.userConfig.appearanceType.symbolChoice)
+                            .foregroundStyle(self.userConfig.appearanceType.primarySymbolColor, self.userConfig.appearanceType.secondarySymbolColor)
+                        Picker(selection: $userConfig.appearanceType, label: Text("System Appearence")) {
                             Text("Auto").tag(AppearanceType.automatic)
                             Text("Light").tag(AppearanceType.light)
                             Text("Dark").tag(AppearanceType.dark)
@@ -74,16 +70,16 @@ struct SettingsView: View {
                         ColorPicker("Canvas Color", selection: $drawing.backgroundColor, supportsOpacity: true)
                     }
                     HStack {
-                        Image(systemName: self.orientationType.symbolChoice)
-                            .foregroundStyle(self.orientationType.primarySymbolColor, self.orientationType.secondarySymbolColor)
-                        Picker(selection: $orientationType, label: Text("Canvas Orientation")) {
+                        Image(systemName: self.userConfig.orientationType.symbolChoice)
+                            .foregroundStyle(self.userConfig.orientationType.primarySymbolColor, self.userConfig.orientationType.secondarySymbolColor)
+                        Picker(selection: $userConfig.orientationType, label: Text("Canvas Orientation")) {
                             Text("Auto").tag(OrientationType.automatic)
                             Text("Portrait").tag(OrientationType.portrait)
                             Text("Landscape").tag(OrientationType.landscape)
                         }
-                        .onChange(of: self.orientationType, {
+                        .onChange(of: self.userConfig.orientationType, {
                             if self.drawing.isOldStrokesEmpty() {
-                                self.drawing.setOrientation(orientation: self.orientationType)
+                                self.drawing.setOrientation(orientation: self.userConfig.orientationType)
                             }
                         })
                     }
@@ -103,11 +99,11 @@ struct SettingsView: View {
                                 .presentationCompactAdaptation(.popover)
                         }
                         Spacer()
-                        Toggle("Exceed Safe Area", isOn: $canIgnoreSafeArea)
+                        Toggle("Exceed Safe Area", isOn: $userConfig.canIgnoreSafeArea)
                             .labelsHidden()
-                            .onChange(of: self.canIgnoreSafeArea, {
+                            .onChange(of: self.userConfig.canIgnoreSafeArea, {
                                 if self.drawing.isOldStrokesEmpty() {
-                                    self.drawing.setSafeArea(canIgnoreSafeArea: self.canIgnoreSafeArea)
+                                    self.drawing.setSafeArea(canIgnoreSafeArea: self.userConfig.canIgnoreSafeArea)
                                 }
                             })
                     }
@@ -129,15 +125,15 @@ struct SettingsView: View {
                                         .presentationCompactAdaptation(.popover)
                                 }
                                 Spacer()
-                                Toggle("Canvas Haptics", isOn: $isCanvasHapticsEnabled)
+                                Toggle("Canvas Haptics", isOn: $userConfig.isCanvasHapticsEnabled)
                                     .labelsHidden()
                             }
-                            if isCanvasHapticsEnabled {
+                            if self.userConfig.isCanvasHapticsEnabled {
                                 HStack {
                                     Text("Intensity: ") +
-                                    Text(String(format: "%.2f", canvasHapticsIntensity))
+                                    Text(String(format: "%.2f", self.userConfig.canvasHapticsIntensity))
                                         .fontWeight(.medium)
-                                    Slider(value: $canvasHapticsIntensity, in: 0.28...0.8)
+                                    Slider(value: $userConfig.canvasHapticsIntensity, in: 0.28...0.8)
                                 }
                             }
                         }
@@ -273,11 +269,13 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
         .environmentObject(Drawing())
+        .environmentObject(UserConfiguration())
         .preferredColorScheme(.light)
 }
 
 #Preview {
     SettingsView()
         .environmentObject(Drawing())
+        .environmentObject(UserConfiguration())
         .preferredColorScheme(.dark)
 }

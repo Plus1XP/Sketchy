@@ -18,6 +18,7 @@
 		2F190F4D2C91B062001D01F1 /* ClearCanvasButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F4C2C91B062001D01F1 /* ClearCanvasButton.swift */; };
 		2F190F4F2C91E7BD001D01F1 /* ModernSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F4E2C91E7BD001D01F1 /* ModernSlider.swift */; };
 		2F190F552C920EDA001D01F1 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F542C920EDA001D01F1 /* ColorScheme.swift */; };
+		2F190F572C921C85001D01F1 /* UserConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F562C921C85001D01F1 /* UserConfiguration.swift */; };
 		2F42B9072C8B40E300A887DF /* OrientationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9062C8B40E300A887DF /* OrientationType.swift */; };
 		2F42B9092C8BBF2900A887DF /* LegacyStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9082C8BBF2900A887DF /* LegacyStroke.swift */; };
 		2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */; };
@@ -63,6 +64,7 @@
 		2F190F4C2C91B062001D01F1 /* ClearCanvasButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearCanvasButton.swift; sourceTree = "<group>"; };
 		2F190F4E2C91E7BD001D01F1 /* ModernSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernSlider.swift; sourceTree = "<group>"; };
 		2F190F542C920EDA001D01F1 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
+		2F190F562C921C85001D01F1 /* UserConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConfiguration.swift; sourceTree = "<group>"; };
 		2F42B9062C8B40E300A887DF /* OrientationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationType.swift; sourceTree = "<group>"; };
 		2F42B9082C8BBF2900A887DF /* LegacyStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyStroke.swift; sourceTree = "<group>"; };
 		2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPreferencesView.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 		2FDEEC8D2C821DBE009BB9E3 /* DataObject */ = {
 			isa = PBXGroup;
 			children = (
+				2F190F562C921C85001D01F1 /* UserConfiguration.swift */,
 				2FD6FB262C83EAF400AFDD82 /* AppearanceType.swift */,
 				2FE991732C863CD8000686FD /* ToolType.swift */,
 				2F42B9062C8B40E300A887DF /* OrientationType.swift */,
@@ -337,6 +340,7 @@
 				2FDEEC9F2C822060009BB9E3 /* HelperFunctions.swift in Sources */,
 				2FDEEC912C821DEF009BB9E3 /* UIWindow.swift in Sources */,
 				2F190F412C91AACF001D01F1 /* ToolPreferencesMenuButton.swift in Sources */,
+				2F190F572C921C85001D01F1 /* UserConfiguration.swift in Sources */,
 				2F42B9072C8B40E300A887DF /* OrientationType.swift in Sources */,
 				2FDEEC982C821EBF009BB9E3 /* SettingsView.swift in Sources */,
 				2FD6FB272C83EAF400AFDD82 /* AppearanceType.swift in Sources */,

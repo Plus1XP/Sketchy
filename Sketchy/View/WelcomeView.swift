@@ -9,10 +9,7 @@ import SwiftUI
 
 struct WelcomeView: View {
     @Environment(\.presentationMode) var presentationMode
-    @AppStorage("canShowOnBoarding") var canShowOnBoarding: Bool = true
-    @AppStorage("canIgnoreSafeArea") var canIgnoreSafeArea: Bool = true
-    @AppStorage("isCanvasHapticsEnabled") var isCanvasHapticsEnabled: Bool = true
-
+    @EnvironmentObject var userConfig: UserConfiguration
     let appName = "Sketchy"
     let welcomeModel = [
         WelcomeModel(title: "Historic undo", description: "Undo & Redo is for your most recent changes, when you exit it'll forget. Historic undo will keep track of changes from your past sessions", image: "custom.arrow.uturn.backward.badge.clock"),
@@ -45,7 +42,7 @@ struct WelcomeView: View {
                         }
                         .accessibilityElement(children: .combine)
                         Spacer()
-                        Toggle("Full Size Canvas", isOn: $canIgnoreSafeArea)
+                        Toggle("Full Size Canvas", isOn: $userConfig.canIgnoreSafeArea)
                             .labelsHidden()
                             .toggleStyle(.switch)
                     }
@@ -66,7 +63,7 @@ struct WelcomeView: View {
                         }
                         .accessibilityElement(children: .combine)
                         Spacer()
-                        Toggle("Canvas Haptics", isOn: $isCanvasHapticsEnabled)
+                        Toggle("Canvas Haptics", isOn: $userConfig.isCanvasHapticsEnabled)
                             .labelsHidden()
                             .toggleStyle(.switch)
                     }
@@ -111,7 +108,7 @@ struct WelcomeView: View {
                 .foregroundColor(.secondary)
             
             Button("Continue", action: {
-                self.canShowOnBoarding = false
+                self.userConfig.canShowOnBoarding = false
                 self.close()
             })
             .frame(maxWidth: .infinity, minHeight: 44)
@@ -129,10 +126,12 @@ struct WelcomeView: View {
 
 #Preview {
     WelcomeView()
+        .environmentObject(UserConfiguration())
         .preferredColorScheme(.light)
 }
 
 #Preview {
     WelcomeView()
+        .environmentObject(UserConfiguration())
         .preferredColorScheme(.dark)
 }

@@ -11,17 +11,20 @@ import SwiftUI
 struct SketchyApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
-    @AppStorage("appearanceType") var appearanceType: AppearanceType = .automatic
+    @StateObject var drawing = Drawing()
+    @StateObject var userConfig = UserConfiguration()
 
     var body: some Scene {
         DocumentGroup(newDocument: Drawing.init) { file in
             ContentView()
+                .environmentObject(self.drawing)
+                .environmentObject(self.userConfig)
         }
         .onChange(of: scenePhase) {
             print("Scene Changed")
             self.setAppearance()
         }
-        .onChange(of: appearanceType) {
+        .onChange(of: self.userConfig.appearanceType) {
             print("Appearance settings changed")
             self.setAppearance()
         }
@@ -35,7 +38,7 @@ struct SketchyApp: App {
 //        window?.overrideUserInterfaceStyle = appearance.userInerfaceStyle ?? .unspecified
         let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         if let firstWindow = scene?.windows.first {
-            firstWindow.overrideUserInterfaceStyle = appearanceType.userInerfaceStyle ?? .unspecified
+            firstWindow.overrideUserInterfaceStyle = self.userConfig.appearanceType.userInerfaceStyle ?? .unspecified
         }
     }
 }

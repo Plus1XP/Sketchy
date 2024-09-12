@@ -80,8 +80,9 @@ struct ToolPreferencesView: View {
                             ModernSlider(systemImage: "ellipsis", value: $drawing.lineSpacing)
                                 .sensoryFeedback(.increase, trigger: self.drawing.lineSpacing)
                             
-                            Text(Int(self.drawing.lineSpacing).description)
+                            Text("\(Int(self.drawing.lineSpacing).description)")
                                 .fontWeight(.medium)
+//                                .scaledToFill()
                         }
                     }
                 }

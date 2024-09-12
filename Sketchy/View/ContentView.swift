@@ -9,10 +9,10 @@ import SwiftUI
 import Combine
 
 struct ContentView: View {
-    @AppStorage("canShowOnBoarding") var canShowOnBoarding: Bool = true
-    
+    @EnvironmentObject var userConfig: UserConfiguration
+
     var body: some View {
-        if self.canShowOnBoarding {
+        if self.userConfig.canShowOnBoarding {
             WelcomeView()
         } else {
             CanvasView()
@@ -23,4 +23,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environmentObject(Drawing())
+        .environmentObject(UserConfiguration())
 }
