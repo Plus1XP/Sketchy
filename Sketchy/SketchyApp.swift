@@ -11,13 +11,11 @@ import SwiftUI
 struct SketchyApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
-    @StateObject var drawing = Drawing()
     @StateObject var userConfig = UserConfiguration()
 
     var body: some Scene {
         DocumentGroup(newDocument: Drawing.init) { file in
             ContentView()
-                .environmentObject(self.drawing)
                 .environmentObject(self.userConfig)
         }
         .onChange(of: scenePhase) {
