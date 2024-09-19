@@ -9,7 +9,6 @@ import SwiftUI
 
 struct HistoricUndoButton: View {
     @EnvironmentObject var drawing: Drawing
-    @Environment(\.undoManager) var undoManager
     @State var animateHistoricUndo: Bool = false
 
     var body: some View {
@@ -22,7 +21,7 @@ struct HistoricUndoButton: View {
                 .symbolEffect(.bounce.up.byLayer, options: .speed(1), value: self.animateHistoricUndo)
         })
         .buttonRepeatBehavior(.enabled)
-        .disabled(self.drawing.oldStrokeHistory() == 0 || self.undoManager?.canUndo == true)
+        .disabled(self.drawing.oldStrokeHistory() == 0 || self.drawing.undoManager.canUndo == true)
     }
 }
 

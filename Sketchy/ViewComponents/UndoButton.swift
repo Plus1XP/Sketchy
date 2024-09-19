@@ -9,7 +9,6 @@ import SwiftUI
 
 struct UndoButton: View {
     @EnvironmentObject var drawing: Drawing
-    @Environment(\.undoManager) var undoManager
     @State var animateUndo: Bool = false
 
     var body: some View {
@@ -23,7 +22,7 @@ struct UndoButton: View {
                 .symbolEffect( .bounce, options: .speed(2), value: self.animateUndo)
         })
         .buttonRepeatBehavior(.enabled)
-        .disabled(self.undoManager?.canUndo == false)
+        .disabled(self.drawing.undoManager.canUndo == false)
     }
 }
 

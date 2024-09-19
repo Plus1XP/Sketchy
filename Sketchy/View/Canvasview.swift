@@ -9,7 +9,6 @@ import SwiftUI
 import Combine
 
 struct CanvasView: View {
-    @Environment(\.undoManager) var undoManager
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.verticalSizeClass) var verticalScreenSize
     @EnvironmentObject var drawing: Drawing
@@ -96,7 +95,6 @@ struct CanvasView: View {
                 }
             }
             .onAppear {
-                self.drawing.undoManager = self.undoManager
                 debugPrint("Loading Canvas Preferences")
                 self.drawing.setCanvasDefaults(colorScheme: self.colorScheme, canIgnoreSafeArea: self.userConfig.canIgnoreSafeArea, orientation: self.userConfig.orientationType)
                 self.setDeviceOrientation(orientation: self.drawing.orientation)

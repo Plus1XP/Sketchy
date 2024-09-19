@@ -9,7 +9,6 @@ import SwiftUI
 
 struct UndoToolBarGroup: View {
     @EnvironmentObject var drawing: Drawing
-    @Environment(\.undoManager) var undoManager
     @Binding var canShowDeleteAlert: Bool
     
     var body: some View {
