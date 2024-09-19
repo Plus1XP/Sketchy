@@ -29,8 +29,8 @@ struct ExpandableUndoToolBarGroup: View {
                 ClearCanvasButton(canShowDeleteAlert: $canShowDeleteAlert)
             }
             .background(.ultraThinMaterial)
-            .frame(width: 235)
-            .cornerRadius(35)
+            .frame(width: 170, height: 30)
+            .cornerRadius(100)
             .transition(.move(edge: .trailing))
         } else {
             Button(action: {
@@ -39,11 +39,12 @@ struct ExpandableUndoToolBarGroup: View {
             }, label: {
                 Label("Expand", systemImage: "chevron.left.circle")
             })
+            .frame(height: 30)
         }
     }
 }
 
 #Preview {
-    ExpandableUndoToolBarGroup(canExpand: .constant(false), canShowDeleteAlert: .constant(false))
+    ExpandableUndoToolBarGroup(canExpand: .constant(true), canShowDeleteAlert: .constant(false))
         .environmentObject(Drawing())
 }
