@@ -16,7 +16,7 @@ struct ExpandableUndoToolBarGroup: View {
     var body: some View {
         Spacer()
         if canExpand {
-            HStack {
+            HStack(spacing: 10) {
                 Button(action: {
                     self.canExpand.toggle()
                     UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
@@ -28,10 +28,9 @@ struct ExpandableUndoToolBarGroup: View {
                 HistoricUndoButton()
                 ClearCanvasButton(canShowDeleteAlert: $canShowDeleteAlert)
             }
-            .background(.ultraThinMaterial)
-            .frame(width: 170, height: 30)
-            .cornerRadius(100)
-            .transition(.move(edge: .trailing))
+            .padding([.leading, .trailing], 3)
+            .background(RoundedRectangle(cornerRadius: 40).fill(.ultraThinMaterial))
+            .frame(width: 210, height: 40)
         } else {
             Button(action: {
                 self.canExpand.toggle()
@@ -39,7 +38,7 @@ struct ExpandableUndoToolBarGroup: View {
             }, label: {
                 Label("Expand", systemImage: "chevron.left.circle")
             })
-            .frame(height: 30)
+            .frame(height: 40)
         }
     }
 }

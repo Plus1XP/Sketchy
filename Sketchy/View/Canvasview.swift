@@ -148,7 +148,7 @@ struct CanvasView: View {
                                     UINotificationFeedbackGenerator().notificationOccurred(.success)
                                 }
                             }
-                            .font(.title2)
+                            .font(.title)
                             .padding(.trailing, 20)
                             .labelStyle(.iconOnly)
                     }
