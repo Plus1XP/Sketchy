@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ExpandableUndoToolBarGroup: View {
     @EnvironmentObject var drawing: Drawing
+    @Environment(\.undoManager) var undoManager
     @Binding var canExpand: Bool
     @Binding var canShowDeleteAlert: Bool
     

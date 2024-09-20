@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RedoButton: View {
     @EnvironmentObject var drawing: Drawing
+    @Environment(\.undoManager) var undoManager
     @State var animateRedo: Bool = false
 
     var body: some View {
@@ -21,7 +22,7 @@ struct RedoButton: View {
                 .symbolEffect( .bounce, options: .speed(2), value: self.animateRedo)
         })
         .buttonRepeatBehavior(.enabled)
-        .disabled(self.drawing.undoManager.canRedo == false)
+        .disabled(self.undoManager?.canRedo == false)
     }
 }
 

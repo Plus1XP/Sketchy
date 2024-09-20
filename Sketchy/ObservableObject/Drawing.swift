@@ -12,7 +12,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     private var currentStroke = Stroke()
     private var sketchModel = SketchModel(artCanvas: ArtCanvas(), oldStrokes: [Stroke]())
     static var readableContentTypes = [UTType(exportedAs: "io.plus1xp.sketchy")]
-    var undoManager = UndoManager()
+    var undoManager: UndoManager?
     var strokes: [Stroke] {
         var all = self.sketchModel.oldStrokes
         all.append(self.currentStroke)
@@ -373,7 +373,6 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     func finishedStroke() {
         objectWillChange.send()
         self.addStrokeWithUndo(self.currentStroke)
-        self.newStroke()
     }
 
     func newStroke() {
@@ -394,7 +393,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         if !self.sketchModel.oldStrokes.isEmpty {
             objectWillChange.send()
             self.sketchModel.oldStrokes.removeAll()
-            self.undoManager.removeAllActions()
+            self.undoManager?.removeAllActions()
             self.lineWidth = 3.0
             self.lineSpacing = 0.0
             self.blurAmount = 0.0
@@ -410,24 +409,25 @@ class Drawing: ObservableObject, ReferenceFileDocument {
 
     func undo() {
         objectWillChange.send()
-        self.undoManager.undo()
+        self.undoManager?.undo()
     }
 
     func redo() {
         objectWillChange.send()
-        self.undoManager.redo()
+        self.undoManager?.redo()
     }
 
     private func addStrokeWithUndo(_ stroke: Stroke) {
-        self.undoManager.registerUndo(withTarget: self, handler: { drawing in
+        self.undoManager?.registerUndo(withTarget: self, handler: { drawing in
             drawing.removeStrokeWithUndo(stroke)
         })
 
         self.sketchModel.oldStrokes.append(stroke)
+        self.newStroke()
     }
 
     private func removeStrokeWithUndo(_ stroke: Stroke) {
-        self.undoManager.registerUndo(withTarget: self, handler: { drawing in
+        self.undoManager?.registerUndo(withTarget: self, handler: { drawing in
             drawing.addStrokeWithUndo(stroke)
         })
         if !sketchModel.oldStrokes.isEmpty {
