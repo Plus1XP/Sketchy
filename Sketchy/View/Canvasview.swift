@@ -104,6 +104,11 @@ struct CanvasView: View {
             .onDisappear{
                 self.resetDeviceOrientation()
             }
+            .onChange(of: drawing.undoManager, {
+                if drawing.undoManager == nil && undoManager != nil {
+                    drawing.undoManager = undoManager
+                }
+            })
             .onChange(of: self.drawing.orientation, {
                 if self.drawing.isOldStrokesEmpty() {
                     self.setDeviceOrientation(orientation: self.userConfig.orientationType)
