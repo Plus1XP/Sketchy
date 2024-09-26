@@ -129,10 +129,10 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     // Initialize from FileWrapper (decode JSON)
     required init(configuration: ReadConfiguration) throws {
         // Prints RAW JSON Data
-        if let decodedData = configuration.file.regularFileContents {
-            let jsonString = String(data: decodedData, encoding: .utf8) ?? "Invalid JSON"
-            debugPrint("Raw JSON data: \(jsonString)")
-        }
+//        if let decodedData = configuration.file.regularFileContents {
+//            let jsonString = String(data: decodedData, encoding: .utf8) ?? "Invalid JSON"
+//            debugPrint("Raw JSON data: \(jsonString)")
+//        }
         
         if let decodedData = configuration.file.regularFileContents {
             // Try decoding with the new v3 model first
@@ -188,10 +188,10 @@ class Drawing: ObservableObject, ReferenceFileDocument {
                     self.sketchModel.oldStrokes = newStrokes
 
                     // Use the artCanvas information from the v2 format
-                    self.backgroundColor = self.sketchModel.artCanvas.color
-                    self.ignoreSafeArea = self.sketchModel.artCanvas.fullscreen
-                    self.orientation = self.sketchModel.artCanvas.orientation
-                    self.lock = self.sketchModel.artCanvas.lock
+                    self.backgroundColor = legacySketchModelV2.artCanvas.color
+                    self.ignoreSafeArea = legacySketchModelV2.artCanvas.fullscreen
+                    self.orientation = legacySketchModelV2.artCanvas.orientation
+                    self.lock = legacySketchModelV2.artCanvas.lock
 
                     if let lastStroke = self.sketchModel.oldStrokes.last {
                         self.foregroundColor = lastStroke.color
