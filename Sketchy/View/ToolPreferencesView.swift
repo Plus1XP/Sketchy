@@ -22,6 +22,8 @@ struct ToolPreferencesView: View {
                         self.drawing.lineWidth = 3.0
                         self.drawing.blurAmount = 0.0
                         self.drawing.lineSpacing = 0.0
+                        self.drawing.eraserWidth = 3.0
+                        self.drawing.eraserBlurAmount = 0.0
                         UINotificationFeedbackGenerator().notificationOccurred(.success)
                     }
                 } label: {
@@ -52,53 +54,53 @@ struct ToolPreferencesView: View {
             .padding(.trailing, 20)
             
             Form {
-                Section(header: Text("\(Image(systemName: "pencil.tip")) Line Width")) {
+                Section(header: Text("\(Image(systemName: "paintbrush.pointed.fill")) Brush Presets")) {
                     Group {
                         HStack {
-                            ModernSlider(systemImage: "pencil.tip", value: $drawing.lineWidth)
+                            ModernSlider("Thickness", systemImage: "pencil.tip", value: $drawing.lineWidth)
                                 .sensoryFeedback(.increase, trigger: self.drawing.lineWidth)
-                            
-                            Text(Int(self.drawing.lineWidth).description)
-                                .fontWeight(.medium)
+                                .onChange(of: self.drawing.lineWidth, {
+                                    if self.drawing.lineWidth < 1 {
+                                        self.drawing.lineWidth = 1
+                                    }
+                                })
                         }
-                    }
-                }
-                Section(header: Text("\(Image(systemName: "scribble.variable")) Line blur")) {
-                    Group {
                         HStack {
-                            ModernSlider(systemImage: "scribble.variable", value: $drawing.blurAmount)
+                            ModernSlider("Softness", systemImage: "scribble.variable", value: $drawing.blurAmount)
                                 .sensoryFeedback(.increase, trigger: self.drawing.blurAmount)
-                            
-                            Text(Int(self.drawing.blurAmount).description)
-                                .fontWeight(.medium)
+                        }
+                        HStack {
+                            ModernSlider("Spacing", systemImage: "ellipsis", value: $drawing.lineSpacing)
+                                .sensoryFeedback(.increase, trigger: self.drawing.lineSpacing)
                         }
                     }
                 }
-                Section(header: Text("\(Image(systemName: "ellipsis")) Line Spacing")) {
+                Section(header: Text("\(Image(systemName: "eraser.fill")) Eraser Prefs")) {
                     Group {
                         HStack {
-                            ModernSlider(systemImage: "ellipsis", value: $drawing.lineSpacing)
-                                .sensoryFeedback(.increase, trigger: self.drawing.lineSpacing)
-                            
-                            Text("\(Int(self.drawing.lineSpacing).description)")
-                                .fontWeight(.medium)
-//                                .scaledToFill()
+                            ModernSlider("Thickness", systemImage: "lineweight", value: $drawing.eraserWidth)
+                                .sensoryFeedback(.increase, trigger: self.drawing.eraserWidth)
+                        }
+                        HStack {
+                            ModernSlider("Softness", systemImage: "aqi.medium", value: $drawing.eraserBlurAmount)
+                                .sensoryFeedback(.increase, trigger: self.drawing.eraserBlurAmount)
                         }
                     }
                 }
                 Section(header: Text("\(Image(systemName: "slider.horizontal.below.square.and.square.filled")) Shape Presets")) {
                     Group {
                         HStack {
-                            Text("Fill Shape: ")
+                            Text("Fill Shape")
                             Toggle("Fill Shape:", isOn: $drawing.canFill)
                                 .labelsHidden()
                                 .sensoryFeedback(.increase, trigger: self.drawing.canFill)
                             Spacer()
-                            Text("Fill Color: ")
+                            Text("Fill Color")
                             ColorPicker("Fill Color", selection: $drawing.fillColor)
                                 .labelsHidden()
                                 .sensoryFeedback(.selection, trigger: self.drawing.fillColor)
                         }
+                        .font(.footnote)
                     }
                 }
             }

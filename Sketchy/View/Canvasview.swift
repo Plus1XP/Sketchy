@@ -236,10 +236,10 @@ struct CanvasView: View {
         let path = Path(curving: stroke.points)
         
         var contextCopy = context
-        if stroke.blur > 0 {
-            contextCopy.addFilter(.blur(radius: stroke.blur))
+        if stroke.eraserBlur > 0 {
+            contextCopy.addFilter(.blur(radius: stroke.eraserBlur))
         }
-        contextCopy.stroke(path, with: .color(self.drawing.backgroundColor), style: StrokeStyle(lineWidth: stroke.width, lineCap: .round, lineJoin: .round, dash: [1, stroke.spacing * stroke.width])
+        contextCopy.stroke(path, with: .color(self.drawing.backgroundColor), style: StrokeStyle(lineWidth: stroke.eraserWidth, lineCap: .round, lineJoin: .round, dash: [1, stroke.spacing * stroke.eraserWidth])
         )
     }
     

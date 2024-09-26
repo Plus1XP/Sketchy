@@ -20,7 +20,6 @@
 		2F190F552C920EDA001D01F1 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F542C920EDA001D01F1 /* ColorScheme.swift */; };
 		2F190F572C921C85001D01F1 /* UserConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F562C921C85001D01F1 /* UserConfiguration.swift */; };
 		2F42B9072C8B40E300A887DF /* OrientationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9062C8B40E300A887DF /* OrientationType.swift */; };
-		2F42B9092C8BBF2900A887DF /* LegacyStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9082C8BBF2900A887DF /* LegacyStroke.swift */; };
 		2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */; };
 		2FD6FB272C83EAF400AFDD82 /* AppearanceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6FB262C83EAF400AFDD82 /* AppearanceType.swift */; };
 		2FDEEC742C82159D009BB9E3 /* SketchyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEEC732C82159D009BB9E3 /* SketchyApp.swift */; };
@@ -66,7 +65,6 @@
 		2F190F542C920EDA001D01F1 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		2F190F562C921C85001D01F1 /* UserConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConfiguration.swift; sourceTree = "<group>"; };
 		2F42B9062C8B40E300A887DF /* OrientationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationType.swift; sourceTree = "<group>"; };
-		2F42B9082C8BBF2900A887DF /* LegacyStroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyStroke.swift; sourceTree = "<group>"; };
 		2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPreferencesView.swift; sourceTree = "<group>"; };
 		2FD6FB262C83EAF400AFDD82 /* AppearanceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceType.swift; sourceTree = "<group>"; };
 		2FDEEC702C82159D009BB9E3 /* Sketchy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sketchy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,7 +194,6 @@
 				2FE991732C863CD8000686FD /* ToolType.swift */,
 				2F42B9062C8B40E300A887DF /* OrientationType.swift */,
 				2FE9916F2C861B31000686FD /* ArtCanvas.swift */,
-				2F42B9082C8BBF2900A887DF /* LegacyStroke.swift */,
 				2FDEEC812C821649009BB9E3 /* Stroke.swift */,
 				2FE991712C861B5F000686FD /* SketchModel.swift */,
 				2FE9918C2C8921E4000686FD /* WelcomeModel.swift */,
@@ -304,7 +301,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F42B9092C8BBF2900A887DF /* LegacyStroke.swift in Sources */,
 				2FDEEC842C821650009BB9E3 /* Drawing.swift in Sources */,
 				2FDEEC9A2C821F1E009BB9E3 /* Confetti.swift in Sources */,
 				2F190F4D2C91B062001D01F1 /* ClearCanvasButton.swift in Sources */,

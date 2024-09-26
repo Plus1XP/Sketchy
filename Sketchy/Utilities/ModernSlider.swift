@@ -95,25 +95,29 @@ public struct ModernSlider: View {
 
     public var body: some View {
         VStack(alignment: .leading) {
-            if let title {
-                Text(title)
-                    .foregroundStyle(Color.primary)
-                    .font(.system(size: halfThumbSize))
+            HStack {
+                if let title {
+                    Text(title)
+                        .foregroundStyle(Color.primary)
+                        .font(.system(size: halfThumbSize))
+                        .scaledToFill()
+                }
+                Spacer()
+                SliderView(
+                    offset: $offset,
+                    isDragging: $isDragging,
+                    value: value,
+                    sliderWidth: sliderWidth,
+                    sliderHeight: sliderHeight,
+                    sliderColor: sliderColor,
+                    systemImage: systemImage,
+                    colorScheme: colorScheme,
+                    onChange: updateValue,
+                    onChangeEnd: { onChangeEnd?(value) }
+                )
             }
-
-            SliderView(
-                offset: $offset,
-                isDragging: $isDragging,
-                sliderWidth: sliderWidth,
-                sliderHeight: sliderHeight,
-                sliderColor: sliderColor,
-                systemImage: systemImage,
-                colorScheme: colorScheme,
-                onChange: updateValue,
-                onChangeEnd: { onChangeEnd?(value) }
-            )
         }
-        .padding(12)
+        .padding(5)
 //        .modifier(ConditionalBackground(isActive: title != nil))
         .onChange(of: value) { newValue in
             updateOffset(to: newValue)
@@ -138,6 +142,7 @@ private struct SliderView: View {
     @Binding var offset: CGFloat
     @Binding var isDragging: Bool
 
+    let value: Double
     let sliderWidth: CGFloat
     let sliderHeight: CGFloat
     let sliderColor: Color
@@ -206,7 +211,8 @@ private struct SliderView: View {
             .brightness(isDragging ? -0.1 : 0)
             .shadow(radius: colorScheme == .dark ? 5 : 3)
             .overlay {
-                Image(systemName: systemImage)
+                Text(Int(value).description)
+//                Image(systemName: systemImage)
                     .font(.system(size: halfThumbSize))
                     .foregroundStyle(Colors.thumbIconColor)
             }
