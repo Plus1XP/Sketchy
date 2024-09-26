@@ -109,6 +109,12 @@ struct CanvasView: View {
                     drawing.undoManager = undoManager
                 }
             })
+            .onChange(of: self.drawing.canSetCanvasDefaults, {
+                debugPrint("Loading Canvas Preferences")
+                self.drawing.setCanvasDefaults(colorScheme: self.colorScheme, canIgnoreSafeArea: self.userConfig.canIgnoreSafeArea, orientation: self.userConfig.orientationType)
+                self.setDeviceOrientation(orientation: self.drawing.orientation)
+                self.drawing.canSetCanvasDefaults = false
+            })
             .onChange(of: self.drawing.orientation, {
                 if self.drawing.isOldStrokesEmpty() {
                     self.setDeviceOrientation(orientation: self.userConfig.orientationType)

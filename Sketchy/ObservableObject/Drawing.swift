@@ -19,6 +19,8 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         return all
     }
     
+    @Published var canSetCanvasDefaults = false
+        
     @Published var safeAreaOverride = false
     
     @Published var orientationOverride = false
@@ -165,6 +167,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
             debugPrint("Failed to read before loading")
             throw CocoaError(.fileReadCorruptFile)
         }
+        self.canSetCanvasDefaults = true
     }
     
     
@@ -372,6 +375,9 @@ class Drawing: ObservableObject, ReferenceFileDocument {
 
     func finishedStroke() {
         objectWillChange.send()
+        if undoManager == nil {
+            print("No undoManager")
+        }
         self.addStrokeWithUndo(self.currentStroke)
     }
 
