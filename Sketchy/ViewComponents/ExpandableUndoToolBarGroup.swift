@@ -29,7 +29,7 @@ struct ExpandableUndoToolBarGroup: View {
                 ClearCanvasButton(canShowDeleteAlert: $canShowDeleteAlert)
             }
             .padding([.leading, .trailing], 3)
-            .background(RoundedRectangle(cornerRadius: 40).fill(.ultraThinMaterial))
+            .background(RoundedRectangle(cornerRadius: 40).fill(.ultraThinMaterial).opacity(0.5))
             .frame(width: 210, height: 40)
         } else {
             Button(action: {
