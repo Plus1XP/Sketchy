@@ -449,7 +449,7 @@ class Drawing: ObservableObject, ReferenceFileDocument {
     func finishedStroke() {
         objectWillChange.send()
         if undoManager == nil {
-            print("No undoManager")
+            debugPrint("No undoManager")
         }
         self.addStrokeWithUndo(self.currentStroke)
     }

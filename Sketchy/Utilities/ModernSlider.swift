@@ -21,7 +21,7 @@ import SwiftUI
 ///
 /// var body: some View {
 ///     ModernSlider("Brightness", imageType: .system(name: "sun.max.fill"), value: $brightness, onChange: { newValue in
-///         print("Brightness changed to \(newValue)")
+///         debugPrint("Brightness changed to \(newValue)")
 ///     })
 /// }
 /// ```

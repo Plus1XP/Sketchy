@@ -19,11 +19,11 @@ struct SketchyApp: App {
                 .environmentObject(self.userConfig)
         }
         .onChange(of: scenePhase) {
-            print("Scene Changed")
+            debugPrint("Scene Changed")
             self.setAppearance()
         }
         .onChange(of: self.userConfig.appearanceType) {
-            print("Appearance settings changed")
+            debugPrint("Appearance settings changed")
             self.setAppearance()
         }
     }
