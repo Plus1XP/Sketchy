@@ -464,6 +464,12 @@ class Drawing: ObservableObject, ReferenceFileDocument {
         self.newStroke()
     }
     
+    func removeFirstStroke() {
+        objectWillChange.send()
+        self.sketchModel.oldStrokes.removeFirst()
+        self.newStroke()
+    }
+    
     func oldStrokeHistory() -> Int {
         return self.sketchModel.oldStrokes.count
     }

@@ -19,6 +19,7 @@
 		2F190F4F2C91E7BD001D01F1 /* ModernSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F4E2C91E7BD001D01F1 /* ModernSlider.swift */; };
 		2F190F552C920EDA001D01F1 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F542C920EDA001D01F1 /* ColorScheme.swift */; };
 		2F190F572C921C85001D01F1 /* UserConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F190F562C921C85001D01F1 /* UserConfiguration.swift */; };
+		2F1D545C2CA81A87009EAE7A /* UndoBaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1D545B2CA81A87009EAE7A /* UndoBaseButton.swift */; };
 		2F42B9072C8B40E300A887DF /* OrientationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F42B9062C8B40E300A887DF /* OrientationType.swift */; };
 		2F5B279B2C82506F004D09BA /* ToolPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */; };
 		2FD6FB272C83EAF400AFDD82 /* AppearanceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6FB262C83EAF400AFDD82 /* AppearanceType.swift */; };
@@ -64,6 +65,7 @@
 		2F190F4E2C91E7BD001D01F1 /* ModernSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernSlider.swift; sourceTree = "<group>"; };
 		2F190F542C920EDA001D01F1 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		2F190F562C921C85001D01F1 /* UserConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConfiguration.swift; sourceTree = "<group>"; };
+		2F1D545B2CA81A87009EAE7A /* UndoBaseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoBaseButton.swift; sourceTree = "<group>"; };
 		2F42B9062C8B40E300A887DF /* OrientationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationType.swift; sourceTree = "<group>"; };
 		2F5B279A2C82506F004D09BA /* ToolPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolPreferencesView.swift; sourceTree = "<group>"; };
 		2FD6FB262C83EAF400AFDD82 /* AppearanceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceType.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				2F190F462C91B044001D01F1 /* UndoButton.swift */,
 				2F190F482C91B04B001D01F1 /* RedoButton.swift */,
 				2F190F4A2C91B056001D01F1 /* HistoricUndoButton.swift */,
+				2F1D545B2CA81A87009EAE7A /* UndoBaseButton.swift */,
 				2F190F4C2C91B062001D01F1 /* ClearCanvasButton.swift */,
 				2FE991862C878AAC000686FD /* MinusButtonComponent.swift */,
 				2FE991882C878ABB000686FD /* PlusButtonComponent.swift */,
@@ -315,6 +318,7 @@
 				2FE991702C861B31000686FD /* ArtCanvas.swift in Sources */,
 				2FDEEC942C821E43009BB9E3 /* DeviceShakeViewModifier.swift in Sources */,
 				2FDEEC822C821649009BB9E3 /* Stroke.swift in Sources */,
+				2F1D545C2CA81A87009EAE7A /* UndoBaseButton.swift in Sources */,
 				2F190F432C91ABCC001D01F1 /* ExpandableUndoToolBarGroup.swift in Sources */,
 				2FDEEC742C82159D009BB9E3 /* SketchyApp.swift in Sources */,
 				2FE9918B2C8921C7000686FD /* WelcomeView.swift in Sources */,

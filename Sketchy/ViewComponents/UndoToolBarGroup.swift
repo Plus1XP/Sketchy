@@ -18,6 +18,7 @@ struct UndoToolBarGroup: View {
             UndoButton()
             RedoButton()
             HistoricUndoButton()
+            UndoBaseButton()
             ClearCanvasButton(canShowDeleteAlert: $canShowDeleteAlert)
         }
     }

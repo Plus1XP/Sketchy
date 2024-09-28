@@ -26,11 +26,12 @@ struct ExpandableUndoToolBarGroup: View {
                 UndoButton()
                 RedoButton()
                 HistoricUndoButton()
+                UndoBaseButton()
                 ClearCanvasButton(canShowDeleteAlert: $canShowDeleteAlert)
             }
             .padding([.leading, .trailing], 3)
             .background(RoundedRectangle(cornerRadius: 40).fill(.ultraThinMaterial).opacity(0.5))
-            .frame(width: 210, height: 40)
+            .frame(width: 250, height: 40)
         } else {
             Button(action: {
                 self.canExpand.toggle()
